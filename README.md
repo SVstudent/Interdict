@@ -204,14 +204,30 @@ is why every rail is one-directional.
 
 ## What is genuinely running on Google Cloud
 
+This section is split deliberately. "We enabled the API" and "the demo calls it" are different
+claims, and only the second one is worth anything.
+
+### Live on every run
+
 | Service | Location | How Interdict uses it |
 |---|---|---|
 | **Vertex AI — Gemini 3.x** | `global` | Every agent inference. `gemini-3.6-flash` for routine agents, `gemini-3.7-flash` for the reasoning tier, driven by a `google.adk.Runner` over an `LlmAgent` whose model is ADK's `Gemini` subclassed to bind our Vertex client explicitly (`vertexai=True`, project and location from settings) rather than reading ambient `GOOGLE_*` environment variables — because the location must be `global`. Authenticated by Application Default Credentials. |
-| **Vertex AI Agent Runtime** (`reasoningEngines`) | `us-central1` | `platform/runtime.py` — `create`, `asyncQuery`, `list` against `v1beta1`. |
-| **Agent Registry** (`agents`) | `global` | `platform/registry.py` and `scripts/publish_registry.py` publish the versioned catalog with owner, department, data classification, scope manifest and changelog. |
-| **Model Armor** | `us-central1` | `sanitizeUserPrompt` on every inbound artifact, template `interdict-inbound`. Real HTTP, verified. |
-| **Firestore** | project default | The durable repository: cases, findings, checkpoints, payments, audit records, posture events, the effects ledger and the replay cache. The exactly-once guarantee is a transactional `create()`, enforced by the database rather than the caller. |
-| **Pub/Sub, Cloud Run, Cloud Scheduler** | project | Enabled for the hosted path: Cloud Run as the container target for the API and static front end, Cloud Scheduler as the tick that wakes dormant cases whose callback grace window has lapsed. |
+| **Model Armor** | `us-central1` | `sanitizeUserPrompt` on every inbound artifact, before any agent parses it. Template `interdict-inbound`. Real HTTP, verified in the request log. |
+
+### Implemented and selectable, not exercised by the default demo
+
+The demo runs `PLATFORM_BACKEND=local`, which is what lets the suite run credential-free and what
+every timing in this README was measured under. Under that setting the repository is in-memory and
+the GEAP bindings below are not on the path. They are real implementations behind the Protocols in
+`backend/app/platform/`, selected by `PLATFORM_BACKEND=geap`, not stubs — but this README is not
+going to claim a service is running because its API is enabled.
+
+| Service | Location | Status |
+|---|---|---|
+| **Firestore** | project default | `store/firestore.py` is the durable repository — cases, findings, checkpoints, payments, audit records, posture events, the effects ledger and the replay cache. The exactly-once guarantee is a transactional `create()` enforced by the database rather than the caller. Selected by `PLATFORM_BACKEND=geap` or by pointing `FIRESTORE_EMULATOR_HOST` at the emulator. |
+| **Vertex AI Agent Runtime** (`reasoningEngines`) | `us-central1` | `platform/runtime.py` — `create`, `asyncQuery`, `list` against `v1beta1`. Surface and location verified by `make probe-geap`. |
+| **Agent Registry** (`agents`) | `global` | Bound in `platform/registry.py`, but it **does not provision on this project** and the Registry surface is served by `LocalRegistry` — `GET /api/registry` reports `"backend": "local"` so the UI never claims otherwise. `projects.locations.agents` is not a generic catalog: the discovery document permits exactly one `base_agent` value, and a create returns HTTP 200 with a long-running operation that never completes while `agents.list` stays empty (DECISIONS D-013a). The catalog is our own record either way; what the platform would add is hosting for it. |
+| **Pub/Sub, Cloud Run, Cloud Scheduler** | project | Enabled on the project for the hosted path — Cloud Run as the container target, Cloud Scheduler as the tick that wakes dormant cases whose callback grace window has lapsed. `make deploy` is not wired; nothing is deployed. |
 
 Two location facts caused real work and are worth stating plainly, because they are not
 discoverable from the docs alone:
