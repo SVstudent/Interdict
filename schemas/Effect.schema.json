@@ -1,0 +1,40 @@
+{
+  "description": "One row in the exactly-once ledger, keyed by idempotency_key.",
+  "properties": {
+    "idempotency_key": {
+      "title": "Idempotency Key",
+      "type": "string"
+    },
+    "case_id": {
+      "title": "Case Id",
+      "type": "string"
+    },
+    "action": {
+      "title": "Action",
+      "type": "string"
+    },
+    "payload": {
+      "additionalProperties": true,
+      "title": "Payload",
+      "type": "object"
+    },
+    "result": {
+      "additionalProperties": true,
+      "title": "Result",
+      "type": "object"
+    },
+    "recorded_at": {
+      "format": "date-time",
+      "title": "Recorded At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "idempotency_key",
+    "case_id",
+    "action",
+    "recorded_at"
+  ],
+  "title": "Effect",
+  "type": "object"
+}

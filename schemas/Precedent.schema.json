@@ -1,0 +1,122 @@
+{
+  "$defs": {
+    "PrecedentKey": {
+      "description": "The characteristics a precedent keys on \u2014 the whole judgement of what makes two cases\nsimilar enough to cite one on the other.\n\nFour dimensions, chosen because each one changes what a reasonable human would decide. They\nare deliberately coarse: an exact match on exposure amount or vendor identity would mean a\nprecedent is never citable twice, and the point of precedent is that it generalises.",
+      "properties": {
+        "exposure_band": {
+          "title": "Exposure Band",
+          "type": "string"
+        },
+        "verdict_pattern": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Verdict Pattern",
+          "type": "array"
+        },
+        "callback_resolved": {
+          "title": "Callback Resolved",
+          "type": "boolean"
+        },
+        "vendor_tenure_band": {
+          "title": "Vendor Tenure Band",
+          "type": "string"
+        }
+      },
+      "required": [
+        "exposure_band",
+        "verdict_pattern",
+        "callback_resolved",
+        "vendor_tenure_band"
+      ],
+      "title": "PrecedentKey",
+      "type": "object"
+    }
+  },
+  "description": "A human's resolution of an escalation, kept so the fleet can cite it later.\n\nToday an ESCALATE dead-ends at a person and the reasoning leaves with them. This is that\nreasoning made durable: the fleet learns the organisation's risk appetite from what the\norganisation actually did, and escalates less as the book fills up.",
+  "properties": {
+    "precedent_id": {
+      "title": "Precedent Id",
+      "type": "string"
+    },
+    "case_id": {
+      "title": "Case Id",
+      "type": "string"
+    },
+    "tenant_id": {
+      "default": "riverbend",
+      "title": "Tenant Id",
+      "type": "string"
+    },
+    "outcome": {
+      "enum": [
+        "RELEASE",
+        "BLOCK"
+      ],
+      "title": "Outcome",
+      "type": "string"
+    },
+    "rationale": {
+      "minLength": 1,
+      "title": "Rationale",
+      "type": "string"
+    },
+    "decided_by": {
+      "description": "the human, named \u2014 not 'operator'",
+      "minLength": 1,
+      "title": "Decided By",
+      "type": "string"
+    },
+    "decided_at": {
+      "format": "date-time",
+      "title": "Decided At",
+      "type": "string"
+    },
+    "key": {
+      "$ref": "#/$defs/PrecedentKey"
+    },
+    "vendor_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Vendor Id"
+    },
+    "exposure_amount": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        }
+      ],
+      "default": "0",
+      "title": "Exposure Amount"
+    },
+    "cited_by_case_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Cited By Case Ids",
+      "type": "array"
+    }
+  },
+  "required": [
+    "precedent_id",
+    "case_id",
+    "outcome",
+    "rationale",
+    "decided_by",
+    "decided_at",
+    "key"
+  ],
+  "title": "Precedent",
+  "type": "object"
+}

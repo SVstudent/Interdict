@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+*.egg-info/
+.coverage
+coverage/
+htmlcov/
+
+# Node / build output
+node_modules/
+dist/
+build/
+
+# Local configuration. `.env*` rather than a two-item allowlist: a future .env.record or
+# .env.production would otherwise be committed silently, and the record workflow in CACHE.md
+# makes exactly those files likely to exist.
+.env*
+!.env.example
+
+# Claude Code writes local permission and environment overrides here.
+.claude/settings.local.json
+
+# The inherited scaffold. Deliberately NOT published — see CLAUDE.md and DECISIONS D-001.
+# It is a prior full-stack attempt that looks finished and is not (zero LLM calls, no ADK, a
+# `kill_runner` that kills nothing), and its seed data casts real banks and three real registered
+# companies as actors in fabricated payment-fraud emails. Shipping it would breach this project's
+# own all-data-is-synthetic rule and be indistinguishable from live code to anyone reading the
+# repo. The one salvageable file is preserved under reference/inherited/.
+untitled/
+
+# Editor / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Runtime artifacts
+artifacts/
+*.log

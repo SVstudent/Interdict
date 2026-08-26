@@ -1,0 +1,115 @@
+{
+  "$defs": {
+    "BankingDetails": {
+      "description": "Only fragments are ever stored. Full account and routing numbers are never persisted,\neven synthetic ones \u2014 a screenshot of this system must not teach a bad habit.",
+      "properties": {
+        "account_name": {
+          "title": "Account Name",
+          "type": "string"
+        },
+        "account_last4": {
+          "pattern": "^\\d{4}$",
+          "title": "Account Last4",
+          "type": "string"
+        },
+        "routing_last4": {
+          "pattern": "^\\d{4}$",
+          "title": "Routing Last4",
+          "type": "string"
+        },
+        "bank_name": {
+          "title": "Bank Name",
+          "type": "string"
+        },
+        "bank_country": {
+          "description": "ISO 3166-1 alpha-2",
+          "maxLength": 2,
+          "minLength": 2,
+          "title": "Bank Country",
+          "type": "string"
+        },
+        "effective_from": {
+          "format": "date-time",
+          "title": "Effective From",
+          "type": "string"
+        }
+      },
+      "required": [
+        "account_name",
+        "account_last4",
+        "routing_last4",
+        "bank_name",
+        "bank_country",
+        "effective_from"
+      ],
+      "title": "BankingDetails",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "request_id": {
+      "title": "Request Id",
+      "type": "string"
+    },
+    "vendor_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Vendor Id"
+    },
+    "channel": {
+      "enum": [
+        "email",
+        "portal",
+        "invoice_pdf",
+        "phone"
+      ],
+      "title": "Channel",
+      "type": "string"
+    },
+    "received_at": {
+      "format": "date-time",
+      "title": "Received At",
+      "type": "string"
+    },
+    "raw_artifact": {
+      "title": "Raw Artifact",
+      "type": "string"
+    },
+    "artifact_metadata": {
+      "additionalProperties": true,
+      "title": "Artifact Metadata",
+      "type": "object"
+    },
+    "proposed_banking": {
+      "$ref": "#/$defs/BankingDetails"
+    },
+    "claimed_reason": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Claimed Reason"
+    }
+  },
+  "required": [
+    "request_id",
+    "channel",
+    "received_at",
+    "raw_artifact",
+    "proposed_banking"
+  ],
+  "title": "ChangeRequest",
+  "type": "object"
+}

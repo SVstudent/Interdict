@@ -1,0 +1,1582 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Interdict wire types",
+  "$defs": {
+    "BankingDetails": {
+      "description": "Only fragments are ever stored. Full account and routing numbers are never persisted,\neven synthetic ones \u2014 a screenshot of this system must not teach a bad habit.",
+      "properties": {
+        "account_name": {
+          "title": "Account Name",
+          "type": "string"
+        },
+        "account_last4": {
+          "pattern": "^\\d{4}$",
+          "title": "Account Last4",
+          "type": "string"
+        },
+        "routing_last4": {
+          "pattern": "^\\d{4}$",
+          "title": "Routing Last4",
+          "type": "string"
+        },
+        "bank_name": {
+          "title": "Bank Name",
+          "type": "string"
+        },
+        "bank_country": {
+          "description": "ISO 3166-1 alpha-2",
+          "maxLength": 2,
+          "minLength": 2,
+          "title": "Bank Country",
+          "type": "string"
+        },
+        "effective_from": {
+          "format": "date-time",
+          "title": "Effective From",
+          "type": "string"
+        }
+      },
+      "required": [
+        "account_name",
+        "account_last4",
+        "routing_last4",
+        "bank_name",
+        "bank_country",
+        "effective_from"
+      ],
+      "title": "BankingDetails",
+      "type": "object"
+    },
+    "BankingChange": {
+      "$defs": {
+        "BankingDetails": {
+          "description": "Only fragments are ever stored. Full account and routing numbers are never persisted,\neven synthetic ones \u2014 a screenshot of this system must not teach a bad habit.",
+          "properties": {
+            "account_name": {
+              "title": "Account Name",
+              "type": "string"
+            },
+            "account_last4": {
+              "pattern": "^\\d{4}$",
+              "title": "Account Last4",
+              "type": "string"
+            },
+            "routing_last4": {
+              "pattern": "^\\d{4}$",
+              "title": "Routing Last4",
+              "type": "string"
+            },
+            "bank_name": {
+              "title": "Bank Name",
+              "type": "string"
+            },
+            "bank_country": {
+              "description": "ISO 3166-1 alpha-2",
+              "maxLength": 2,
+              "minLength": 2,
+              "title": "Bank Country",
+              "type": "string"
+            },
+            "effective_from": {
+              "format": "date-time",
+              "title": "Effective From",
+              "type": "string"
+            }
+          },
+          "required": [
+            "account_name",
+            "account_last4",
+            "routing_last4",
+            "bank_name",
+            "bank_country",
+            "effective_from"
+          ],
+          "title": "BankingDetails",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "changed_at": {
+          "format": "date-time",
+          "title": "Changed At",
+          "type": "string"
+        },
+        "previous": {
+          "$ref": "#/$defs/BankingDetails"
+        },
+        "proposed": {
+          "$ref": "#/$defs/BankingDetails"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "changed_at",
+        "previous",
+        "proposed",
+        "reason"
+      ],
+      "title": "BankingChange",
+      "type": "object"
+    },
+    "Vendor": {
+      "$defs": {
+        "BankingChange": {
+          "properties": {
+            "changed_at": {
+              "format": "date-time",
+              "title": "Changed At",
+              "type": "string"
+            },
+            "previous": {
+              "$ref": "#/$defs/BankingDetails"
+            },
+            "proposed": {
+              "$ref": "#/$defs/BankingDetails"
+            },
+            "reason": {
+              "title": "Reason",
+              "type": "string"
+            }
+          },
+          "required": [
+            "changed_at",
+            "previous",
+            "proposed",
+            "reason"
+          ],
+          "title": "BankingChange",
+          "type": "object"
+        },
+        "BankingDetails": {
+          "description": "Only fragments are ever stored. Full account and routing numbers are never persisted,\neven synthetic ones \u2014 a screenshot of this system must not teach a bad habit.",
+          "properties": {
+            "account_name": {
+              "title": "Account Name",
+              "type": "string"
+            },
+            "account_last4": {
+              "pattern": "^\\d{4}$",
+              "title": "Account Last4",
+              "type": "string"
+            },
+            "routing_last4": {
+              "pattern": "^\\d{4}$",
+              "title": "Routing Last4",
+              "type": "string"
+            },
+            "bank_name": {
+              "title": "Bank Name",
+              "type": "string"
+            },
+            "bank_country": {
+              "description": "ISO 3166-1 alpha-2",
+              "maxLength": 2,
+              "minLength": 2,
+              "title": "Bank Country",
+              "type": "string"
+            },
+            "effective_from": {
+              "format": "date-time",
+              "title": "Effective From",
+              "type": "string"
+            }
+          },
+          "required": [
+            "account_name",
+            "account_last4",
+            "routing_last4",
+            "bank_name",
+            "bank_country",
+            "effective_from"
+          ],
+          "title": "BankingDetails",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "vendor_id": {
+          "title": "Vendor Id",
+          "type": "string"
+        },
+        "tenant_id": {
+          "default": "riverbend",
+          "title": "Tenant Id",
+          "type": "string"
+        },
+        "legal_name": {
+          "title": "Legal Name",
+          "type": "string"
+        },
+        "dba_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dba Name"
+        },
+        "onboarded_at": {
+          "format": "date-time",
+          "title": "Onboarded At",
+          "type": "string"
+        },
+        "contact_email_of_record": {
+          "title": "Contact Email Of Record",
+          "type": "string"
+        },
+        "contact_phone_of_record": {
+          "title": "Contact Phone Of Record",
+          "type": "string"
+        },
+        "banking": {
+          "$ref": "#/$defs/BankingDetails"
+        },
+        "banking_change_history": {
+          "items": {
+            "$ref": "#/$defs/BankingChange"
+          },
+          "title": "Banking Change History",
+          "type": "array"
+        },
+        "total_paid_lifetime": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "default": "0",
+          "title": "Total Paid Lifetime"
+        },
+        "invoice_count": {
+          "default": 0,
+          "title": "Invoice Count",
+          "type": "integer"
+        },
+        "operating_country": {
+          "maxLength": 2,
+          "minLength": 2,
+          "title": "Operating Country",
+          "type": "string"
+        }
+      },
+      "required": [
+        "vendor_id",
+        "legal_name",
+        "onboarded_at",
+        "contact_email_of_record",
+        "contact_phone_of_record",
+        "banking",
+        "operating_country"
+      ],
+      "title": "Vendor",
+      "type": "object"
+    },
+    "Invoice": {
+      "properties": {
+        "invoice_id": {
+          "title": "Invoice Id",
+          "type": "string"
+        },
+        "vendor_id": {
+          "title": "Vendor Id",
+          "type": "string"
+        },
+        "amount": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Amount"
+        },
+        "issued_at": {
+          "format": "date-time",
+          "title": "Issued At",
+          "type": "string"
+        },
+        "due_at": {
+          "format": "date-time",
+          "title": "Due At",
+          "type": "string"
+        },
+        "status": {
+          "default": "open",
+          "enum": [
+            "open",
+            "paid",
+            "void"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "invoice_id",
+        "vendor_id",
+        "amount",
+        "issued_at",
+        "due_at"
+      ],
+      "title": "Invoice",
+      "type": "object"
+    },
+    "Payment": {
+      "$defs": {
+        "PaymentStatus": {
+          "enum": [
+            "scheduled",
+            "held",
+            "released",
+            "blocked"
+          ],
+          "title": "PaymentStatus",
+          "type": "string"
+        }
+      },
+      "description": "Real payment documents exist so that exposure can be a sum rather than a literal, and so\nthe exactly-once guarantee has something to actually guard.",
+      "properties": {
+        "payment_id": {
+          "title": "Payment Id",
+          "type": "string"
+        },
+        "vendor_id": {
+          "title": "Vendor Id",
+          "type": "string"
+        },
+        "tenant_id": {
+          "default": "riverbend",
+          "title": "Tenant Id",
+          "type": "string"
+        },
+        "invoice_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Invoice Id"
+        },
+        "amount": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Amount"
+        },
+        "currency": {
+          "default": "USD",
+          "title": "Currency",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/PaymentStatus",
+          "default": "scheduled"
+        },
+        "scheduled_for": {
+          "format": "date-time",
+          "title": "Scheduled For",
+          "type": "string"
+        },
+        "held_by_case_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Held By Case Id"
+        }
+      },
+      "required": [
+        "payment_id",
+        "vendor_id",
+        "amount",
+        "scheduled_for"
+      ],
+      "title": "Payment",
+      "type": "object"
+    },
+    "ChangeRequest": {
+      "$defs": {
+        "BankingDetails": {
+          "description": "Only fragments are ever stored. Full account and routing numbers are never persisted,\neven synthetic ones \u2014 a screenshot of this system must not teach a bad habit.",
+          "properties": {
+            "account_name": {
+              "title": "Account Name",
+              "type": "string"
+            },
+            "account_last4": {
+              "pattern": "^\\d{4}$",
+              "title": "Account Last4",
+              "type": "string"
+            },
+            "routing_last4": {
+              "pattern": "^\\d{4}$",
+              "title": "Routing Last4",
+              "type": "string"
+            },
+            "bank_name": {
+              "title": "Bank Name",
+              "type": "string"
+            },
+            "bank_country": {
+              "description": "ISO 3166-1 alpha-2",
+              "maxLength": 2,
+              "minLength": 2,
+              "title": "Bank Country",
+              "type": "string"
+            },
+            "effective_from": {
+              "format": "date-time",
+              "title": "Effective From",
+              "type": "string"
+            }
+          },
+          "required": [
+            "account_name",
+            "account_last4",
+            "routing_last4",
+            "bank_name",
+            "bank_country",
+            "effective_from"
+          ],
+          "title": "BankingDetails",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "request_id": {
+          "title": "Request Id",
+          "type": "string"
+        },
+        "vendor_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Vendor Id"
+        },
+        "channel": {
+          "enum": [
+            "email",
+            "portal",
+            "invoice_pdf",
+            "phone"
+          ],
+          "title": "Channel",
+          "type": "string"
+        },
+        "received_at": {
+          "format": "date-time",
+          "title": "Received At",
+          "type": "string"
+        },
+        "raw_artifact": {
+          "title": "Raw Artifact",
+          "type": "string"
+        },
+        "artifact_metadata": {
+          "additionalProperties": true,
+          "title": "Artifact Metadata",
+          "type": "object"
+        },
+        "proposed_banking": {
+          "$ref": "#/$defs/BankingDetails"
+        },
+        "claimed_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Claimed Reason"
+        }
+      },
+      "required": [
+        "request_id",
+        "channel",
+        "received_at",
+        "raw_artifact",
+        "proposed_banking"
+      ],
+      "title": "ChangeRequest",
+      "type": "object"
+    },
+    "EvidenceRef": {
+      "properties": {
+        "source": {
+          "description": "e.g. 'email_headers', 'erp:invoices', 'entity_registry'",
+          "title": "Source",
+          "type": "string"
+        },
+        "locator": {
+          "description": "where in the source, e.g. 'Reply-To' or 'INV-4471'",
+          "title": "Locator",
+          "type": "string"
+        },
+        "excerpt": {
+          "description": "the literal observed value, not a summary",
+          "minLength": 1,
+          "title": "Excerpt",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "locator",
+        "excerpt"
+      ],
+      "title": "EvidenceRef",
+      "type": "object"
+    },
+    "Finding": {
+      "$defs": {
+        "EvidenceRef": {
+          "properties": {
+            "source": {
+              "description": "e.g. 'email_headers', 'erp:invoices', 'entity_registry'",
+              "title": "Source",
+              "type": "string"
+            },
+            "locator": {
+              "description": "where in the source, e.g. 'Reply-To' or 'INV-4471'",
+              "title": "Locator",
+              "type": "string"
+            },
+            "excerpt": {
+              "description": "the literal observed value, not a summary",
+              "minLength": 1,
+              "title": "Excerpt",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source",
+            "locator",
+            "excerpt"
+          ],
+          "title": "EvidenceRef",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "finding_id": {
+          "title": "Finding Id",
+          "type": "string"
+        },
+        "agent": {
+          "title": "Agent",
+          "type": "string"
+        },
+        "agent_version": {
+          "title": "Agent Version",
+          "type": "string"
+        },
+        "signal": {
+          "title": "Signal",
+          "type": "string"
+        },
+        "verdict": {
+          "enum": [
+            "supports",
+            "contradicts",
+            "inconclusive"
+          ],
+          "title": "Verdict",
+          "type": "string"
+        },
+        "confidence": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceRef"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "reasoning": {
+          "title": "Reasoning",
+          "type": "string"
+        },
+        "latency_ms": {
+          "default": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "finding_id",
+        "agent",
+        "agent_version",
+        "signal",
+        "verdict",
+        "confidence",
+        "reasoning"
+      ],
+      "title": "Finding",
+      "type": "object"
+    },
+    "Rebuttal": {
+      "description": "Bound to a specific finding, so BLOCK can ask 'was *this* finding rebutted?' instead of\nconsulting one global survived flag.",
+      "properties": {
+        "finding_id": {
+          "title": "Finding Id",
+          "type": "string"
+        },
+        "argument": {
+          "title": "Argument",
+          "type": "string"
+        },
+        "succeeds": {
+          "title": "Succeeds",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "finding_id",
+        "argument",
+        "succeeds"
+      ],
+      "title": "Rebuttal",
+      "type": "object"
+    },
+    "ChallengeResult": {
+      "$defs": {
+        "Rebuttal": {
+          "description": "Bound to a specific finding, so BLOCK can ask 'was *this* finding rebutted?' instead of\nconsulting one global survived flag.",
+          "properties": {
+            "finding_id": {
+              "title": "Finding Id",
+              "type": "string"
+            },
+            "argument": {
+              "title": "Argument",
+              "type": "string"
+            },
+            "succeeds": {
+              "title": "Succeeds",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "finding_id",
+            "argument",
+            "succeeds"
+          ],
+          "title": "Rebuttal",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "strongest_legitimate_explanation": {
+          "title": "Strongest Legitimate Explanation",
+          "type": "string"
+        },
+        "rebuttals": {
+          "items": {
+            "$ref": "#/$defs/Rebuttal"
+          },
+          "title": "Rebuttals",
+          "type": "array"
+        },
+        "survived": {
+          "title": "Survived",
+          "type": "boolean"
+        },
+        "reasoning": {
+          "title": "Reasoning",
+          "type": "string"
+        }
+      },
+      "required": [
+        "strongest_legitimate_explanation",
+        "survived",
+        "reasoning"
+      ],
+      "title": "ChallengeResult",
+      "type": "object"
+    },
+    "Decision": {
+      "properties": {
+        "outcome": {
+          "enum": [
+            "BLOCK",
+            "RELEASE",
+            "ESCALATE"
+          ],
+          "title": "Outcome",
+          "type": "string"
+        },
+        "confidence": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "rationale": {
+          "title": "Rationale",
+          "type": "string"
+        },
+        "dissenting_findings": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Dissenting Findings",
+          "type": "array"
+        },
+        "decided_at": {
+          "format": "date-time",
+          "title": "Decided At",
+          "type": "string"
+        },
+        "decided_by": {
+          "default": "fleet",
+          "enum": [
+            "fleet",
+            "human"
+          ],
+          "title": "Decided By",
+          "type": "string"
+        },
+        "human_reviewer": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Human Reviewer"
+        }
+      },
+      "required": [
+        "outcome",
+        "confidence",
+        "rationale",
+        "decided_at"
+      ],
+      "title": "Decision",
+      "type": "object"
+    },
+    "Checkpoint": {
+      "$defs": {
+        "CaseState": {
+          "enum": [
+            "opened",
+            "held",
+            "verifying",
+            "awaiting_callback",
+            "challenging",
+            "adjudicating",
+            "escalated",
+            "released",
+            "blocked"
+          ],
+          "title": "CaseState",
+          "type": "string"
+        },
+        "CheckpointStatus": {
+          "enum": [
+            "started",
+            "completed",
+            "failed"
+          ],
+          "title": "CheckpointStatus",
+          "type": "string"
+        }
+      },
+      "description": "Written before a step runs and updated after it completes. On restart the runner replays\nthe checkpoint log to decide what it may skip.",
+      "properties": {
+        "seq": {
+          "title": "Seq",
+          "type": "integer"
+        },
+        "case_id": {
+          "title": "Case Id",
+          "type": "string"
+        },
+        "step": {
+          "title": "Step",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/CheckpointStatus",
+          "default": "started"
+        },
+        "state_before": {
+          "$ref": "#/$defs/CaseState"
+        },
+        "state_after": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CaseState"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "input_hash": {
+          "title": "Input Hash",
+          "type": "string"
+        },
+        "output_hash": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Output Hash"
+        },
+        "attempt": {
+          "default": 1,
+          "title": "Attempt",
+          "type": "integer"
+        },
+        "started_at": {
+          "format": "date-time",
+          "title": "Started At",
+          "type": "string"
+        },
+        "completed_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Completed At"
+        }
+      },
+      "required": [
+        "seq",
+        "case_id",
+        "step",
+        "state_before",
+        "input_hash",
+        "started_at"
+      ],
+      "title": "Checkpoint",
+      "type": "object"
+    },
+    "Effect": {
+      "description": "One row in the exactly-once ledger, keyed by idempotency_key.",
+      "properties": {
+        "idempotency_key": {
+          "title": "Idempotency Key",
+          "type": "string"
+        },
+        "case_id": {
+          "title": "Case Id",
+          "type": "string"
+        },
+        "action": {
+          "title": "Action",
+          "type": "string"
+        },
+        "payload": {
+          "additionalProperties": true,
+          "title": "Payload",
+          "type": "object"
+        },
+        "result": {
+          "additionalProperties": true,
+          "title": "Result",
+          "type": "object"
+        },
+        "recorded_at": {
+          "format": "date-time",
+          "title": "Recorded At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "idempotency_key",
+        "case_id",
+        "action",
+        "recorded_at"
+      ],
+      "title": "Effect",
+      "type": "object"
+    },
+    "Case": {
+      "$defs": {
+        "CaseState": {
+          "enum": [
+            "opened",
+            "held",
+            "verifying",
+            "awaiting_callback",
+            "challenging",
+            "adjudicating",
+            "escalated",
+            "released",
+            "blocked"
+          ],
+          "title": "CaseState",
+          "type": "string"
+        },
+        "ChallengeResult": {
+          "properties": {
+            "strongest_legitimate_explanation": {
+              "title": "Strongest Legitimate Explanation",
+              "type": "string"
+            },
+            "rebuttals": {
+              "items": {
+                "$ref": "#/$defs/Rebuttal"
+              },
+              "title": "Rebuttals",
+              "type": "array"
+            },
+            "survived": {
+              "title": "Survived",
+              "type": "boolean"
+            },
+            "reasoning": {
+              "title": "Reasoning",
+              "type": "string"
+            }
+          },
+          "required": [
+            "strongest_legitimate_explanation",
+            "survived",
+            "reasoning"
+          ],
+          "title": "ChallengeResult",
+          "type": "object"
+        },
+        "Checkpoint": {
+          "description": "Written before a step runs and updated after it completes. On restart the runner replays\nthe checkpoint log to decide what it may skip.",
+          "properties": {
+            "seq": {
+              "title": "Seq",
+              "type": "integer"
+            },
+            "case_id": {
+              "title": "Case Id",
+              "type": "string"
+            },
+            "step": {
+              "title": "Step",
+              "type": "string"
+            },
+            "status": {
+              "$ref": "#/$defs/CheckpointStatus",
+              "default": "started"
+            },
+            "state_before": {
+              "$ref": "#/$defs/CaseState"
+            },
+            "state_after": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/CaseState"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null
+            },
+            "input_hash": {
+              "title": "Input Hash",
+              "type": "string"
+            },
+            "output_hash": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Output Hash"
+            },
+            "attempt": {
+              "default": 1,
+              "title": "Attempt",
+              "type": "integer"
+            },
+            "started_at": {
+              "format": "date-time",
+              "title": "Started At",
+              "type": "string"
+            },
+            "completed_at": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Completed At"
+            }
+          },
+          "required": [
+            "seq",
+            "case_id",
+            "step",
+            "state_before",
+            "input_hash",
+            "started_at"
+          ],
+          "title": "Checkpoint",
+          "type": "object"
+        },
+        "CheckpointStatus": {
+          "enum": [
+            "started",
+            "completed",
+            "failed"
+          ],
+          "title": "CheckpointStatus",
+          "type": "string"
+        },
+        "Decision": {
+          "properties": {
+            "outcome": {
+              "enum": [
+                "BLOCK",
+                "RELEASE",
+                "ESCALATE"
+              ],
+              "title": "Outcome",
+              "type": "string"
+            },
+            "confidence": {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "title": "Confidence",
+              "type": "number"
+            },
+            "rationale": {
+              "title": "Rationale",
+              "type": "string"
+            },
+            "dissenting_findings": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Dissenting Findings",
+              "type": "array"
+            },
+            "decided_at": {
+              "format": "date-time",
+              "title": "Decided At",
+              "type": "string"
+            },
+            "decided_by": {
+              "default": "fleet",
+              "enum": [
+                "fleet",
+                "human"
+              ],
+              "title": "Decided By",
+              "type": "string"
+            },
+            "human_reviewer": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Human Reviewer"
+            }
+          },
+          "required": [
+            "outcome",
+            "confidence",
+            "rationale",
+            "decided_at"
+          ],
+          "title": "Decision",
+          "type": "object"
+        },
+        "EvidenceRef": {
+          "properties": {
+            "source": {
+              "description": "e.g. 'email_headers', 'erp:invoices', 'entity_registry'",
+              "title": "Source",
+              "type": "string"
+            },
+            "locator": {
+              "description": "where in the source, e.g. 'Reply-To' or 'INV-4471'",
+              "title": "Locator",
+              "type": "string"
+            },
+            "excerpt": {
+              "description": "the literal observed value, not a summary",
+              "minLength": 1,
+              "title": "Excerpt",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source",
+            "locator",
+            "excerpt"
+          ],
+          "title": "EvidenceRef",
+          "type": "object"
+        },
+        "Finding": {
+          "properties": {
+            "finding_id": {
+              "title": "Finding Id",
+              "type": "string"
+            },
+            "agent": {
+              "title": "Agent",
+              "type": "string"
+            },
+            "agent_version": {
+              "title": "Agent Version",
+              "type": "string"
+            },
+            "signal": {
+              "title": "Signal",
+              "type": "string"
+            },
+            "verdict": {
+              "enum": [
+                "supports",
+                "contradicts",
+                "inconclusive"
+              ],
+              "title": "Verdict",
+              "type": "string"
+            },
+            "confidence": {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "title": "Confidence",
+              "type": "number"
+            },
+            "evidence": {
+              "items": {
+                "$ref": "#/$defs/EvidenceRef"
+              },
+              "title": "Evidence",
+              "type": "array"
+            },
+            "reasoning": {
+              "title": "Reasoning",
+              "type": "string"
+            },
+            "latency_ms": {
+              "default": 0,
+              "title": "Latency Ms",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "finding_id",
+            "agent",
+            "agent_version",
+            "signal",
+            "verdict",
+            "confidence",
+            "reasoning"
+          ],
+          "title": "Finding",
+          "type": "object"
+        },
+        "Rebuttal": {
+          "description": "Bound to a specific finding, so BLOCK can ask 'was *this* finding rebutted?' instead of\nconsulting one global survived flag.",
+          "properties": {
+            "finding_id": {
+              "title": "Finding Id",
+              "type": "string"
+            },
+            "argument": {
+              "title": "Argument",
+              "type": "string"
+            },
+            "succeeds": {
+              "title": "Succeeds",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "finding_id",
+            "argument",
+            "succeeds"
+          ],
+          "title": "Rebuttal",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "case_id": {
+          "title": "Case Id",
+          "type": "string"
+        },
+        "request_id": {
+          "title": "Request Id",
+          "type": "string"
+        },
+        "tenant_id": {
+          "default": "riverbend",
+          "title": "Tenant Id",
+          "type": "string"
+        },
+        "vendor_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Vendor Id"
+        },
+        "state": {
+          "$ref": "#/$defs/CaseState",
+          "default": "opened"
+        },
+        "exposure_amount": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "default": "0",
+          "title": "Exposure Amount"
+        },
+        "held_payment_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Held Payment Ids",
+          "type": "array"
+        },
+        "opened_at": {
+          "format": "date-time",
+          "title": "Opened At",
+          "type": "string"
+        },
+        "deadline_at": {
+          "format": "date-time",
+          "title": "Deadline At",
+          "type": "string"
+        },
+        "findings": {
+          "items": {
+            "$ref": "#/$defs/Finding"
+          },
+          "title": "Findings",
+          "type": "array"
+        },
+        "challenge": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ChallengeResult"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "decision": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Decision"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "checkpoints": {
+          "items": {
+            "$ref": "#/$defs/Checkpoint"
+          },
+          "title": "Checkpoints",
+          "type": "array"
+        },
+        "idempotency_keys": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Idempotency Keys",
+          "type": "array"
+        },
+        "session_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Session Id"
+        }
+      },
+      "required": [
+        "case_id",
+        "request_id",
+        "opened_at",
+        "deadline_at"
+      ],
+      "title": "Case",
+      "type": "object"
+    },
+    "Tenant": {
+      "description": "One district. Money, vendors and cases are partitioned by tenant_id; the threat exchange\ndeliberately is not.",
+      "properties": {
+        "tenant_id": {
+          "title": "Tenant Id",
+          "type": "string"
+        },
+        "display_name": {
+          "title": "Display Name",
+          "type": "string"
+        },
+        "short_name": {
+          "description": "badge text in the UI",
+          "maxLength": 12,
+          "title": "Short Name",
+          "type": "string"
+        },
+        "exchange_id": {
+          "default": "k12-payments-exchange",
+          "title": "Exchange Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "tenant_id",
+        "display_name",
+        "short_name"
+      ],
+      "title": "Tenant",
+      "type": "object"
+    },
+    "PrecedentKey": {
+      "description": "The characteristics a precedent keys on \u2014 the whole judgement of what makes two cases\nsimilar enough to cite one on the other.\n\nFour dimensions, chosen because each one changes what a reasonable human would decide. They\nare deliberately coarse: an exact match on exposure amount or vendor identity would mean a\nprecedent is never citable twice, and the point of precedent is that it generalises.",
+      "properties": {
+        "exposure_band": {
+          "title": "Exposure Band",
+          "type": "string"
+        },
+        "verdict_pattern": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Verdict Pattern",
+          "type": "array"
+        },
+        "callback_resolved": {
+          "title": "Callback Resolved",
+          "type": "boolean"
+        },
+        "vendor_tenure_band": {
+          "title": "Vendor Tenure Band",
+          "type": "string"
+        }
+      },
+      "required": [
+        "exposure_band",
+        "verdict_pattern",
+        "callback_resolved",
+        "vendor_tenure_band"
+      ],
+      "title": "PrecedentKey",
+      "type": "object"
+    },
+    "Precedent": {
+      "$defs": {
+        "PrecedentKey": {
+          "description": "The characteristics a precedent keys on \u2014 the whole judgement of what makes two cases\nsimilar enough to cite one on the other.\n\nFour dimensions, chosen because each one changes what a reasonable human would decide. They\nare deliberately coarse: an exact match on exposure amount or vendor identity would mean a\nprecedent is never citable twice, and the point of precedent is that it generalises.",
+          "properties": {
+            "exposure_band": {
+              "title": "Exposure Band",
+              "type": "string"
+            },
+            "verdict_pattern": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Verdict Pattern",
+              "type": "array"
+            },
+            "callback_resolved": {
+              "title": "Callback Resolved",
+              "type": "boolean"
+            },
+            "vendor_tenure_band": {
+              "title": "Vendor Tenure Band",
+              "type": "string"
+            }
+          },
+          "required": [
+            "exposure_band",
+            "verdict_pattern",
+            "callback_resolved",
+            "vendor_tenure_band"
+          ],
+          "title": "PrecedentKey",
+          "type": "object"
+        }
+      },
+      "description": "A human's resolution of an escalation, kept so the fleet can cite it later.\n\nToday an ESCALATE dead-ends at a person and the reasoning leaves with them. This is that\nreasoning made durable: the fleet learns the organisation's risk appetite from what the\norganisation actually did, and escalates less as the book fills up.",
+      "properties": {
+        "precedent_id": {
+          "title": "Precedent Id",
+          "type": "string"
+        },
+        "case_id": {
+          "title": "Case Id",
+          "type": "string"
+        },
+        "tenant_id": {
+          "default": "riverbend",
+          "title": "Tenant Id",
+          "type": "string"
+        },
+        "outcome": {
+          "enum": [
+            "RELEASE",
+            "BLOCK"
+          ],
+          "title": "Outcome",
+          "type": "string"
+        },
+        "rationale": {
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "decided_by": {
+          "description": "the human, named \u2014 not 'operator'",
+          "minLength": 1,
+          "title": "Decided By",
+          "type": "string"
+        },
+        "decided_at": {
+          "format": "date-time",
+          "title": "Decided At",
+          "type": "string"
+        },
+        "key": {
+          "$ref": "#/$defs/PrecedentKey"
+        },
+        "vendor_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Vendor Id"
+        },
+        "exposure_amount": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "default": "0",
+          "title": "Exposure Amount"
+        },
+        "cited_by_case_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Cited By Case Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "precedent_id",
+        "case_id",
+        "outcome",
+        "rationale",
+        "decided_by",
+        "decided_at",
+        "key"
+      ],
+      "title": "Precedent",
+      "type": "object"
+    }
+  }
+}

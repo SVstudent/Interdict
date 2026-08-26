@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Interdict enumerations",
+  "$defs": {
+    "CaseState": {
+      "type": "string",
+      "enum": [
+        "opened",
+        "held",
+        "verifying",
+        "awaiting_callback",
+        "challenging",
+        "adjudicating",
+        "escalated",
+        "released",
+        "blocked"
+      ],
+      "description": "opened -> held -> verifying -> {awaiting_callback} -> challenging -> adjudicating -> {escalated | released | blocked}"
+    },
+    "Verdict": {
+      "type": "string",
+      "enum": [
+        "supports",
+        "contradicts",
+        "inconclusive"
+      ],
+      "description": "Whether the evidence supports the LEGITIMACY of the change request. Not the analyst's confidence in their own analysis."
+    },
+    "Outcome": {
+      "type": "string",
+      "enum": [
+        "BLOCK",
+        "RELEASE",
+        "ESCALATE"
+      ],
+      "description": "ESCALATE is a success state, not a failure."
+    },
+    "PaymentStatus": {
+      "type": "string",
+      "enum": [
+        "scheduled",
+        "held",
+        "released",
+        "blocked"
+      ]
+    },
+    "CheckpointStatus": {
+      "type": "string",
+      "enum": [
+        "started",
+        "completed",
+        "failed"
+      ]
+    },
+    "HumanOutcome": {
+      "type": "string",
+      "enum": [
+        "RELEASE",
+        "BLOCK"
+      ],
+      "description": "What a human may resolve an escalation TO. Re-escalating is not a resolution, so ESCALATE is absent."
+    },
+    "ExposureBand": {
+      "type": "string",
+      "enum": [
+        "below_callback_threshold",
+        "callback_required",
+        "above_release_ceiling"
+      ],
+      "description": "Which adjudication rail regime an exposure falls under. The boundaries are CALLBACK_REQUIRED_THRESHOLD and AUTO_RELEASE_CEILING, not round numbers."
+    },
+    "TenureBand": {
+      "type": "string",
+      "enum": [
+        "new",
+        "under_2y",
+        "established"
+      ],
+      "description": "Vendor relationship age: <90d, <2y, otherwise."
+    }
+  }
+}

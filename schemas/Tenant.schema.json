@@ -1,0 +1,31 @@
+{
+  "description": "One district. Money, vendors and cases are partitioned by tenant_id; the threat exchange\ndeliberately is not.",
+  "properties": {
+    "tenant_id": {
+      "title": "Tenant Id",
+      "type": "string"
+    },
+    "display_name": {
+      "title": "Display Name",
+      "type": "string"
+    },
+    "short_name": {
+      "description": "badge text in the UI",
+      "maxLength": 12,
+      "title": "Short Name",
+      "type": "string"
+    },
+    "exchange_id": {
+      "default": "k12-payments-exchange",
+      "title": "Exchange Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "tenant_id",
+    "display_name",
+    "short_name"
+  ],
+  "title": "Tenant",
+  "type": "object"
+}

@@ -1,0 +1,91 @@
+{
+  "$defs": {
+    "EvidenceRef": {
+      "properties": {
+        "source": {
+          "description": "e.g. 'email_headers', 'erp:invoices', 'entity_registry'",
+          "title": "Source",
+          "type": "string"
+        },
+        "locator": {
+          "description": "where in the source, e.g. 'Reply-To' or 'INV-4471'",
+          "title": "Locator",
+          "type": "string"
+        },
+        "excerpt": {
+          "description": "the literal observed value, not a summary",
+          "minLength": 1,
+          "title": "Excerpt",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "locator",
+        "excerpt"
+      ],
+      "title": "EvidenceRef",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "finding_id": {
+      "title": "Finding Id",
+      "type": "string"
+    },
+    "agent": {
+      "title": "Agent",
+      "type": "string"
+    },
+    "agent_version": {
+      "title": "Agent Version",
+      "type": "string"
+    },
+    "signal": {
+      "title": "Signal",
+      "type": "string"
+    },
+    "verdict": {
+      "enum": [
+        "supports",
+        "contradicts",
+        "inconclusive"
+      ],
+      "title": "Verdict",
+      "type": "string"
+    },
+    "confidence": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Confidence",
+      "type": "number"
+    },
+    "evidence": {
+      "items": {
+        "$ref": "#/$defs/EvidenceRef"
+      },
+      "title": "Evidence",
+      "type": "array"
+    },
+    "reasoning": {
+      "title": "Reasoning",
+      "type": "string"
+    },
+    "latency_ms": {
+      "default": 0,
+      "title": "Latency Ms",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "finding_id",
+    "agent",
+    "agent_version",
+    "signal",
+    "verdict",
+    "confidence",
+    "reasoning"
+  ],
+  "title": "Finding",
+  "type": "object"
+}

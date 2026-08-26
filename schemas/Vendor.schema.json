@@ -1,0 +1,161 @@
+{
+  "$defs": {
+    "BankingChange": {
+      "properties": {
+        "changed_at": {
+          "format": "date-time",
+          "title": "Changed At",
+          "type": "string"
+        },
+        "previous": {
+          "$ref": "#/$defs/BankingDetails"
+        },
+        "proposed": {
+          "$ref": "#/$defs/BankingDetails"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "changed_at",
+        "previous",
+        "proposed",
+        "reason"
+      ],
+      "title": "BankingChange",
+      "type": "object"
+    },
+    "BankingDetails": {
+      "description": "Only fragments are ever stored. Full account and routing numbers are never persisted,\neven synthetic ones \u2014 a screenshot of this system must not teach a bad habit.",
+      "properties": {
+        "account_name": {
+          "title": "Account Name",
+          "type": "string"
+        },
+        "account_last4": {
+          "pattern": "^\\d{4}$",
+          "title": "Account Last4",
+          "type": "string"
+        },
+        "routing_last4": {
+          "pattern": "^\\d{4}$",
+          "title": "Routing Last4",
+          "type": "string"
+        },
+        "bank_name": {
+          "title": "Bank Name",
+          "type": "string"
+        },
+        "bank_country": {
+          "description": "ISO 3166-1 alpha-2",
+          "maxLength": 2,
+          "minLength": 2,
+          "title": "Bank Country",
+          "type": "string"
+        },
+        "effective_from": {
+          "format": "date-time",
+          "title": "Effective From",
+          "type": "string"
+        }
+      },
+      "required": [
+        "account_name",
+        "account_last4",
+        "routing_last4",
+        "bank_name",
+        "bank_country",
+        "effective_from"
+      ],
+      "title": "BankingDetails",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "vendor_id": {
+      "title": "Vendor Id",
+      "type": "string"
+    },
+    "tenant_id": {
+      "default": "riverbend",
+      "title": "Tenant Id",
+      "type": "string"
+    },
+    "legal_name": {
+      "title": "Legal Name",
+      "type": "string"
+    },
+    "dba_name": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Dba Name"
+    },
+    "onboarded_at": {
+      "format": "date-time",
+      "title": "Onboarded At",
+      "type": "string"
+    },
+    "contact_email_of_record": {
+      "title": "Contact Email Of Record",
+      "type": "string"
+    },
+    "contact_phone_of_record": {
+      "title": "Contact Phone Of Record",
+      "type": "string"
+    },
+    "banking": {
+      "$ref": "#/$defs/BankingDetails"
+    },
+    "banking_change_history": {
+      "items": {
+        "$ref": "#/$defs/BankingChange"
+      },
+      "title": "Banking Change History",
+      "type": "array"
+    },
+    "total_paid_lifetime": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        }
+      ],
+      "default": "0",
+      "title": "Total Paid Lifetime"
+    },
+    "invoice_count": {
+      "default": 0,
+      "title": "Invoice Count",
+      "type": "integer"
+    },
+    "operating_country": {
+      "maxLength": 2,
+      "minLength": 2,
+      "title": "Operating Country",
+      "type": "string"
+    }
+  },
+  "required": [
+    "vendor_id",
+    "legal_name",
+    "onboarded_at",
+    "contact_email_of_record",
+    "contact_phone_of_record",
+    "banking",
+    "operating_country"
+  ],
+  "title": "Vendor",
+  "type": "object"
+}

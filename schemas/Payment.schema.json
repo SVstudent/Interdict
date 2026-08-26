@@ -1,0 +1,88 @@
+{
+  "$defs": {
+    "PaymentStatus": {
+      "enum": [
+        "scheduled",
+        "held",
+        "released",
+        "blocked"
+      ],
+      "title": "PaymentStatus",
+      "type": "string"
+    }
+  },
+  "description": "Real payment documents exist so that exposure can be a sum rather than a literal, and so\nthe exactly-once guarantee has something to actually guard.",
+  "properties": {
+    "payment_id": {
+      "title": "Payment Id",
+      "type": "string"
+    },
+    "vendor_id": {
+      "title": "Vendor Id",
+      "type": "string"
+    },
+    "tenant_id": {
+      "default": "riverbend",
+      "title": "Tenant Id",
+      "type": "string"
+    },
+    "invoice_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Invoice Id"
+    },
+    "amount": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        }
+      ],
+      "title": "Amount"
+    },
+    "currency": {
+      "default": "USD",
+      "title": "Currency",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/PaymentStatus",
+      "default": "scheduled"
+    },
+    "scheduled_for": {
+      "format": "date-time",
+      "title": "Scheduled For",
+      "type": "string"
+    },
+    "held_by_case_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Held By Case Id"
+    }
+  },
+  "required": [
+    "payment_id",
+    "vendor_id",
+    "amount",
+    "scheduled_for"
+  ],
+  "title": "Payment",
+  "type": "object"
+}

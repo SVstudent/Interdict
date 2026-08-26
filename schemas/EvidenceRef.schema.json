@@ -1,0 +1,27 @@
+{
+  "properties": {
+    "source": {
+      "description": "e.g. 'email_headers', 'erp:invoices', 'entity_registry'",
+      "title": "Source",
+      "type": "string"
+    },
+    "locator": {
+      "description": "where in the source, e.g. 'Reply-To' or 'INV-4471'",
+      "title": "Locator",
+      "type": "string"
+    },
+    "excerpt": {
+      "description": "the literal observed value, not a summary",
+      "minLength": 1,
+      "title": "Excerpt",
+      "type": "string"
+    }
+  },
+  "required": [
+    "source",
+    "locator",
+    "excerpt"
+  ],
+  "title": "EvidenceRef",
+  "type": "object"
+}

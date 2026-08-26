@@ -1,0 +1,32 @@
+{
+  "description": "The characteristics a precedent keys on \u2014 the whole judgement of what makes two cases\nsimilar enough to cite one on the other.\n\nFour dimensions, chosen because each one changes what a reasonable human would decide. They\nare deliberately coarse: an exact match on exposure amount or vendor identity would mean a\nprecedent is never citable twice, and the point of precedent is that it generalises.",
+  "properties": {
+    "exposure_band": {
+      "title": "Exposure Band",
+      "type": "string"
+    },
+    "verdict_pattern": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Verdict Pattern",
+      "type": "array"
+    },
+    "callback_resolved": {
+      "title": "Callback Resolved",
+      "type": "boolean"
+    },
+    "vendor_tenure_band": {
+      "title": "Vendor Tenure Band",
+      "type": "string"
+    }
+  },
+  "required": [
+    "exposure_band",
+    "verdict_pattern",
+    "callback_resolved",
+    "vendor_tenure_band"
+  ],
+  "title": "PrecedentKey",
+  "type": "object"
+}

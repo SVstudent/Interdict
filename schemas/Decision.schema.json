@@ -1,0 +1,64 @@
+{
+  "properties": {
+    "outcome": {
+      "enum": [
+        "BLOCK",
+        "RELEASE",
+        "ESCALATE"
+      ],
+      "title": "Outcome",
+      "type": "string"
+    },
+    "confidence": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Confidence",
+      "type": "number"
+    },
+    "rationale": {
+      "title": "Rationale",
+      "type": "string"
+    },
+    "dissenting_findings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Dissenting Findings",
+      "type": "array"
+    },
+    "decided_at": {
+      "format": "date-time",
+      "title": "Decided At",
+      "type": "string"
+    },
+    "decided_by": {
+      "default": "fleet",
+      "enum": [
+        "fleet",
+        "human"
+      ],
+      "title": "Decided By",
+      "type": "string"
+    },
+    "human_reviewer": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Human Reviewer"
+    }
+  },
+  "required": [
+    "outcome",
+    "confidence",
+    "rationale",
+    "decided_at"
+  ],
+  "title": "Decision",
+  "type": "object"
+}

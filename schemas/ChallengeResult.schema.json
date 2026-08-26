@@ -1,0 +1,56 @@
+{
+  "$defs": {
+    "Rebuttal": {
+      "description": "Bound to a specific finding, so BLOCK can ask 'was *this* finding rebutted?' instead of\nconsulting one global survived flag.",
+      "properties": {
+        "finding_id": {
+          "title": "Finding Id",
+          "type": "string"
+        },
+        "argument": {
+          "title": "Argument",
+          "type": "string"
+        },
+        "succeeds": {
+          "title": "Succeeds",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "finding_id",
+        "argument",
+        "succeeds"
+      ],
+      "title": "Rebuttal",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "strongest_legitimate_explanation": {
+      "title": "Strongest Legitimate Explanation",
+      "type": "string"
+    },
+    "rebuttals": {
+      "items": {
+        "$ref": "#/$defs/Rebuttal"
+      },
+      "title": "Rebuttals",
+      "type": "array"
+    },
+    "survived": {
+      "title": "Survived",
+      "type": "boolean"
+    },
+    "reasoning": {
+      "title": "Reasoning",
+      "type": "string"
+    }
+  },
+  "required": [
+    "strongest_legitimate_explanation",
+    "survived",
+    "reasoning"
+  ],
+  "title": "ChallengeResult",
+  "type": "object"
+}

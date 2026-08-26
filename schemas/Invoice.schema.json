@@ -1,0 +1,53 @@
+{
+  "properties": {
+    "invoice_id": {
+      "title": "Invoice Id",
+      "type": "string"
+    },
+    "vendor_id": {
+      "title": "Vendor Id",
+      "type": "string"
+    },
+    "amount": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        }
+      ],
+      "title": "Amount"
+    },
+    "issued_at": {
+      "format": "date-time",
+      "title": "Issued At",
+      "type": "string"
+    },
+    "due_at": {
+      "format": "date-time",
+      "title": "Due At",
+      "type": "string"
+    },
+    "status": {
+      "default": "open",
+      "enum": [
+        "open",
+        "paid",
+        "void"
+      ],
+      "title": "Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "invoice_id",
+    "vendor_id",
+    "amount",
+    "issued_at",
+    "due_at"
+  ],
+  "title": "Invoice",
+  "type": "object"
+}

@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Interdict invariants",
+  "description": "Constraints a consumer may rely on. Each is enforced by a validator or a runtime assertion in the backend, and covered by a test.",
+  "invariants": [
+    {
+      "id": "INV-1",
+      "rule": "A Finding with verdict != 'inconclusive' MUST have non-empty evidence.",
+      "enforced_by": "models/domain.py Finding._committed_verdicts_must_cite",
+      "test": "tests/test_invariants.py::test_committed_verdict_without_evidence_is_rejected",
+      "rationale": "A hallucinated verdict cannot reach adjudication if it cannot cite."
+    },
+    {
+      "id": "INV-2",
+      "rule": "outcome == 'RELEASE' requires >= 2 independent supporting agents, one of which is callback with verdict 'supports'.",
+      "enforced_by": "agents/adjudicator.py AdjudicatorAgent.apply_rails rule 5",
+      "test": "tests/test_invariants.py (adjudication table)"
+    },
+    {
+      "id": "INV-3",
+      "rule": "case.exposure_amount == sum(amount of payments in held_payment_ids).",
+      "enforced_by": "models/domain.py Case.assert_exposure_matches, called by services/payments.py on every mutation",
+      "test": "tests/test_invariants.py::test_exposure_matches_sum_of_held_payments"
+    },
+    {
+      "id": "INV-4",
+      "rule": "State transitions must appear in LEGAL_TRANSITIONS; anything else raises IllegalTransition.",
+      "enforced_by": "models/domain.py assert_transition",
+      "test": "tests/test_invariants.py::test_every_illegal_transition_raises"
+    },
+    {
+      "id": "INV-5",
+      "rule": "A side effect is applied at most once per idempotency_key, across crashes.",
+      "enforced_by": "store/base.py Repository.record_effect (compare-and-set); services/payments.py short-circuits on created=False",
+      "test": "tests/test_durability.py::test_exactly_once_block_when_runner_dies_after_the_effect"
+    },
+    {
+      "id": "INV-6",
+      "rule": "Full account and routing numbers are NEVER stored or transmitted; only 4-digit fragments.",
+      "enforced_by": "models/domain.py BankingDetails (account_last4/routing_last4 pattern ^\\\\d{4}$)"
+    },
+    {
+      "id": "INV-8",
+      "rule": "A Precedent MUST carry a non-empty rationale. A resolution with no reasoning cannot be cited in an adjudication.",
+      "enforced_by": "models/domain.py Precedent._a_precedent_must_explain_itself",
+      "test": "tests/test_precedent.py::test_a_precedent_without_a_rationale_is_rejected",
+      "rationale": "Same reasoning as INV-1, applied to human decisions: a position that cannot show its work must not carry weight."
+    },
+    {
+      "id": "INV-9",
+      "rule": "Money is partitioned by tenant_id. A case, vendor or payment listing scoped to a tenant NEVER returns another tenant's rows. Tradecraft in the threat exchange is deliberately NOT partitioned.",
+      "enforced_by": "store/base.py Repository list_* tenant_id filters; platform/exchange.py LocalExchange.lookup",
+      "test": "tests/test_tenancy.py::test_a_tenant_never_sees_another_tenants_payments"
+    },
+    {
+      "id": "INV-7",
+      "rule": "Every timestamp originates from the injected Clock, never the wall clock.",
+      "enforced_by": "config.py Clock protocol",
+      "test": "tests/test_no_wallclock.py::test_no_module_reads_the_wall_clock_directly"
+    }
+  ]
+}

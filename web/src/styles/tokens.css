@@ -1,0 +1,450 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   INTERDICT DESIGN SYSTEM — tokens
+
+   Authoritative spec: context/UI_SPEC.md. If this file and that document
+   disagree, the document wins.
+
+   The vernacular is judicial: cases, evidence, findings, a challenger, an
+   adjudicator, a verdict. The register is the docket and the ledger —
+   institutional, precise, documentary. Not cyber-security. Not fintech.
+
+   GEOMETRY is enterprise control-room: a 4px unit, a 20/24/30/40 control
+   ladder, 50px chrome, 28px table rows, and an elevation model built from
+   layered box-shadows — a hairline ring plus long-throw drop shadows — rather
+   than a border on everything. Borders change layout size and cannot stack;
+   a ring can. That single decision is what separates a lit workspace from a
+   flat mock.
+
+   PALETTE and TYPE are ours and are not negotiable. Oxblood means money is
+   being stopped, and appears roughly four times in the entire interface.
+   ============================================================================ */
+
+@theme static {
+  /* ==========================================================================
+     SURFACE RAMP — neutral, light
+
+     A light enterprise console inverts the dark elevation logic rather than
+     mirroring it. In the dark build, coming forward meant getting lighter and
+     a sheen sold the surface as lit. Here the field is the darkest step and
+     panels come forward toward paper white; the thing that separates them is a
+     crisp hairline and a short, low-alpha drop, not a glow.
+
+     The asymmetry is still load-bearing and still the whole point: surface-to-
+     surface contrast is tiny (~1.15:1) while text-to-surface contrast is
+     enormous (16:1). That is what keeps a dense grid legible instead of noisy.
+     ========================================================================== */
+  --color-ground: #e8ebf0;          /* L0  app field — the darkest step       */
+  --color-surface: #f6f7fa;         /* L1  pane, navbar, table header         */
+  --color-raised: #ffffff;          /* L2  card, row hover, control fill      */
+  --color-overlay: #ffffff;         /* L3  popover, menu, selected row        */
+  --color-elevated: #ffffff;        /* L4  command palette, table chrome      */
+  --color-scrim: #2b313a;           /* L5  tooltip — dark on a light field    */
+
+  /* Hairlines. Solid, because Tailwind border utilities need a colour. */
+  --color-rule-muted: #e9ecf1;      /* in-pane separators, row dividers       */
+  --color-rule: #dce0e7;            /* pane boundaries, card edges            */
+  --color-rule-strong: #c2c9d3;     /* active pane, outlined control          */
+
+  /* ==========================================================================
+     INK RAMP
+
+     Five steps descending from near-black. The top step is not pure #000:
+     black on white at 14px rings on an LCD and is the first thing H.264
+     haloes at 1080p. #14181d carries the same authority and encodes clean.
+     ========================================================================== */
+  --color-ink: #14181d;             /* 16.1:1  body, headings, primary values */
+  --color-ink-muted: #454d58;       /*  8.9:1  secondary values, icons        */
+  --color-ink-dim: #626b78;         /*  5.7:1  metadata, mono identifiers     */
+  --color-ink-faint: #878f9b;       /*  3.4:1  micro labels ONLY, never body  */
+  --color-ink-disabled: #a9afb8;    /*  2.4:1  disabled text ONLY             */
+
+  /* ==========================================================================
+     SEMANTIC — exactly four hues, and no more.
+
+     >=90% of pixels are neutral at rest. Colour enters only on deviation and
+     on operator-action states.
+
+     Every hue is DEEPER here than in the dark build. A mid-tone that read
+     correctly against a blue-black field is washed out against paper, and the
+     `-text` step has to clear 4.5:1 on white rather than on a dark surface.
+
+     The `-dim` / `-deep` pair keeps its ROLE and inverts its value: `-dim` is
+     the tint that draws a pill's edge, `-deep` is the wash that fills it. Both
+     were dark in the dark build; both are pale here. Do not read `-deep` as
+     "darkest" — read it as "the quietest fill".
+     ========================================================================== */
+
+  /* structure: labels, rules, active state, the rail, focus. NEVER status. */
+  --color-brass: #9a7529;
+  --color-brass-text: #7d5e18;
+  --color-brass-dim: #d9c48f;
+  --color-brass-deep: #f5efe0;
+
+  /* RESERVED: contradicts findings + BLOCK. Nowhere else. ~4 uses total. */
+  --color-oxblood: #a3322a;
+  --color-oxblood-text: #8f2721;
+  --color-oxblood-dim: #e6bdb8;
+  --color-oxblood-deep: #fbeeec;
+
+  /* released, confirmed, supports, healthy */
+  --color-verdigris: #2f7a63;
+  --color-verdigris-text: #256355;
+  --color-verdigris-dim: #b6d9cd;
+  --color-verdigris-deep: #ecf6f2;
+
+  /* held, awaiting, dormant, escalated */
+  --color-amber: #a8681c;
+  --color-amber-text: #8a5410;
+  --color-amber-dim: #ecd0a8;
+  --color-amber-deep: #fdf3e6;
+
+  /* Resting / active pill fills. Lower alpha than the dark build: the same
+     percentage of a darker hue over white reads roughly twice as loud. */
+  --color-fill-brass: rgb(154 117 41 / 0.10);
+  --color-fill-brass-strong: rgb(154 117 41 / 0.18);
+  --color-fill-oxblood: rgb(163 50 42 / 0.09);
+  --color-fill-oxblood-strong: rgb(163 50 42 / 0.16);
+  --color-fill-verdigris: rgb(47 122 99 / 0.10);
+  --color-fill-verdigris-strong: rgb(47 122 99 / 0.17);
+  --color-fill-amber: rgb(168 104 28 / 0.10);
+  --color-fill-amber-strong: rgb(168 104 28 / 0.17);
+  --color-fill-neutral: rgb(69 77 88 / 0.06);
+  --color-fill-neutral-strong: rgb(69 77 88 / 0.12);
+
+  /* ==========================================================================
+     ELEVATION — a hairline ring plus a short, low-alpha drop.
+
+     Levels 0-4 map to: flat panel, resting card / navbar, hover lift,
+     popover + palette, modal-most. The ring is tinted 17 24 39 (a cool near-
+     black), never pure black — pure black at 10% on paper reads as soot.
+
+     THE SHEEN IS GONE, deliberately. The dark build's two inset white
+     highlights were what made a dark panel read as a lit physical surface;
+     on white they are invisible at best and a grey smear at worst. A light
+     surface does not need to be lit — it needs to be SEPARATED. That work is
+     done here by the ring and by the field being darker than the panel, which
+     is why --color-ground is the darkest step in the ramp above.
+     ========================================================================== */
+  --shadow-elev-0:
+    inset 0 0 0 1px rgb(17 24 39 / 0.09);
+
+  --shadow-elev-1:
+    inset 0 0 0 1px rgb(17 24 39 / 0.10),
+    0 1px 2px 0 rgb(17 24 39 / 0.05),
+    0 1px 3px 0 rgb(17 24 39 / 0.04);
+
+  --shadow-elev-2:
+    inset 0 0 0 1px rgb(17 24 39 / 0.10),
+    0 2px 4px -2px rgb(17 24 39 / 0.10),
+    0 6px 16px -4px rgb(17 24 39 / 0.10);
+
+  --shadow-elev-3:
+    inset 0 0 0 1px rgb(17 24 39 / 0.11),
+    0 8px 12px -6px rgb(17 24 39 / 0.12),
+    0 16px 32px -8px rgb(17 24 39 / 0.14);
+
+  --shadow-elev-4:
+    inset 0 0 0 1px rgb(17 24 39 / 0.12),
+    0 24px 48px -12px rgb(17 24 39 / 0.26);
+
+  /* A control is a ring plus a single 1px drop — it sits ON the surface. */
+  --shadow-control:
+    inset 0 0 0 1px rgb(17 24 39 / 0.14),
+    0 1px 1px 0 rgb(17 24 39 / 0.04);
+  --shadow-control-hover:
+    inset 0 0 0 1px rgb(17 24 39 / 0.22),
+    0 1px 2px 0 rgb(17 24 39 / 0.08);
+
+  /* An input is a recess CUT INTO the panel, not a box drawn on it.
+
+     On light the recess is legible in a way it never was on dark: a real
+     top-inner shadow reads as depth against paper. The ring can therefore sit
+     at 0.16 and still survive H.264 at 1080p, where the dark build needed
+     0.26 to hold the same hairline. */
+  --shadow-well:
+    inset 0 0 0 1px rgb(17 24 39 / 0.16),
+    inset 0 1px 2px 0 rgb(17 24 39 / 0.08);
+  --shadow-well-focus:
+    inset 0 0 0 1px rgb(154 117 41 / 0.85),
+    inset 0 1px 2px 0 rgb(17 24 39 / 0.06),
+    0 0 0 3px rgb(154 117 41 / 0.20);
+
+  /* A table row cannot carry an outline without changing its own height, so
+     its focus ring is drawn inside it — the one sanctioned substitute for the
+     global outline rule. Same colour, same alpha, same 2px. */
+  --shadow-focus-inset: inset 0 0 0 2px rgb(154 117 41 / 0.85);
+
+  /* The severity rail and the selection rail are drawn INSIDE the row, so
+     selection can never change a row's height. On light these rails do more
+     work than they did on dark: with --overlay and --raised both at paper
+     white, the rail IS the selected state. */
+  --shadow-rail-brass: inset 2px 0 0 0 var(--color-brass);
+  --shadow-rail-oxblood: inset 2px 0 0 0 var(--color-oxblood);
+  --shadow-rail-amber: inset 2px 0 0 0 var(--color-amber);
+  --shadow-rail-verdigris: inset 2px 0 0 0 var(--color-verdigris);
+
+  /* ==========================================================================
+     TYPE
+     ========================================================================== */
+  --font-display: "Newsreader", Georgia, serif;
+  --font-sans: "Inter Tight", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Enterprise scale: small, tight, many steps. Ceiling is 28px except for
+     the verdict and the exposure figure — one each, per screen. */
+  --text-micro: 0.6875rem;      /* 11px — column headers, chips, kbd */
+  --text-micro--line-height: 1rem;          /* */
+  --text-mini: 0.8125rem;       /* 13px — table cells, metadata, mono ids */
+  --text-mini--line-height: 1.125rem;       /* */
+  --text-xs: 0.875rem;          /* 14px — body, field values */
+  --text-xs--line-height: 1.25rem;          /* */
+  --text-sm: 0.9375rem;         /* 15px — emphasis body, row primary */
+  --text-sm--line-height: 1.375rem;         /* */
+  --text-base: 1rem;            /* 16px — prose, agent reasoning */
+  --text-base--line-height: 1.5rem;         /* */
+  --text-lg: 1.25rem;           /* 20px — pane and entity titles */
+  --text-lg--line-height: 1.625rem;         /* */
+  --text-xl: 1.625rem;          /* 26px — case titles */
+  --text-xl--line-height: 2rem;             /* */
+  --text-2xl: 1.75rem;         /* 28px — surface headline                    */
+  --text-2xl--line-height: 2rem;         /* 32px */
+  --text-figure: 2.75rem;      /* 44px — THE exposure figure                 */
+  --text-figure--line-height: 1;
+  --text-verdict: 3.25rem;     /* 52px — THE verdict                         */
+  --text-verdict--line-height: 1;
+
+  /* ==========================================================================
+     SPACING — 4px unit. These are the ONLY permitted layout values.
+     Banned: 5, 10, 14, 18, 30, and anything >=56 in a layout.
+     20 is permitted only as card/section padding, never as a row rhythm.
+     ========================================================================== */
+  --spacing: 0.25rem;          /* base unit: p-1 = 4px, p-2 = 8px, ...       */
+  --spacing-hair: 0.125rem;    /*  2px */
+  --spacing-xxs: 0.25rem;      /*  4px */
+  --spacing-xs: 0.375rem;      /*  6px */
+  --spacing-sm: 0.5rem;        /*  8px */
+  --spacing-md: 0.75rem;       /* 12px */
+  --spacing-lg: 1rem;          /* 16px */
+  --spacing-xl: 1.25rem;       /* 20px */
+  --spacing-2xl: 1.5rem;       /* 24px */
+  --spacing-3xl: 2rem;         /* 32px */
+  --spacing-4xl: 3rem;         /* 48px */
+
+  /* ==========================================================================
+     CONTROL LADDER + CHROME BANDS
+     Nothing in this app is 32px or 36px tall.
+     ========================================================================== */
+  --spacing-micro: 1.125rem;   /* 18px — status pill                         */
+  --spacing-ctl-xs: 1.25rem;   /* 20px — micro chip, kbd, dense button       */
+  --spacing-ctl-sm: 1.5rem;    /* 24px — small button, banner                */
+  --spacing-ctl-md: 1.875rem;  /* 30px — STANDARD: button, input, tab, row hdr */
+  --spacing-ctl-lg: 2.5rem;    /* 40px — large button, palette input         */
+
+  --spacing-row: 2.25rem;          /* 34px — THE table row (compact) */
+  --spacing-row-dense: 1.875rem;    /* 30px */
+  --spacing-row-roomy: 2.75rem;    /* 38px */
+  --spacing-pane-header: 1.875rem; /* 30px */
+  --spacing-status: 1.625rem;  /* 26px — status bar                          */
+  --spacing-header: 3.125rem;  /* 50px — global navbar                       */
+  --spacing-rail: 3.5rem;      /* 56px — left navigation rail                */
+
+  /* ==========================================================================
+     RADIUS — 0 panes / 2 pills / 3 inputs / 4 buttons+cards / 6 palette.
+     Nothing else. A 12px-rounded data container reads as a marketing site.
+     ========================================================================== */
+  --radius-none: 0;
+  --radius-pill: 2px;
+  --radius-input: 3px;
+  --radius-ctl: 4px;
+  --radius-overlay: 6px;
+
+  /* ==========================================================================
+     MOTION — 100ms interaction, 200ms positional, one 900ms moment.
+     ========================================================================== */
+  --ease-ui: cubic-bezier(0.4, 1, 0.75, 0.9);
+  --ease-slot: cubic-bezier(0.16, 0.84, 0.44, 1);
+  --ease-tip: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root { color-scheme: light; }
+
+html, body, #root { height: 100%; }
+
+body {
+  background: var(--color-ground);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);   /* 14px — matches Lightning/Blueprint territory */
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  /* The chrome never scrolls; panes scroll independently. */
+  overflow: hidden;
+}
+
+/* All figures are tabular so a number never changes width as it updates —
+   a column that jitters on every SSE frame reads as instability on video. */
+.tabular, .font-mono, code, pre, td, th, [data-numeric] {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "zero" 1;
+}
+
+/* ----------------------------------------------------------------------------
+   FOCUS — one global rule, not per-component.
+
+   The 0.85 alpha is deliberate: it is the value that holds a >=3:1 focus
+   contrast against every surface in the ramp from --ground through --raised.
+   Do not substitute a solid colour.
+   ---------------------------------------------------------------------------- */
+:where(a, button, [role="button"], [role="tab"], [role="option"],
+       [tabindex]:not([tabindex="-1"]), input, select, textarea):focus-visible {
+  outline: 2px solid rgb(154 117 41 / 0.85);
+  outline-offset: 2px;
+  border-radius: 1px;
+}
+
+/* A pill is 18px tall; a 2px offset would collide with its neighbour. */
+:where([data-pill]):focus-visible { outline-offset: 0; }
+
+/* A text input's focus is the recess itself — an outline would fight it. */
+:where(input, textarea)[data-well]:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-well-focus);
+}
+
+/* ----------------------------------------------------------------------------
+   SCROLLBARS — present but quiet. `scrollbar-gutter: stable` kills the
+   horizontal jump the moment a list starts overflowing.
+   ---------------------------------------------------------------------------- */
+* { scrollbar-width: thin; scrollbar-color: var(--color-rule-strong) transparent; }
+.pane-scroll { scrollbar-gutter: stable; }
+
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--color-rule-strong);
+  border: 2px solid var(--color-ground);
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--color-ink-disabled); }
+::-webkit-scrollbar-corner { background: transparent; }
+
+/* Pin autofill to our ink and surface rather than the UA yellow. */
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--color-ink);
+  -webkit-box-shadow: 0 0 0 1000px var(--color-raised) inset;
+  caret-color: var(--color-ink);
+}
+
+/* ----------------------------------------------------------------------------
+   UTILITY LAYER
+   ---------------------------------------------------------------------------- */
+@layer utilities {
+  /* The SINGLE sanctioned uppercase treatment. Column headers, field labels,
+     group headings — and nowhere else. */
+  .label-micro {
+    font-size: var(--text-micro);
+    line-height: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--color-ink-faint);
+  }
+  .label-brass {
+    font-size: var(--text-micro);
+    line-height: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--color-brass);
+  }
+
+  .rule-t { border-top: 1px solid var(--color-rule); }
+  .rule-b { border-bottom: 1px solid var(--color-rule); }
+  .rule-l { border-left: 1px solid var(--color-rule); }
+  .rule-r { border-right: 1px solid var(--color-rule); }
+  .rule-b-muted { border-bottom: 1px solid var(--color-rule-muted); }
+
+  /* Reserve space so an arriving finding never shifts the layout. */
+  .no-shift { contain: layout; }
+
+  /* Prose: 14px / 1.5, the one place line-height opens up. */
+  .prose-agent {
+    font-size: var(--text-base);
+    line-height: 1.5;
+    color: var(--color-ink-muted);
+  }
+
+  /* The active pane always shows where keystrokes are going. */
+  .pane-active { box-shadow: inset 0 0 0 1px var(--color-rule-strong); }
+}
+
+/* ----------------------------------------------------------------------------
+   MOTION — one orchestrated moment, nothing else.
+   ---------------------------------------------------------------------------- */
+@keyframes slot-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes tip-settle {
+  0%   { transform: rotate(0deg); }
+  35%  { transform: rotate(var(--tip-overshoot, 0deg)); }
+  100% { transform: rotate(var(--tip-angle, 0deg)); }
+}
+@keyframes strike {
+  from { background-size: 0% 2px; }
+  to   { background-size: 100% 2px; }
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.35; }
+}
+/* A new row appears at full height instantly; only the background decays.
+   Motion in a streaming list is the single loudest amateur tell. */
+@keyframes row-land {
+  from { background-color: var(--color-fill-brass-strong); }
+  to   { background-color: transparent; }
+}
+/* Indeterminate: a 2px sweep, never a spinner, never a bar for a stream. */
+@keyframes indeterminate {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(300%); }
+}
+
+.animate-slot { animation: slot-in 260ms var(--ease-slot) both; }
+.animate-tip  { animation: tip-settle 900ms var(--ease-tip) both; }
+.animate-live { animation: pulse-dot 1.6s ease-in-out infinite; }
+.animate-land { animation: row-land 700ms ease-out both; }
+/* 900ms — the one sanctioned long duration in the motion table above, rather
+   than a fourth timing invented for this loop. */
+.animate-indeterminate { animation: indeterminate 900ms linear infinite; }
+
+/* A struck-through injection: the line is drawn, not merely present.
+
+   AMBER, not oxblood. --oxblood means money is being stopped, and it is
+   reserved for contradicts-verdict findings and BLOCK states. A neutralized
+   injection is dormant, which is amber's meaning. This class has exactly one
+   caller — the Posture guardrail excerpt. A defeated ARGUMENT is struck in
+   neutral ink instead (see Balance/Docket); it is not the same fact.
+
+   2px, because a 1px line over 13px type is the first thing H.264 throws
+   away at 1080p, and the strike is the whole point of the frame. */
+.struck {
+  background-image: linear-gradient(var(--color-amber), var(--color-amber));
+  background-repeat: no-repeat;
+  background-position: 0 55%;
+  background-size: 100% 2px;
+  animation: strike 420ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The tip collapses to a state change. Nothing animates. */
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

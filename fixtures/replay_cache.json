@@ -1,0 +1,1378 @@
+{
+  "entries": {
+    "000f3da962a6a8d5b5e3ced93854b36f38b35045cb8fa7d2c5706a0ab001d9e9": {
+      "reasoning": "The innocent explanation collapses entirely in the presence of an active Cyrillic homograph domain spoof and an explicit denial from the vendor via their verified phone number of record. These findings unequivocally establish a fraudulent payment diversion attempt rather than a legitimate treasury consolidation.",
+      "rebuttals": [
+        {
+          "argument": "Shared banking partners and holding company names can coincidentally overlap in regional commercial ecosystems, but matching the exact threat cluster signature and previously blocked indicators cannot be innocently explained.",
+          "finding_id": "F-attribution",
+          "succeeds": false
+        },
+        {
+          "argument": "The individual answering the primary operational line might not have visibility into executive-level treasury restructuring, but an explicit denial from the verified contact number of record directly refutes authorization.",
+          "finding_id": "F-callback-out_of",
+          "succeeds": false
+        },
+        {
+          "argument": "A long-standing 6.2-year relationship with 212 successful transactions establishes that the vendor is genuine, but genuine baseline history does not validate an unannounced, out-of-pattern banking change.",
+          "finding_id": "F-ledger-relati",
+          "succeeds": false
+        },
+        {
+          "argument": "There is no legitimate business justification for registering an 11-day-old domain utilizing a Cyrillic homograph character to mimic the vendor's real domain in the Reply-To header.",
+          "finding_id": "F-provenance-artifa",
+          "succeeds": false
+        },
+        {
+          "argument": "Parent holding companies frequently manage cash management and collections for operating subsidiaries, but without supporting legal novation or factoring agreements, the severe naming mismatch remains unverified.",
+          "finding_id": "F-registry-check-entity",
+          "succeeds": false
+        }
+      ],
+      "strongest_legitimate_explanation": "Northwind Student Transport LLC may have undergone a corporate acquisition or restructuring under a parent entity, NW Holdings Group, which consolidated treasury functions into a centralized account at Cascade Union Trust. Under this scenario, the newly registered communication channel was provisioned for corporate treasury communications, and the staff member reached at the standard dispatch/operations phone number was simply unaware of parent-company level banking migrations.",
+      "survived": false
+    },
+    "028d7a32385f668c2e5abe5f7bc77a6ee3686fd338e16f9442295f134dc7485c": {
+      "confidence": 1.0,
+      "dissenting_findings": [],
+      "outcome": "BLOCK",
+      "rationale": "The transaction is a confirmed fraudulent payment redirection attempt. Out-of-band verification with Northwind Student Transport's verified contact of record explicitly denied authorizing any banking changes. Furthermore, forensic analysis detected active Cyrillic homoglyph domain spoofing on a newly registered domain, matched to known threat actor Shadow Transit, accompanied by an unauthorized beneficiary name ('NW Holdings Group')."
+    },
+    "03d21b7f07d3cd7e6690b6f8de0cdf7a9518091e9d5fd40ac344b1d208b93417": {
+      "reasoning": "The change request is thoroughly authenticated through both a successful out-of-band callback to the official phone number of record and a perfect entity registry match. There are no indicators of fraud, making the legitimate explanation overwhelmingly strong.",
+      "rebuttals": [
+        {
+          "argument": "An unanswered initial phone call represents a routine missed call rather than suspicious activity, and this was superseded by the subsequent successful confirmation call to the verified phone number of record.",
+          "finding_id": "F-callback-b93d16",
+          "succeeds": true
+        },
+        {
+          "argument": "A long-standing vendor undergoing its first banking change in 7.4 years is an expected corporate lifecycle event, and the ledger analyst's condition requiring out-of-band verification was fully satisfied by the successful callback.",
+          "finding_id": "F-ledger-0a6859",
+          "succeeds": true
+        },
+        {
+          "argument": "This finding directly confirms legitimacy by validating that the account holder name exactly matches the registered corporate entity name in the correct jurisdiction.",
+          "finding_id": "F-registry-check-b06480",
+          "succeeds": true
+        },
+        {
+          "argument": "This finding directly establishes legitimacy via verified out-of-band voice confirmation with the vendor using master contact data.",
+          "finding_id": "F-callback-b1ec36",
+          "succeeds": true
+        },
+        {
+          "argument": "The absence of prior changes simply reflects account stability, and the recommended out-of-band verification was successfully completed.",
+          "finding_id": "F-ledger-bbe02c",
+          "succeeds": true
+        },
+        {
+          "argument": "This finding reinforces legitimacy with a perfect 1.0 entity name and jurisdiction match.",
+          "finding_id": "F-registry-check-d65442",
+          "succeeds": true
+        }
+      ],
+      "strongest_legitimate_explanation": "Kestrel Athletic Equipment Inc. is executing a routine corporate treasury or banking update after over seven years with their prior institution. The change has been authenticated via direct out-of-band callback to their verified phone number of record, and the new bank account name matches the legal entity name exactly with perfect alignment in their operating jurisdiction.",
+      "survived": true
+    },
+    "084a4473569d6909ed962674fe62166217b23663acfbf07c6adc80d7db3e37cd": {
+      "reasoning": "The legitimate explanation is overwhelmingly plausible and verified across multiple independent controls, including gold-standard out-of-band phone confirmation and exact legal entity matching. The lack of prior bank changes over 7.4 years reflects vendor stability rather than suspicion, making a block unwarranted.",
+      "rebuttals": [
+        {
+          "argument": "The finding already strongly supports legitimacy (confidence 1.0); the out-of-band verification took place via the pre-existing system-of-record telephone number, effectively ruling out email compromise or adversary interception.",
+          "finding_id": "F-callback-out_of",
+          "succeeds": true
+        },
+        {
+          "argument": "The ledger agent marked this inconclusive simply because the vendor has not changed bank details in 7.4 years. A long track record with zero prior changes demonstrates a reliable, low-risk counterparty, and post-acquisition treasury updates are legitimate catalysts for an established vendor's first banking update.",
+          "finding_id": "F-ledger-relati",
+          "succeeds": true
+        },
+        {
+          "argument": "The finding already supports legitimacy (confidence 0.95); the proposed account title precisely mirrors the verified corporate entity name in the correct domestic jurisdiction, ruling out third-party payee substitution.",
+          "finding_id": "F-registry-check-entity",
+          "succeeds": true
+        }
+      ],
+      "strongest_legitimate_explanation": "Kestrel Athletic Equipment Inc. is performing routine treasury consolidation following a corporate acquisition, a standard financial practice that necessitates updating disbursement accounts across established vendor relationships. This operational change is corroborated by an authenticated out-of-band callback to the vendor's long-standing phone number of record, an exact 1.0 entity name match on the new target account, and consistent alignment with an existing open invoice due within standard payment terms.",
+      "survived": true
+    },
+    "097517e9b8a5a548cd812ef2eb0597a3f993ed290169c19e4ca0be5ceb5c20f6": {
+      "reasoning": "The change is backed by an undisputed out-of-band callback confirmation on the master record phone number and a perfect legal entity match at the destination bank. The vendor's long tenure without prior changes is entirely consistent with a legitimate post-acquisition treasury migration.",
+      "rebuttals": [
+        {
+          "argument": "The finding fully supports legitimacy with maximum confidence; out-of-band authentication was conducted on the historical contact number of record rather than any number provided in the change request, effectively ruling out unauthorized impersonation.",
+          "finding_id": "F-callback-885f7c",
+          "succeeds": true
+        },
+        {
+          "argument": "The absence of banking changes over 7.4 years is not an indicator of fraud when paired with an acquisition-driven treasury consolidation, as corporate restructurings routinely trigger rare, one-off account migrations across long-standing vendor relationships.",
+          "finding_id": "F-ledger-950129",
+          "succeeds": true
+        },
+        {
+          "argument": "The finding confirms that the destination account title matches the registered entity name exactly (1.0 similarity) in the correct jurisdiction, eliminating the possibility of a diversion to an unrelated third-party account.",
+          "finding_id": "F-registry-check-46a069",
+          "succeeds": true
+        }
+      ],
+      "strongest_legitimate_explanation": "Kestrel Athletic Equipment Inc. has undergone a corporate acquisition leading to a standard post-acquisition treasury consolidation. After 7.4 years of steady operations under previous banking details, new parent company treasury policies require migrating vendor cash management to a unified corporate account. The new account remains in the exact legal name of the vendor within their home jurisdiction, and the update was independently verified and confirmed via an out-of-band voice callback to the established system-of-record phone number.",
+      "survived": true
+    },
+    "0a62c95720f17e559fa3b824d36cdf815e5512c3260766fbde8fdbf7bc458d7d": {
+      "confidence": 0.95,
+      "reasoning": "This request is an active impersonation attack by the 'Veiled Route' operator, reusing the identical 'NW Holdings Group' beneficiary name and a six-day-old Cyrillic homoglyph lookalike domain. District staff should immediately reject the requested banking update and verify pending invoices directly with Tidewater Nutrition using pre-established contact numbers.",
+      "same_operator": true,
+      "verdict": "contradicts"
+    },
+    "0ab479e7fc35515fa8c2dad767dc7430c0d977c444600bf16879a23808f52c94": {
+      "reasoning": "The legitimate corporate restructuring hypothesis fails against the combination of an explicit denial from the verified contact and deliberate Cyrillic homograph domain spoofing. These forensic indicators establish active impersonation and fraud beyond any plausible innocent explanation.",
+      "rebuttals": [
+        {
+          "argument": "The individual answering the legacy phone number of record may be an operational staff member unaware of corporate-level treasury consolidation managed by executive leadership.",
+          "finding_id": "F-callback-out_of",
+          "succeeds": false
+        },
+        {
+          "argument": "A 6.2-year established relationship with 212 consistent invoices represents a mature vendor lifecycle where corporate restructuring or bank migration is naturally expected at some stage.",
+          "finding_id": "F-ledger-relati",
+          "succeeds": true
+        },
+        {
+          "argument": "While corporate rebranding or new infrastructure can result in young domains, the presence of an obfuscated Cyrillic homograph character in the Reply-To header is a definitive indicator of an intentional spoof rather than legitimate IT provisioning.",
+          "finding_id": "F-provenance-artifa",
+          "succeeds": false
+        },
+        {
+          "argument": "Treasury consolidation frequently involves routing payments to a parent holding company like 'NW Holdings Group' rather than the operating subsidiary entity.",
+          "finding_id": "F-registry-check-entity",
+          "succeeds": false
+        }
+      ],
+      "strongest_legitimate_explanation": "Northwind Student Transport LLC may have undergone a corporate restructuring or acquisition by NW Holdings Group, leading to centralized treasury operations and new banking details under the parent entity's name. In such transitions, corporate communications may route through new administrative domains, and the local operational contact reached at the legacy phone number of record may simply have been uninformed about top-level treasury management decisions.",
+      "survived": false
+    },
+    "0b545dd7981ca7de89b5aabc9d09f5d9b28194086fc31565d48f817e2a313aec": {
+      "confidence": 1.0,
+      "dissenting_findings": [],
+      "outcome": "BLOCK",
+      "rationale": "Payment redirection request is confirmed fraudulent. An out-of-band callback to the vendor's verified number on record resulted in an explicit denial of the change request. Forensic analysis identified an active Cyrillic homograph domain spoof registered 6 days prior, matching the tradecraft of known threat actor 'Shadow Transit', alongside an unverified beneficiary mismatch ('NW Holdings Group' vs 'Tidewater School Nutrition LLC'). The adversarial challenge failed to substantiate any legitimate basis for homograph spoofing."
+    },
+    "0d824ae6a0d484fb52f77f869d3b00fc4111e6b7a42b96c23a9c92bf1b0abd50": {
+      "reasoning": "The innocent explanation of an uninformed contact during a treasury consolidation completely collapses against the use of a newly registered Cyrillic homoglyph spoofing domain and explicit denial from the vendor of record. These compounding technical and human verification signals demonstrate an active impersonation attack that cannot be legitimized.",
+      "rebuttals": [
+        {
+          "argument": "Threat exchange attributions can suffer from false clustering when generic holding company names and automated domain alerts overlap, but the identical beneficiary name and identical infrastructure TTPs make an innocent coincidence extraordinarily unlikely.",
+          "finding_id": "F-attribution-0CAC71",
+          "succeeds": false
+        },
+        {
+          "argument": "The individual answering the primary number of record might be a local operational contact unfamiliar with corporate treasury consolidation decisions, but a direct, explicit denial on the verified number of record cannot be overcome without authenticated counter-evidence.",
+          "finding_id": "F-callback-out_of",
+          "succeeds": false
+        },
+        {
+          "argument": "A 5.4-year history with zero banking changes and a valid open invoice indicates normal ongoing business operations, which explains why an authentic invoice amount is referenced even if the relationship baseline itself is neutral.",
+          "finding_id": "F-ledger-relati",
+          "succeeds": true
+        },
+        {
+          "argument": "While organizations occasionally migrate email domains during corporate restructuring, the intentional use of a Cyrillic homoglyph character registered six days prior is definitive technical proof of deceptive impersonation.",
+          "finding_id": "F-provenance-artifa",
+          "succeeds": false
+        },
+        {
+          "argument": "Legitimate factoring agreements or parent-company treasury consolidations frequently direct disbursements to legal entities with different names than the operating vendor, though this requires formal legal attestation.",
+          "finding_id": "F-registry-check-entity",
+          "succeeds": false
+        }
+      ],
+      "strongest_legitimate_explanation": "Tidewater School Nutrition LLC may have undergone a corporate acquisition or restructuring by a parent entity, NW Holdings Group, which is consolidating treasury operations across its portfolio. Under this scenario, the newly appointed treasury management team initiated banking updates for outstanding invoices like INV-3101, while the staff member reached at the legacy contact number was simply uninformed about the executive-level banking transition.",
+      "survived": false
+    },
+    "0da807add92a41483511c07330adeed08dcee2a7d58ace594634b6fd2c965485": {
+      "confidence": 0.95,
+      "reasoning": "The proposed account holder name 'NW Holdings Group' shows a severe name mismatch against the registered legal entity 'Ashfield Science Supply Ltd.' with a similarity score of only 0.08. This unverified beneficiary discrepancy presents a critical risk of payment redirection and indicates the request is fraudulent.",
+      "verdict": "contradicts"
+    },
+    "10b456853a52336925ec6a656de340d6827198c43d30e6a1a2b6115253597050": {
+      "confidence": 0.95,
+      "reasoning": "The out-of-band callback to the vendor's system of record phone number went unanswered. As silence is not confirmation, the request remains inconclusive and payment detail changes should be held until verified.",
+      "verdict": "inconclusive"
+    },
+    "142ed22bece4507d554fb8f4d5109114191c51ecb8d3007b8dc2ed86bb8069ca": {
+      "confidence": 0.99,
+      "dissenting_findings": [],
+      "outcome": "BLOCK",
+      "rationale": "The banking update and payment request are confirmed fraudulent, matching the 'Veiled Route' threat campaign. Key evidence includes a lookalike domain using a Cyrillic homoglyph substitution registered 11 days ago, an extreme beneficiary mismatch ('NW Holdings Group' vs 'Ashfield Science Supply Ltd.'), and explicit denial during out-of-band callback with the verified vendor contact."
+    },
+    "1514cb10d78b8f23e9fbbd87c55a64c41480063f9d9159e8292dfc7aacbdc769": {
+      "confidence": 1.0,
+      "dissenting_findings": [],
+      "outcome": "BLOCK",
+      "rationale": "The transaction change is confirmed fraudulent. The vendor explicitly denied requesting or authorizing any payment detail changes when contacted via their verified out-of-band phone number of record. Forensic analysis confirmed active email domain spoofing using a Cyrillic homograph in the Reply-To address, accompanied by a severe entity name mismatch on the proposed beneficiary account."
+    },
+    "1c7e7302b322606279f07610f2fc6c74ce26cffa3de9498e6854eb565478f8bd": {
+      "confidence": 0.85,
+      "reasoning": "Vendor V-9002 has a 4.1-year history with 88 paid invoices and zero prior banking changes, while referenced invoice INV-5120 is genuinely open. Because attackers frequently cite valid open invoices, ERP relationship baseline data alone cannot verify the legitimacy of this change request.",
+      "verdict": "inconclusive"
+    },
+    "1c9315541bf2d32b64140b93e355c94b6cabc1edffa3614902e7ed8c1013965d": {
+      "reasoning": "Operation Shadow Transit specifically targets high-value service contractors where substantial recurring invoices make out-of-band banking updates appear plausible. We recommend placing a preemptive verification hold on PAY-9005 while allowing standard goods and equipment suppliers to proceed without disruption.",
+      "swept_but_cleared": [
+        "PAY-9008",
+        "PAY-9010",
+        "PAY-9009",
+        "PAY-9000",
+        "PAY-9007",
+        "PAY-9006",
+        "PAY-9002",
+        "PAY-9004"
+      ],
+      "targets": [
+        {
+          "payment_id": "PAY-9005",
+          "reason": "Padstow Special Education Services LLC matches the dossier's profile of high-value service contractors whose large recurring disbursements are targeted for diversion via deceptive banking change requests.",
+          "risk": "medium"
+        }
+      ]
+    },
+    "1fdf81689212e75e072643cee8bc600d5bef7167f35f8121396ff3be7e2170aa": {
+      "confidence": 0.98,
+      "reasoning": "This request matches the known threat actor Shadow Transit through the use of a Cyrillic homoglyph lookalike domain, an 11-day-old registration, and the identical beneficiary account NW Holdings Group at Cascade Union Trust. Do not disburse funds or update banking details, and contact Northwind Transport via verified directory records to confirm legitimate account information.",
+      "same_operator": true,
+      "verdict": "contradicts"
+    },
+    "20160d86582ce0bb0eba92ae3cafff37b6e4d2c02318b9ee8f1e8512e0c9611d": {
+      "reasoning": "PAY-6041 represents a major $165,000 facilities maintenance disbursement to a long-tenured vendor, perfectly aligning with Veiled Route's targeting profile for invoice hijacking. We recommend freezing this payment for out-of-band contact verification while clearing other lower-exposure scheduled payments.",
+      "swept_but_cleared": [
+        "PAY-6031",
+        "PAY-6051",
+        "PAY-6011",
+        "PAY-6021"
+      ],
+      "targets": [
+        {
+          "payment_id": "PAY-6041",
+          "reason": "Matches the operation's target profile as a high-exposure facilities maintenance contractor with a long-standing tenure and zero prior banking changes.",
+          "risk": "high"
+        }
+      ]
+    },
+    "20cef7c70d42ea653e986e08e8f6596605e6ade97e7b164a7c7ebbebe5738452": {
+      "confidence": 0.98,
+      "reasoning": "This request matches the 'Veiled Route' threat operation, utilizing an identical fraudulent beneficiary name ('NW Holdings Group') at Cascade Union Trust alongside a newly registered lookalike domain with a Cyrillic character substitution. Do not process this change, as it is an active impersonation attack targeting district invoice disbursements.",
+      "same_operator": true,
+      "verdict": "contradicts"
+    },
+    "219ad4734d3ca4f8a3df1ca746e4a9b3ec538cab301b8611ce431bdd0e31b404": {
+      "confidence": 1.0,
+      "dissenting_findings": [],
+      "outcome": "BLOCK",
+      "rationale": "Multiple independent findings confirm an active fraudulent payment redirection attempt. Out-of-band callback to the vendor's official phone number on record explicitly denied requesting the banking update. Technical forensics identified a 6-day-old Cyrillic homograph spoofed domain matching the known 'Veiled Route' fraud pattern, alongside an unmatched beneficiary entity ('NW Holdings Group'). Adversarial challenge failed."
+    },
+    "229f271988e48b7f58db96d78849dbd57c5f11ce2d1a242e8d8eb845eb0983db": {
+      "confidence": 0.98,
+      "dissenting_findings": [
+        "relationship_baseline"
+      ],
+      "outcome": "RELEASE",
+      "rationale": "The banking detail change has been successfully validated via gold-standard out-of-band callback using the phone number of record. Furthermore, the receiving account name matches the vendor's legal entity name exactly (1.0 similarity) within the correct operating jurisdiction. The historical baseline anomaly noted by the ledger check is fully resolved by the verified callback."
+    },
+    "2c412da5b6ebcb0670509f2493aca093051f7fd9d54eec6231983f52e8f369f9": {
+      "confidence": 0.95,
+      "reasoning": "The proposed account holder name perfectly matches the registered legal entity name with a similarity score of 1.0. Furthermore, the receiving bank's jurisdiction aligns completely with the vendor's US operating location.",
+      "verdict": "supports"
+    },
+    "2d07424af87aa579ab0cf7dc709e731ec7b38ab19302ddd8169e6c1fb2c0652e": {
+      "assessment": "This operation targets established district vendors by using real unpaid invoice details to request urgent bank account updates. It is distinctive for using lookalike email addresses containing visually identical foreign characters and providing fake phone numbers on change forms to hijack verification calls.",
+      "confidence": 0.75,
+      "designation": "False Transit",
+      "indicators": [
+        "A contact phone number on a payment change form that does not match the vendor number in the official system of record",
+        "An account holder name on payment instructions that differs from the vendor's legal corporate name",
+        "A sudden banking change request for a vendor that has used the same bank account for years",
+        "Incoming vendor emails originating from web addresses with subtle spelling variations or unusual letter shapes"
+      ],
+      "likely_next_target": "The operator will likely target another high-value recurring service provider\u2014such as a facilities management or student nutrition vendor\u2014where large invoice amounts are routinely paid on established schedules.",
+      "tradecraft": [
+        "Registering lookalike web domains using visually identical foreign characters",
+        "Citing real open invoice numbers and amounts to build credibility",
+        "Inserting fake contact numbers onto payment change forms to intercept confirmation calls",
+        "Directing diverted funds to mismatched account holder names"
+      ]
+    },
+    "2d75ee579ac0aa170ba39da4b782109fe825295a1b71ab6c390b6c34415c6680": {
+      "confidence": 0.98,
+      "reasoning": "The reply-to header diverges from the vendor's domain using a Cyrillic homograph character registered just 11 days prior. This domain spoofing confirms a business email compromise attempt, and the bank detail change request must be rejected.",
+      "verdict": "contradicts"
+    },
+    "31653dada97356173c95264d5310293e34cd010d9eb2d45770406accaecd60cf": {
+      "reasoning": "Although the schedule includes several high-value payments to long-tenured vendors, none match the specific high-volume facilities maintenance or student nutrition profiles flagged by the dossier, nor do any exhibit active banking change requests. Freezing these payments preemptively would cause unnecessary operational disruption without actionable evidence of active compromise.",
+      "swept_but_cleared": [
+        "PAY-9010",
+        "PAY-9009",
+        "PAY-9005",
+        "PAY-9000",
+        "PAY-9007",
+        "PAY-9006",
+        "PAY-9002",
+        "PAY-9004"
+      ],
+      "targets": []
+    },
+    "332a1cca7f9df816fe33930a871ca346723f9c78d3c28f55ae0c412718f4ecd7": {
+      "reasoning": "The presence of a Cyrillic homograph spoofed domain registered 11 days prior, combined with an explicit denial from the vendor via verified out-of-band callback, definitively establishes business email compromise. The legitimate restructuring explanation is entirely implausible under active domain impersonation and verification diversion.",
+      "rebuttals": [
+        {
+          "argument": "The individual answering the master contact number might be in an operational role unaware of executive-level treasury restructuring, but an explicit denial coupled with an attempt to divert verification to a separate unverified number cannot be legitimately explained.",
+          "finding_id": "F-callback-0751b3",
+          "succeeds": false
+        },
+        {
+          "argument": "A 6.2-year relationship with no prior changes is consistent with a company undergoing its first major treasury consolidation or acquisition event, meaning the lack of prior changes alone does not prove fraud.",
+          "finding_id": "F-ledger-b02f09",
+          "succeeds": true
+        },
+        {
+          "argument": "There is no valid business reason for legitimate vendor correspondence to use a newly registered (11 days old) domain featuring a Cyrillic homograph lookalike character in the Reply-To header.",
+          "finding_id": "F-provenance-e55a33",
+          "succeeds": false
+        },
+        {
+          "argument": "A discrepancy between the operational entity name and a newly designated treasury holding company name (NW Holdings Group) could occur during corporate reorganization, though documentation is required.",
+          "finding_id": "F-registry-check-c20ce3",
+          "succeeds": false
+        }
+      ],
+      "strongest_legitimate_explanation": "Northwind Student Transport LLC could theoretically have been acquired by NW Holdings Group as part of a corporate restructuring and treasury consolidation, utilizing a newly configured outsourced communications infrastructure or subsidiary entity to direct payments to the new parent company's account.",
+      "survived": false
+    },
+    "3343cf6ce10c43bc15aca212c9e05e2ca68f6f98a3f2fa5a16829d4094b4d5db": {
+      "confidence": 0.85,
+      "reasoning": "The vendor has a 7.4-year established history with 163 invoices and zero prior banking changes, making any sudden update notable. While the referenced open invoice is valid, attackers frequently cite real invoice details, requiring out-of-band verification before approving the change.",
+      "verdict": "inconclusive"
+    },
+    "33c96c0bb4f2b83de374274f634c0c20bd977e7c8cabafb5f864d651913cffe0": {
+      "confidence": 0.9,
+      "reasoning": "The request originates from the authentic vendor domain of record, which is well-established at over seven years old with no reply-to divergence or lookalike indicators. Additionally, there are no thread hijack markers or evidence of document metadata alteration.",
+      "verdict": "supports"
+    },
+    "3469f9d7afbe2f67459352ad94def55e0df4a4c4b9cea3a3177ed886d403c4a0": {
+      "confidence": 1.0,
+      "dissenting_findings": [],
+      "outcome": "BLOCK",
+      "rationale": "Clear evidence of Business Email Compromise (BEC). The vendor explicitly denied the payee change request during an out-of-band callback to their verified system-of-record number, the communication utilized a spoofed domain with Cyrillic homographs registered 11 days prior, and the requested beneficiary name does not match the vendor entity."
+    },
+    "3688af9415b2f657dfc8aa5d5528073f776f618594b110b7ba66e54a8358acca": {
+      "confidence": 1.0,
+      "dissenting_findings": [],
+      "outcome": "BLOCK",
+      "rationale": "The request is a confirmed payment redirection attack. Forensic analysis identified active Cyrillic homograph domain spoofing matching the known tradecraft of threat actor 'Veiled Route'. Furthermore, an out-of-band callback to the vendor's verified phone number of record resulted in an explicit denial of any payee detail update, and the proposed beneficiary name does not match the registered legal entity."
+    },
+    "38fc17c600cb5def7be0ec14264d20bf2520e5fb90e0d06524ea804b0e8f95ad": {
+      "confidence": 0.99,
+      "dissenting_findings": [
+        "relationship_baseline"
+      ],
+      "outcome": "BLOCK",
+      "rationale": "The payment redirection request is a confirmed fraudulent impersonation attack matching known threat operation 'Shadow Transit'. Forensic analysis revealed a spoofed domain with Cyrillic homoglyphs registered 11 days prior, a severe beneficiary mismatch ('NW Holdings Group' vs registered entity 'Ashfield Science Supply Ltd.'), and an explicit denial during out-of-band verification with the vendor's authorized contact of record. The adversarial review confirmed legitimate explanations are irreconcilable with the forensic evidence."
+    },
+    "39e93fab1aa0626862a047904bd3107c7d8796e5b2477200d9efb99063718123": {
+      "reasoning": "The innocent explanation completely collapses in the face of active homoglyph domain spoofing and an explicit denial of the change from the vendor on their verified phone number of record. These indicators definitively establish a fraudulent redirection attempt matching a known active threat campaign.",
+      "rebuttals": [
+        {
+          "argument": "Threat signatures can occasionally overlap with genuine treasury management firms or shared banking platforms utilized by multiple legitimate entities.",
+          "finding_id": "F-attribution-313012",
+          "succeeds": false
+        },
+        {
+          "argument": "The individual answering the primary number of record might be an operational contact unaware of corporate treasury decisions made at executive levels.",
+          "finding_id": "F-callback-53582c",
+          "succeeds": false
+        },
+        {
+          "argument": "The 4.1-year clean tenure and accurate citation of an active open invoice demonstrate consistent business continuity and familiarity with the account ledger.",
+          "finding_id": "F-ledger-a5676b",
+          "succeeds": true
+        },
+        {
+          "argument": "Third-party billing or factoring platforms might generate PDF notices using standard libraries like iText rather than ERP-integrated PDF writers.",
+          "finding_id": "F-provenance-6d9cd8",
+          "succeeds": false
+        },
+        {
+          "argument": "Name mismatches frequently occur during parent-subsidiary treasury consolidations or when utilizing dedicated billing entities.",
+          "finding_id": "F-registry-check-cebe06",
+          "succeeds": false
+        }
+      ],
+      "strongest_legitimate_explanation": "Ashfield Science Supply Ltd. may have been acquired by or transitioned its treasury operations to a corporate parent, NW Holdings Group, which is consolidating cash management across subsidiaries into a shared treasury account at Cascade Union Trust. Under this scenario, the reference to the valid open invoice reflects legitimate accounts receivable knowledge, and the discrepancy in contact information or entity naming arises from centralized corporate restructuring rather than malice.",
+      "survived": false
+    },
+    "3c5f1967a3b08cbca3a3726eba66c3a6a44061724b3d25c82f9e3f9998378045": {
+      "reasoning": "The innocent explanation completely collapses in the face of an active Cyrillic homoglyph spoofed domain and direct out-of-band denial by the vendor. This request is an unambiguous business email compromise attack matching a known threat pattern.",
+      "rebuttals": [
+        {
+          "argument": "Shared banking destinations and holding entities can occasionally represent shared factoring agencies used across industries, but the combination of identical banking coordinates with deliberate unicode-confusable spoofing matches an established adversarial campaign rather than legitimate shared infrastructure.",
+          "finding_id": "F-attribution-4C285A",
+          "succeeds": false
+        },
+        {
+          "argument": "The individual answering the primary verified contact number might lack visibility into recent executive treasury restructuring; however, an explicit out-of-band denial from the authorized vendor number of record directly disconfirms authorization for the change.",
+          "finding_id": "F-callback-out_of",
+          "succeeds": false
+        },
+        {
+          "argument": "The 4.1-year history and valid open invoice confirm an active commercial relationship, but attackers routinely target real outstanding invoices, meaning legitimate baseline history alone cannot validate new disbursement instructions.",
+          "finding_id": "F-ledger-relati",
+          "succeeds": false
+        },
+        {
+          "argument": "While software changes could account for different PDF producers, the presence of a Cyrillic homoglyph substitution in a Reply-To domain registered just 11 days ago is unambiguous technical evidence of domain spoofing and cannot be explained innocently.",
+          "finding_id": "F-provenance-artifa",
+          "succeeds": false
+        },
+        {
+          "argument": "Third-party factoring or parent holding company structures frequently result in low entity name similarity, but without authorized corporate documentation or vendor corroboration, this severe mismatch represents severe diversion risk.",
+          "finding_id": "F-registry-check-entity",
+          "succeeds": false
+        }
+      ],
+      "strongest_legitimate_explanation": "Ashfield Science Supply Ltd. may have entered into a third-party factoring, debt assignment, or treasury management agreement with NW Holdings Group to manage cash flow against open receivables like INV-5120. In such corporate reorganizations, billing operations might be outsourced to an external service provider using standard programmatic PDF generators like iText, while internal operational staff answering the legacy primary phone number may not yet have been briefed on the executive-level treasury migration.",
+      "survived": false
+    },
+    "3cf4637b0000f467af936d4edde7fdc0a1056f8f55ef8d0e76e6f5294f8c8d33": {
+      "confidence": 0.96,
+      "dissenting_findings": [
+        "relationship_baseline",
+        "out_of_band_confirmation"
+      ],
+      "outcome": "RELEASE",
+      "rationale": "The vendor's banking update has been fully verified. Although this represents the first bank change in 7.4 years and an initial callback attempt went unanswered, a subsequent out-of-band verification to the system-of-record phone number successfully confirmed the request. Furthermore, the new account holder name matches the legal entity name with a 1.0 similarity score in the appropriate operating jurisdiction."
+    },
+    "3e852d0e606e5cb7cbffe6d2f2f66f4eef3ec76c308f5093f03654f61f3a4dff": {
+      "confidence": 0.95,
+      "reasoning": "The request originates directly from the vendor's authentic domain of record with no reply-to divergence, lookalike traits, or thread-hijacking markers. Document metadata shows no producer alterations or red flags, indicating the bank detail change request is legitimate.",
+      "verdict": "supports"
+    },
+    "42506f6fd7d06b94ab613edab6b08e0cf52324adac5d4a787e3e2c603c715ba3": {
+      "confidence": 1.0,
+      "reasoning": "The change request contains a divergent reply-to domain utilizing a Cyrillic homograph character to visually impersonate the vendor's domain of record. Furthermore, this spoofed domain was registered only 6 days prior to the request, indicating an active fraudulent interdiction attempt.",
+      "verdict": "contradicts"
+    },
+    "46b717e173ceb5248bd7f1e028af1f45bdad830bfa6040aed5dac13a7e1f49da": {
+      "confidence": 1.0,
+      "dissenting_findings": [],
+      "outcome": "BLOCK",
+      "rationale": "The request is a confirmed fraudulent payment redirection attempt. Out-of-band callback to the vendor's phone number of record resulted in an explicit denial of the change. Furthermore, artifact forensics identified an 11-day-old domain utilizing a Cyrillic homograph confusable in the Reply-To header matching the signature of the 'Veiled Route' threat cluster, accompanied by an unauthorized beneficiary entity name mismatch."
+    },
+    "49d1b78d50935003c8eaf6ec8bc45f3abaab8bf2d63f441179a88facf3e7dc8e": {
+      "confidence": 0.9,
+      "reasoning": "The proposed account holder name 'NW Holdings Group' does not match the vendor's registered legal entity 'Northwind Student Transport LLC', yielding a low similarity score of 0.1379. This severe beneficiary name mismatch strongly indicates a potential payment redirection attempt.",
+      "verdict": "contradicts"
+    },
+    "504b6c3455879145b4c607dd8ff3122dd2859659efec6bd5af23a6f5f8cdf693": {
+      "confidence": 0.98,
+      "reasoning": "This request exhibits the identical signature of the Masked Transit operation, matching the exact beneficiary name 'NW Holdings Group', receiving bank, and a spoofed domain utilizing a Cyrillic character swap. Do not process this change, as it is a confirmed fraudulent redirection attempt matching prior blocked activity.",
+      "same_operator": true,
+      "verdict": "contradicts"
+    },
+    "5b07424a2bd8385a6e90dc246054213c7bc4462499fd16edfdf81600ae85b0bb": {
+      "confidence": 0.98,
+      "reasoning": "This request exhibits the exact tradecraft of known threat actor Veiled Route, using a newly registered lookalike domain with a Cyrillic character substitution to redirect payments to 'NW Holdings Group' at Cascade Union Trust. Do not update payment records or contact the provided telephone number, and report this fraudulent attempt immediately.",
+      "same_operator": true,
+      "verdict": "contradicts"
+    },
+    "5b4638e333b99c1ce3e5e1bd7e1e191a0acdec508ad60d702e15cfeff2ca6dc1": {
+      "confidence": 0.98,
+      "dissenting_findings": [],
+      "outcome": "RELEASE",
+      "rationale": "The payee-detail change request is authenticated by a 1.0-confidence out-of-band phone verification using the vendor's established system-of-record contact number. In addition, registry verification confirms a 1.0 legal entity name match within the expected jurisdiction, and the request correlates with a valid upcoming open invoice. The long-standing 7.4-year history with zero prior changes reflects counterparty stability rather than fraudulent activity."
+    },
+    "60bbf656364123222fa8efba49cc6506af69aa70a1442922f073b2c517505290": {
+      "confidence": 1.0,
+      "reasoning": "The vendor explicitly denied requesting any payee-detail changes when contacted via the official system of record phone number. Furthermore, the submission included an unverified phone number, confirming the request is fraudulent and must be rejected.",
+      "verdict": "contradicts"
+    },
+    "61fdf584c855df09bd5169dd9d776d413d84cdaefec8577bac23a43169ecdb3b": {
+      "reasoning": "The innocent explanation collapses entirely in the face of an active Cyrillic homoglyph spoof domain and an explicit denial from the verified contact on record. These technical indicators and out-of-band verification confirm an active impersonation attack rather than a legitimate treasury restructuring.",
+      "rebuttals": [
+        {
+          "argument": "Shared treasury management firms or factoring houses can represent multiple unrelated clients, which might produce overlapping beneficiary details across different corporate entities.",
+          "finding_id": "F-attribution-5BAD7D",
+          "succeeds": false
+        },
+        {
+          "argument": "The primary contact reached on record might not have received internal notice of an executive-level corporate treasury consolidation or factoring assignment.",
+          "finding_id": "F-callback-out_of",
+          "succeeds": false
+        },
+        {
+          "argument": "The referenced invoice INV-5120 is genuinely open for $56,900.00 within an established 4.1-year commercial relationship, consistent with standard billing activity.",
+          "finding_id": "F-ledger-relati",
+          "succeeds": false
+        },
+        {
+          "argument": "Software changes or outsourced billing services can alter PDF metadata producers, and international character sets can sometimes result from local domain localized configurations.",
+          "finding_id": "F-provenance-artifa",
+          "succeeds": false
+        },
+        {
+          "argument": "A low entity similarity score is expected when payments are legitimately redirected to an overarching holding company, parent entity, or factoring partner like NW Holdings Group.",
+          "finding_id": "F-registry-check-entity",
+          "succeeds": false
+        }
+      ],
+      "strongest_legitimate_explanation": "Ashfield Science Supply Ltd. could theoretically have entered into a third-party treasury consolidation or factoring agreement with NW Holdings Group to manage receivables, utilizing an outsourced accounts receivable platform or external billing service that generated the updated invoice documentation. Under this scenario, the newly registered domain and alternative software producer would represent externalized administrative tooling, while the discrepancy during the callback could stem from internal miscommunication between executive treasury management and the operational contact on record.",
+      "survived": false
+    },
+    "634dd603a9f91428785e7c5cace26f69f247eb5c3d5eaa1a52ab094b9e589d13": {
+      "confidence": 0.85,
+      "reasoning": "Vendor V-9003 has a 7.4-year tenure with $3.96M paid across 163 invoices and zero prior banking changes, making a sudden change anomalous right before a $118,000 payment due in four days. While open invoice INV-6204 is confirmed legitimate, invoice citation alone provides weak proof of authenticity, leaving the relationship baseline inconclusive.",
+      "verdict": "inconclusive"
+    },
+    "66646ec4fd7bc8e6db3d64ef8ca813d5e06f8ede4b15767ec719e8da84833fbe": {
+      "confidence": 0.98,
+      "reasoning": "The change request utilizes a spoofed Reply-To domain containing a Cyrillic homoglyph that was registered just 11 days prior. Furthermore, the PDF producer metadata on the attached document deviates from the vendor's baseline, indicating potential document tampering.",
+      "verdict": "contradicts"
+    },
+    "6a208e63e67b7e6786cc656b0e09a6c7cebdda9165f42af0df2ab258740d9a43": {
+      "confidence": 0.99,
+      "dissenting_findings": [
+        "relationship_baseline"
+      ],
+      "outcome": "BLOCK",
+      "rationale": "Payment change request is confirmed fraudulent. Out-of-band callback to the vendor's verified phone number resulted in an explicit denial of the change. Additionally, forensic analysis detected an 11-day-old spoofed domain utilizing Cyrillic homoglyphs, and the beneficiary matches known fraudulent operation signatures ('Masked Transit')."
+    },
+    "6c694927475d4109b7a1274d1a0fd8ffb9132b6c73aaddf6edd776618ca2948a": {
+      "confidence": 0.99,
+      "dissenting_findings": [],
+      "outcome": "BLOCK",
+      "rationale": "The transaction change request is a confirmed Business Email Compromise attack matching the 'Veiled Route' threat campaign. Technical forensics identified a Cyrillic homoglyph lookalike domain registered 11 days prior, an unverified beneficiary name ('NW Holdings Group') with zero correlation to the vendor, and an explicit denial of the banking change from the vendor's authorized contact during out-of-band verification."
+    },
+    "6de842a8cf73e7c07dfdfcc3491d7a903b8613ecb66bb9e29db4564d4f006a36": {
+      "reasoning": "The legitimate reading completely collapses due to the deliberate use of a Cyrillic homoglyph lookalike domain and explicit denial during the authorized out-of-band callback. These indicators unambiguously confirm an active business email compromise attack matching the 'Veiled Route' threat operation.",
+      "rebuttals": [
+        {
+          "argument": "Threat intelligence matches can occasionally flag shared banking entities or factoring houses, but the exact combination of the beneficiary name, bank, and unicode lookalike domain matches known active campaign signatures.",
+          "finding_id": "F-attribution",
+          "succeeds": false
+        },
+        {
+          "argument": "The primary contact of record could potentially be uninformed about high-level corporate treasury consolidation, but an explicit denial from the authorized number directly invalidates the transaction.",
+          "finding_id": "F-callback-out_of",
+          "succeeds": false
+        },
+        {
+          "argument": "The 4.1-year operational baseline and genuine open invoice INV-5120 demonstrate an active, legitimate vendor engagement rather than a fictitious account.",
+          "finding_id": "F-ledger-relati",
+          "succeeds": true
+        },
+        {
+          "argument": "While changes in PDF software can accompany operational shifts, the use of a Cyrillic homoglyph domain registered 11 days prior is technical proof of deceptive impersonation.",
+          "finding_id": "F-provenance-artifa",
+          "succeeds": false
+        },
+        {
+          "argument": "Name mismatches can occur legitimately when payments are redirected to parent holding companies or factoring agents under treasury consolidation agreements.",
+          "finding_id": "F-registry-check-entity",
+          "succeeds": false
+        }
+      ],
+      "strongest_legitimate_explanation": "Ashfield Science Supply Ltd. may have undergone a corporate acquisition or treasury restructuring, directing receivables to a parent entity named NW Holdings Group at Cascade Union Trust. Under this scenario, an external treasury management partner generated updated payment instructions using generic PDF generation tools, referencing the legitimately open invoice INV-5120.",
+      "survived": false
+    },
+    "7235352768a621314c75b06322f933caec854b9fbd333d99db4a38679c8b0150": {
+      "confidence": 0.85,
+      "reasoning": "Vendor V-9003 has a 7.4-year clean history across 163 paid invoices with zero prior banking changes, making a sudden change notable. While referenced open invoice INV-6204 is valid and due in 8 days, invoice correlation alone does not establish authenticity, leaving the request inconclusive.",
+      "verdict": "inconclusive"
+    },
+    "75c45cee048a64981647668d4bbd62608995da15d9ea08815e657b93f4caa457": {
+      "confidence": 0.9,
+      "reasoning": "The requested account holder name 'NW Holdings Group' bears virtually no similarity to the vendor's registered legal entity 'Ashfield Science Supply Ltd.' with a similarity score of only 0.08. This critical beneficiary mismatch strongly indicates an unauthorized payment redirection attempt and should be halted immediately.",
+      "verdict": "contradicts"
+    },
+    "75e3877a77a9c563734e98133b7ac6646fe52102f556e9998a4a3f46b5c19bff": {
+      "reasoning": "The innocent explanation collapses in the face of deliberate Cyrillic homograph domain spoofing and an explicit denial from the vendor on their verified phone of record. These compounding technical and out-of-band contradictions overwhelmingly confirm an active payment redirection attack.",
+      "rebuttals": [
+        {
+          "argument": "Threat intelligence matches can occasionally flag coincidental similarities when common naming conventions (like 'NW Holdings Group') and regional banks are involved in legitimate M&A consolidation.",
+          "finding_id": "F-attribution-929466",
+          "succeeds": false
+        },
+        {
+          "argument": "The individual reached at the standard operational phone number of record might not have visibility into high-level corporate treasury restructuring or parent company banking consolidation.",
+          "finding_id": "F-callback-out_of",
+          "succeeds": false
+        },
+        {
+          "argument": "A long-standing tenure of 6.2 years without prior changes does not preclude a legitimate, first-time banking update following an acquisition or treasury overhaul.",
+          "finding_id": "F-ledger-relati",
+          "succeeds": true
+        },
+        {
+          "argument": "Domain configuration errors or regional character encoding anomalies could theoretically appear in header parsing during rapid IT migrations.",
+          "finding_id": "F-provenance-artifa",
+          "succeeds": false
+        },
+        {
+          "argument": "Parent holding companies or centralized treasury entities frequently operate under different legal names than their operating subsidiaries.",
+          "finding_id": "F-registry-check-entity",
+          "succeeds": false
+        }
+      ],
+      "strongest_legitimate_explanation": "Northwind Student Transport LLC may have undergone an acquisition or corporate restructuring under a parent entity, NW Holdings Group, which is consolidating treasury operations and banking across its portfolio. Under this scenario, the newly registered domain could theoretically be an external communications portal provisioned by the parent entity, and the dispatch/operations contact at the local phone of record may simply have been uninformed about executive-level treasury restructuring.",
+      "survived": false
+    },
+    "7a46454e5906dba04476287a7fd38c24fa52f49f1649948eeea12f702fa77071": {
+      "confidence": 0.85,
+      "reasoning": "Vendor V-9001 has a 6.2-year clean payment history across 212 invoices with zero prior banking changes, making a sudden update request notable. While open invoice INV-4471 is genuine, valid invoice details are weak proof of authenticity and baseline history alone cannot confirm legitimacy without out-of-band verification.",
+      "verdict": "inconclusive"
+    },
+    "7f7ffe5df5eeccb5de7cdaf7df3f230e968b0f157ef3d1fea315c9938a2c2561": {
+      "reasoning": "Shadow Transit specifically positions itself against high-value service contractors such as facilities maintenance providers where large recurring invoices make banking change requests plausible. We recommend freezing PAY-9001 for secondary verification while releasing the remaining scheduled payments that fall outside this specific operational profile.",
+      "swept_but_cleared": [
+        "PAY-9008",
+        "PAY-9010",
+        "PAY-9009",
+        "PAY-9005",
+        "PAY-8821",
+        "PAY-9000",
+        "PAY-9007",
+        "PAY-8822",
+        "PAY-9006",
+        "PAY-9002",
+        "PAY-9004"
+      ],
+      "targets": [
+        {
+          "payment_id": "PAY-9001",
+          "reason": "Lowry Custodial Supply Co. matches the dossier's identified target profile as a high-value facilities maintenance contractor scheduled for a major $220,000 disbursement.",
+          "risk": "high"
+        }
+      ]
+    },
+    "81866263eda5c610815cbd291c4abc449afc269f289766a1deacfbb4b53391c1": {
+      "confidence": 0.95,
+      "reasoning": "The inbound request originates directly from the vendor's legitimate, established domain of 2,701 days with no reply-to divergence or lookalike indicators. No document anomalies or thread-hijacking markers were detected in the request artifact.",
+      "verdict": "supports"
+    },
+    "8aaaf6c06059fa60c3dd1a77b34bd195d7f2b95f25fd1dbadba710a4f9ef79dd": {
+      "confidence": 0.95,
+      "reasoning": "This request exhibits the distinct tradecraft of the 'Veiled Route' operation, including an identical fraudulent beneficiary name ('NW Holdings Group') and a homoglyph-spoofed reply domain using a Cyrillic character. Do not update payment records or disburse funds, as this request is confirmed fraud attempting to divert vendor payments.",
+      "same_operator": true,
+      "verdict": "contradicts"
+    },
+    "919cb8c3f30869a626be5fa7e8a468fecd76a7bcb0a288478610ea24365fa598": {
+      "reasoning": "The legitimate reading fails because the communication originated from a freshly registered Cyrillic homoglyph domain designed to impersonate the vendor, and the vendor's verified contact explicitly denied the request. These technical forensic markers and direct denial conclusively prove an active business email compromise attempt.",
+      "rebuttals": [
+        {
+          "argument": "Shared threat exchange indicators might coincidentally match common holding company naming conventions or shared infrastructure patterns across unrelated commercial entities.",
+          "finding_id": "F-attribution-9BDE6D",
+          "succeeds": false
+        },
+        {
+          "argument": "The individual answering the primary vendor contact phone on record may have been an operational staff member unaware of recent executive-level treasury and banking migrations.",
+          "finding_id": "F-callback-out_of",
+          "succeeds": false
+        },
+        {
+          "argument": "A 5.4-year history with zero prior changes simply reflects account stability, and any long-standing vendor must eventually update banking details when undertaking corporate restructuring.",
+          "finding_id": "F-ledger-relati",
+          "succeeds": true
+        },
+        {
+          "argument": "Technical email routing misconfigurations or third-party billing portal migrations could introduce alternate domain aliases during transitional corporate IT integration.",
+          "finding_id": "F-provenance-artifa",
+          "succeeds": false
+        },
+        {
+          "argument": "Mismatches between the operating trade name and the beneficiary account name regularly occur when operating subsidiaries disburse through centralized holding company accounts.",
+          "finding_id": "F-registry-check-entity",
+          "succeeds": false
+        }
+      ],
+      "strongest_legitimate_explanation": "Tidewater School Nutrition LLC could have been acquired by or merged into NW Holdings Group as part of a corporate restructuring, leading to a centralized treasury consolidation where payments are routed to the parent entity's banking account against active open invoices like INV-3101.",
+      "survived": false
+    },
+    "92a0a1d33c76341034c989cc6ecc927fb9b750c4830b49a9162b2d1d7c6f1e1e": {
+      "confidence": 0.85,
+      "reasoning": "While the vendor has a 4.1-year clean payment history and correctly references an open $56,900.00 invoice, a first-time banking change on a long-standing account is a notable shift that requires independent verification. Because fraudsters frequently cite legitimate open invoices, the ERP relationship data alone cannot confirm authenticity.",
+      "verdict": "inconclusive"
+    },
+    "9701d79c8f79b3205761e4624901941565c4b7a42aca20fcb1015630cc7b13d9": {
+      "reasoning": "Veiled Route targets large scheduled disbursements to long-tenured facilities maintenance contractors by attempting invoice hijacking through lookalike domains. We recommend freezing and performing direct outbound verification on these top facilities payments while allowing standard educational, equipment, and supply disbursements to proceed.",
+      "swept_but_cleared": [
+        "PAY-9008",
+        "PAY-9010",
+        "PAY-9009",
+        "PAY-9005",
+        "PAY-8821",
+        "PAY-9000",
+        "PAY-9007",
+        "PAY-8822",
+        "PAY-9006",
+        "PAY-8811",
+        "PAY-9002",
+        "PAY-9004",
+        "PAY-8812"
+      ],
+      "targets": [
+        {
+          "payment_id": "PAY-9003",
+          "reason": "Matches the operation's target profile as a high-exposure facilities maintenance contractor with long tenure and no prior banking changes.",
+          "risk": "high"
+        },
+        {
+          "payment_id": "PAY-9001",
+          "reason": "Represents a high-dollar custodial and facilities vendor with an established, previously unchanged payment record.",
+          "risk": "high"
+        },
+        {
+          "payment_id": "PAY-9011",
+          "reason": "Fits the profile of a major facilities electrical contracting provider with significant scheduled exposure and long-standing tenure.",
+          "risk": "high"
+        }
+      ]
+    },
+    "9ac183305b02050887c049c7a3534bd92b9e0e8203fd800004e10bbd406ec983": {
+      "reasoning": "Operation Shadow Transit focuses on high-value facilities maintenance contractors whose large invoice amounts make banking change requests plausible. We recommend placing an immediate hold on Wrenfield HVAC Systems LLC for independent out-of-band verification while allowing lower-exposure and non-maintenance vendor payments to proceed.",
+      "swept_but_cleared": [
+        "PAY-6031",
+        "PAY-6051",
+        "PAY-6011",
+        "PAY-6021"
+      ],
+      "targets": [
+        {
+          "payment_id": "PAY-6041",
+          "reason": "Matches the dossier profile targeting high-value facilities maintenance service contractors with substantial recurring payment amounts.",
+          "risk": "high"
+        }
+      ]
+    },
+    "9b3fb72c262f8f70703684475e910d333edf2be4d88a1a21cabca834b91b956c": {
+      "confidence": 1.0,
+      "dissenting_findings": [],
+      "outcome": "BLOCK",
+      "rationale": "This request is a confirmed Business Email Compromise (BEC) and payment diversion attempt associated with the 'Veiled Route' operation. The change request originated via a 6-day-old Cyrillic homoglyph domain impersonating the vendor, diverted funds to an unrelated entity ('NW Holdings Group'), and was explicitly denied by the vendor during an out-of-band callback to verified records."
+    },
+    "9c8d5a63e39c976efe4a1d59a6e33092316b54d873ea62b0f4e1f48fb77d40bd": {
+      "confidence": 0.85,
+      "reasoning": "While referenced open invoice INV-6204 is valid, the vendor's 7.4-year history with zero prior banking changes makes a sudden account update notable. Because open invoice details are weak evidence of authenticity, relationship history alone cannot confirm legitimacy and requires out-of-band verification.",
+      "verdict": "inconclusive"
+    },
+    "9f909ae2292f7a49f10da81701e12eb78b4ab11368ebdb8a35ae48bc6338b05b": {
+      "confidence": 1.0,
+      "dissenting_findings": [],
+      "outcome": "BLOCK",
+      "rationale": "Clear Business Email Compromise (BEC) attack confirmed by an explicit out-of-band vendor denial, domain spoofing via a newly registered Cyrillic homograph in the Reply-To header, and an unverified beneficiary mismatch."
+    },
+    "a4d97a7a4492422e541a16266bd2d505c196bd48aa926e5cd1f7c98e60718f37": {
+      "confidence": 1.0,
+      "reasoning": "The request supplied an unverified phone number rather than the system of record contact, and the out-of-band callback to the authorized vendor number resulted in a denial. This indicates the change request is fraudulent and must be stopped.",
+      "verdict": "contradicts"
+    },
+    "a62ed88ac8afd7c50fd7e96d3c78fd3310353bd8c1136926f1cc16f49997f10a": {
+      "confidence": 0.95,
+      "reasoning": "This payment change request exhibits the exact tradecraft of the Shadow Transit operation, including an identical beneficiary name ('NW Holdings Group') and a 6-day-old unicode lookalike domain. Do not approve these banking changes or disburse funds, as this is an active vendor impersonation attempt.",
+      "same_operator": true,
+      "verdict": "contradicts"
+    },
+    "a7f1e0ba76bf7631272f2a69518bb78fd672f78a08025826eac85c6766b8524c": {
+      "reasoning": "False Transit specifically targets high-value facilities and recurring service providers by exploiting predictable disbursement cycles and requesting urgent banking updates. We recommend holding disbursements for these top facilities contractors pending out-of-band phone verification using official contact numbers already on file.",
+      "swept_but_cleared": [
+        "PAY-9008",
+        "PAY-9010",
+        "PAY-9009",
+        "PAY-9005",
+        "PAY-8821",
+        "PAY-9000",
+        "PAY-9007",
+        "PAY-8822",
+        "PAY-9006",
+        "PAY-8811",
+        "PAY-9002",
+        "PAY-9004",
+        "PAY-8812"
+      ],
+      "targets": [
+        {
+          "payment_id": "PAY-9001",
+          "reason": "Matches the profile of a high-value recurring facilities/custodial provider with long tenure and zero prior banking changes targeted for urgent account diversion.",
+          "risk": "high"
+        },
+        {
+          "payment_id": "PAY-9003",
+          "reason": "Represents a high-value facilities infrastructure payment to an established vendor with no historical banking changes, aligning with the operator's preferred target profile.",
+          "risk": "high"
+        },
+        {
+          "payment_id": "PAY-9011",
+          "reason": "Involves a substantial six-figure facilities contracting disbursement to a long-tenured vendor vulnerable to lookalike domain invoice redirection.",
+          "risk": "medium"
+        }
+      ]
+    },
+    "a8fb947da7c9fca76783afd7b7b238f67ab82e7b04647f40c22ce634e5447b61": {
+      "confidence": 1.0,
+      "reasoning": "The vendor explicitly denied authorizing the payee detail change when contacted at their phone number of record. Additionally, the request attempted to supply a different, unverified phone number, confirming the request is fraudulent.",
+      "verdict": "contradicts"
+    },
+    "aaa0249a5b6f7364a834ad712c11e5d14f31c4b8249835b7558d34130fea8254": {
+      "confidence": 1.0,
+      "reasoning": "Out-of-band callback to the official system-of-record phone number successfully confirmed the payee-detail change request. The evidence indicates the request is genuine and safe for payment processing.",
+      "verdict": "supports"
+    },
+    "adeb25ffbbca513333de71ff2b1d82dd66c2dbdd5a6b7b2951ac1a6bcc1a501e": {
+      "confidence": 0.98,
+      "dissenting_findings": [
+        "relationship_baseline"
+      ],
+      "outcome": "RELEASE",
+      "rationale": "The payee detail update has been authenticated through an out-of-band callback using the official system-of-record phone number. Furthermore, the receiving account name matches the vendor's legal entity name exactly (1.0 score) within the appropriate jurisdiction. The lack of prior banking changes over 7.4 years is sufficiently mitigated by these strong direct verifications."
+    },
+    "b120477e2081ef068b0bdd81ffca34e898d93583fa1b05ef008ff2995ce504e6": {
+      "confidence": 0.9,
+      "dissenting_findings": [
+        "entity_attestation"
+      ],
+      "outcome": "ESCALATE",
+      "rationale": "Vendor V-9003 has submitted a first-time bank detail change after 7.4 years and 163 paid invoices, ahead of an upcoming disbursement with $186,000.00 total exposure. While the new account matches the vendor's legal entity name perfectly (entity_attestation), the mandatory out-of-band phone confirmation was unanswered. Because silence cannot verify bank account alterations, human verification is required to complete out-of-band confirmation with a verified vendor contact before funds are released."
+    },
+    "b1498a1a3fd81c8d84ecf676d4850d53988d9fe60ab7bd19ae340e63853394de": {
+      "confidence": 0.98,
+      "reasoning": "This request matches the previously blocked 'Shadow Transit' operation, utilizing a deceptive unicode-lookalike domain registered 11 days ago to divert funds to NW Holdings Group at Cascade Union Trust. Do not approve this payment change or use the provided contact details, as it is a confirmed impersonation attack.",
+      "same_operator": true,
+      "verdict": "contradicts"
+    },
+    "b6bc6e0e9812b716b0c6d7a5358e08715dda4f9a42d312e1e90c003069fc95f5": {
+      "confidence": 0.98,
+      "dissenting_findings": [
+        "relationship_baseline"
+      ],
+      "outcome": "RELEASE",
+      "rationale": "The banking detail change is fully authenticated through an out-of-band phone verification using the official number of record. In addition, the destination account holder name is an exact match (1.0 similarity) to the registered corporate legal entity in the vendor's home jurisdiction. The long-standing 7.4-year history with no prior changes is consistent with corporate restructuring/treasury consolidation."
+    },
+    "b86347497759cf6a0e93ecfed3e9cf188f8c4cf3fedb1a08c4f3bf84cc1f3603": {
+      "confidence": 0.85,
+      "reasoning": "While the referenced $150,000 open invoice is valid, a sudden banking change after a 6.2-year relationship with zero prior account updates presents significant risk. Because invoice details are easily intercepted by attackers and no out-of-band verification is recorded, the legitimacy of this request cannot be determined without independent confirmation.",
+      "verdict": "inconclusive"
+    },
+    "b92e147ca916a60966fe670ae75d68392441ef3c8ea0f38a9d0c6b6f810239ae": {
+      "reasoning": "The legitimate explanation collapses under the combination of an active Cyrillic homograph spoofed domain and an explicit denial from the vendor on their verified phone of record. There is no plausible innocent basis for homograph deception paired with an unauthorized bank change request.",
+      "rebuttals": [
+        {
+          "argument": "Threat intelligence signature overlaps can sometimes represent coincidence when common corporate holding names are used across unrelated business acquisitions.",
+          "finding_id": "F-attribution-731C8B",
+          "succeeds": false
+        },
+        {
+          "argument": "The primary contact reached on record might not yet have been briefed on an executive-level restructuring or newly implemented treasury consolidation.",
+          "finding_id": "F-callback-872707",
+          "succeeds": false
+        },
+        {
+          "argument": "A vendor operating for over five years with zero prior changes may eventually need a modern treasury consolidation, and referencing an authentic open invoice demonstrates awareness of actual account activity.",
+          "finding_id": "F-ledger-7ea902",
+          "succeeds": false
+        },
+        {
+          "argument": "Domain registration timing could correspond to recent re-branding or operational setup, though unicode homograph spoofing cannot be explained by legitimate business configuration.",
+          "finding_id": "F-provenance-ba0d11",
+          "succeeds": false
+        },
+        {
+          "argument": "Beneficiary name discrepancies frequently occur when operational entities route receivables through parent holding entities or third-party factoring services.",
+          "finding_id": "F-registry-check-536b45",
+          "succeeds": false
+        }
+      ],
+      "strongest_legitimate_explanation": "Tidewater School Nutrition LLC could theoretically have undergone a corporate acquisition or entered a centralized treasury management agreement under parent company NW Holdings Group, with the transition managed by an external integration team that recently established new communication infrastructure and referenced legitimate outstanding invoice INV-3101.",
+      "survived": false
+    },
+    "b9ae2ad3128f348f36fd6e6c80d8c3a50ec687063f7f815241aedcfdf2c5812d": {
+      "confidence": 0.95,
+      "reasoning": "The proposed account holder name 'NW Holdings Group' shows a severe mismatch with the vendor's registered legal entity 'Tidewater School Nutrition LLC' (similarity 0.0714). This beneficiary mismatch is a critical indicator of an unauthorized payment redirection attempt.",
+      "verdict": "contradicts"
+    },
+    "ba552b700c2ebee3ac8685947cd4f47a7b495aa51f1cc8045cadc7d4aa9d900a": {
+      "confidence": 1.0,
+      "reasoning": "An out-of-band callback to the vendor's official phone number on record was explicitly denied, and the change request improperly supplied a different contact number. This confirms the change request is fraudulent and payee details must not be updated.",
+      "verdict": "contradicts"
+    },
+    "bf4c90318068c037bfb5dfd094785224768797a7c639b59eb88e1b8ec7667702": {
+      "reasoning": "The beneficiary account perfectly matches the vendor's legal corporate entity name in their standard operating jurisdiction, providing strong evidence against payee redirection fraud. In the absence of any affirmative indicators of compromise, the legitimate corporate banking migration explanation is highly plausible.",
+      "rebuttals": [
+        {
+          "argument": "An unanswered phone call indicates temporary unavailability of accounting personnel, not a fraudulent compromise or repudiation of the change request.",
+          "finding_id": "F-callback-220d00",
+          "succeeds": true
+        },
+        {
+          "argument": "A first-time banking update after seven years reflects normal corporate treasury evolution, and vendors routinely submit updated payment instructions in conjunction with active pending invoices to ensure disbursements route to their new commercial facility.",
+          "finding_id": "F-ledger-3e03e6",
+          "succeeds": true
+        },
+        {
+          "argument": "This finding directly affirms legitimacy by proving an exact 1.0 legal entity name match and jurisdiction alignment, confirming that funds are directed to the actual vendor rather than an unauthorized third party.",
+          "finding_id": "F-registry-check-35f11a",
+          "succeeds": true
+        }
+      ],
+      "strongest_legitimate_explanation": "Kestrel Athletic Equipment Inc. is an established corporate partner with over seven years of continuous business and 163 successfully paid invoices. The new banking details are registered in the exact legal corporate name of the vendor ('Kestrel Athletic Equipment Inc.') within the appropriate domestic jurisdiction, completely ruling out typical third-party account diversion or mule routing. Routine treasury consolidations, commercial bank migrations, or corporate line-of-credit restructuring happen periodically over long vendor lifecycles, and initiating updates prior to an upcoming disbursement (INV-6204 for $118,000) is standard commercial practice to ensure cash flow continuity. A single unanswered callback is merely an operational non-response rather than evidence of compromise.",
+      "survived": true
+    },
+    "bfdc703f9cd7c2ba1e4269ba08161749993a1af0f075caddff958246d026fe14": {
+      "reasoning": "The legitimate reading fails because the vendor explicitly denied authorizing the banking change during direct out-of-band verification on their registered phone number. Furthermore, the active use of a 6-day-old Cyrillic homograph lookalike domain decisively demonstrates deceptive intent rather than an authorized administrative migration.",
+      "rebuttals": [
+        {
+          "argument": "Threat exchange attribution patterns can produce false positives if legitimate corporate holding groups share similar names or standard treasury management practices across regional acquisitions.",
+          "finding_id": "F-attribution",
+          "succeeds": false
+        },
+        {
+          "argument": "The primary contact reached on record might be an operational contact uninformed about an executive-level corporate treasury consolidation or banking migration.",
+          "finding_id": "F-callback-out_of",
+          "succeeds": false
+        },
+        {
+          "argument": "The long-standing 5.4-year relationship with zero previous changes and a legitimate open invoice demonstrates an active commercial relationship where a rare corporate banking restructuring could plausibly occur.",
+          "finding_id": "F-ledger-relati",
+          "succeeds": true
+        },
+        {
+          "argument": "A newly registered communication domain could theoretically represent an outsourced notification service or recent rebranding channel.",
+          "finding_id": "F-provenance-artifa",
+          "succeeds": false
+        },
+        {
+          "argument": "Parent holding companies or centralized treasury vehicles frequently operate under distinct legal entity names from operating subsidiaries.",
+          "finding_id": "F-registry-check-entity",
+          "succeeds": false
+        }
+      ],
+      "strongest_legitimate_explanation": "A potential innocent explanation would be that Tidewater School Nutrition LLC was recently acquired by or entered into a centralized treasury/factoring agreement with a parent entity named 'NW Holdings Group', prompting an update to banking details for open invoice INV-3101. Under this scenario, technical misconfigurations or a third-party treasury migration service might have sent notifications from an alternate domain or regional contact desk, while the operational staff reached via the baseline contact phone were unaware of the recent corporate restructuring.",
+      "survived": false
+    },
+    "c1d1a2f773d0bce8d100f9aba3922e66064955feb19e6f92cb838b98db8e1630": {
+      "confidence": 1.0,
+      "dissenting_findings": [],
+      "outcome": "BLOCK",
+      "rationale": "This request is a confirmed Business Email Compromise (BEC) attack matching the known 'Veiled Route' threat campaign. Technical evidence shows a reply-to domain registered 11 days ago with a Cyrillic homoglyph substitution, a severe entity mismatch (NW Holdings Group vs. Ashfield Science Supply Ltd.), and an explicit out-of-band denial from the authorized vendor contact of record."
+    },
+    "c596bdd59baec072f077173f8c827a313bf89ac041584cf2b34d7d4522b57ad2": {
+      "reasoning": "The innocent explanation fails because the use of a Cyrillic homoglyph lookalike domain and an explicit denial during out-of-band verification on the number of record are irreconcilable with legitimate treasury operations. These forensic indicators, combined with a direct match to a known impersonation campaign, confirm the request is fraudulent.",
+      "rebuttals": [
+        {
+          "argument": "The match to 'Shadow Transit' could theoretically be a false pattern match if NW Holdings Group operates as a legitimate third-party factoring firm representing multiple independent vendors.",
+          "finding_id": "F-attribution-835606",
+          "succeeds": false
+        },
+        {
+          "argument": "The primary contact reached on the vendor's main line might not yet have been briefed on an executive-level treasury transition or factoring arrangement.",
+          "finding_id": "F-callback-edf137",
+          "succeeds": false
+        },
+        {
+          "argument": "The presence of an active 4.1-year relationship and an exact match to genuine open invoice INV-5120 demonstrates legitimate commercial context rather than unsolicited fraud.",
+          "finding_id": "F-ledger-f3073e",
+          "succeeds": true
+        },
+        {
+          "argument": "Third-party billing agents often use different PDF generation tools such as iText, and corporate rebrandings or portal migrations can involve newly registered domains.",
+          "finding_id": "F-provenance-23c302",
+          "succeeds": false
+        },
+        {
+          "argument": "Parent companies, factoring entities, or treasury management partners often maintain bank accounts under names distinct from the operating subsidiary.",
+          "finding_id": "F-registry-check-36d4b6",
+          "succeeds": false
+        }
+      ],
+      "strongest_legitimate_explanation": "Ashfield Science Supply Ltd. could theoretically be undergoing a corporate restructuring or factoring agreement transferring receivables management to NW Holdings Group as part of a treasury consolidation. Under this scenario, a newly contracted third-party accounts receivable service generated the request documentation and referenced the legitimate open invoice INV-5120.",
+      "survived": false
+    },
+    "c8022d6004e0ec4ba3e014aa67992464e25ee08e03316506ebf344eedd99f4d1": {
+      "reasoning": "The legitimate reading completely collapses in the face of an explicit denial from the verified contact of record alongside active Cyrillic domain spoofing matching a known threat actor. The evidence conclusively demonstrates an active payment redirection attack rather than a genuine treasury consolidation.",
+      "rebuttals": [
+        {
+          "argument": "Threat actor signatures can occasionally trigger false correlations if a legitimate parent entity happens to share a common naming convention or bank, but the identical match across beneficiary name, bank, and homoglyph attack technique cannot be plausibly dismissed as coincidence.",
+          "finding_id": "F-attribution-81F068",
+          "succeeds": false
+        },
+        {
+          "argument": "An operational contact answering the main phone line might not yet be briefed on high-level treasury reorganization decisions; however, an explicit out-of-band denial from the verified contact of record directly repudiates the change request.",
+          "finding_id": "F-callback-b63f08",
+          "succeeds": false
+        },
+        {
+          "argument": "A long-standing 6.2-year relationship with zero prior banking changes does not make future legitimate treasury updates impossible, as corporate banking migrations eventually occur in any enterprise lifecycle.",
+          "finding_id": "F-ledger-407a77",
+          "succeeds": false
+        },
+        {
+          "argument": "There is no valid business or technical justification for an authentic vendor to send payment instructions via a newly registered domain utilizing Cyrillic homoglyph character spoofing.",
+          "finding_id": "F-provenance-399a22",
+          "succeeds": false
+        },
+        {
+          "argument": "Operating subsidiaries often route receivables to parent holding entities like 'NW Holdings Group' during treasury consolidations, but without corroborating legal documentation or authorization, the severe mismatch remains an unverified risk.",
+          "finding_id": "F-registry-check-4c6796",
+          "succeeds": false
+        }
+      ],
+      "strongest_legitimate_explanation": "Northwind Student Transport LLC could theoretically have undergone a corporate restructuring or acquisition under a parent entity named NW Holdings Group, with the parent company consolidating treasury operations into a single central bank account at Cascade Union Trust. Under this hypothesis, the open invoice INV-4471 is an authentic receivable, and the new banking details were intended to reflect the updated centralized corporate cash management structure.",
+      "survived": false
+    },
+    "c8ef282a69f0d2445c201c801781ed178f5466af7dec16dab92b3ab86b52e390": {
+      "confidence": 1.0,
+      "reasoning": "The out-of-band callback to the vendor's phone number of record went unanswered. Because silence cannot be taken as confirmation, the payee-detail change request remains unverified and inconclusive.",
+      "verdict": "inconclusive"
+    },
+    "ca8dae3a55b738b234587929716eed3c8903f628863e6e54894031ae00e2c1db": {
+      "reasoning": "The new account is verified to be in the exact legal name of the vendor within their domestic operating jurisdiction, making external fraud highly improbable. With no positive fraud indicators and the callback merely unanswered, the legitimate treasury migration explanation is at least as plausible as the fraud hypothesis.",
+      "rebuttals": [
+        {
+          "argument": "An unanswered phone call represents an absence of immediate contact rather than evidence of fraud or unauthorized activity. Accounting and finance teams frequently miss unscheduled inbound calls due to meetings or operational duties.",
+          "finding_id": "F-callback-out_of",
+          "succeeds": true
+        },
+        {
+          "argument": "While a banking change after 7.4 years is rare for this vendor, corporate treasury changes periodically occur, and submitting updated banking details ahead of a substantial upcoming payment cycle is standard business practice to avoid payment failure on legacy accounts.",
+          "finding_id": "F-ledger-relati",
+          "succeeds": true
+        },
+        {
+          "argument": "This finding affirmatively supports legitimacy, verifying an exact 1.0 match between the proposed account holder name and the registered legal entity, located in the vendor's domestic US operating jurisdiction.",
+          "finding_id": "F-registry-check-entity",
+          "succeeds": true
+        }
+      ],
+      "strongest_legitimate_explanation": "Kestrel Athletic Equipment Inc. is conducting a standard treasury management or banking partner migration after more than seven years of operations. The new account is titled in the exact legal entity name of the vendor within its domestic US jurisdiction, which strongly aligns with an authorized corporate account rather than an illicit redirection. The timing aligns naturally with ensuring that the upcoming $118,000 disbursement for legitimate open invoice INV-6204 is routed to their active operating account, and the missed callback simply reflects standard unavailability of accounting staff rather than account compromise.",
+      "survived": true
+    },
+    "cacfe91e323f5ef792d2343a2240d59a6198dd6aa3959ff23fe0ce9c4254b309": {
+      "reasoning": "Veiled Route actively targets high-exposure facilities maintenance vendors with established static banking records where large routine invoices can be plausibly diverted under the guise of restructuring. Freezing PAY-9008 safeguards this $195,000 window supply disbursement against imminent lookalike impersonation while allowing unrelated non-facilities payments to proceed without disruption.",
+      "swept_but_cleared": [
+        "PAY-9010",
+        "PAY-9009",
+        "PAY-9005",
+        "PAY-8821",
+        "PAY-9000",
+        "PAY-9007",
+        "PAY-8822",
+        "PAY-9006",
+        "PAY-9002",
+        "PAY-9004"
+      ],
+      "targets": [
+        {
+          "payment_id": "PAY-9008",
+          "reason": "High-value facilities maintenance disbursement on a long-tenured vendor with no prior banking changes, directly fitting Veiled Route's profile for intercepting major contractor payments.",
+          "risk": "high"
+        }
+      ]
+    },
+    "cf1f5021bacfd4be447c2c05e8e478205e517a43139f1daa3d0bb3939bc57442": {
+      "confidence": 1.0,
+      "reasoning": "The vendor explicitly denied submitting a payee-detail change request during the out-of-band verification call to their system-of-record contact number. Furthermore, the request attempted to divert verification by supplying an unauthorized phone number, indicating a fraudulent request.",
+      "verdict": "contradicts"
+    },
+    "cf99c779143612e22bdb081c8ea216193d635d9b3cdda3e5adb50e74c3c8619b": {
+      "confidence": 0.98,
+      "reasoning": "This payment change request matches the known 'Veiled Route' operation, reusing the identical 'NW Holdings Group' beneficiary name, receiving bank, and a spoofed domain utilizing a Cyrillic character substitution. Reject this modification and contact the vendor directly using the verified phone number on file rather than the contact details provided in the submission.",
+      "same_operator": true,
+      "verdict": "contradicts"
+    },
+    "d22af00ffcdc2f95f15f19719f91a4f3592b8abe344f39bf804dbcb52a798abf": {
+      "assessment": "This operation targets long-standing district contractors by sending payment change requests from deceptively spoofed email addresses that use visually identical foreign characters. The attacker cites real, active invoice details to appear legitimate while attempting to divert funds to an unrelated corporate bank account.",
+      "confidence": 0.55,
+      "designation": "Masked Transit",
+      "indicators": [
+        "Reply-to email addresses that contain hidden character swaps or slightly mismatched web domains",
+        "Vendor domain names that were registered only a few days or weeks prior to the request",
+        "Contact phone numbers on payment update forms that differ from the official vendor record",
+        "Bank account holder names that do not match the vendor's legal business name exactly"
+      ],
+      "likely_next_target": "The operator will likely target another essential service provider with large recurring invoices, such as a facility maintenance or food service contractor, where routine six-figure payments make high-value redirections lucrative.",
+      "tradecraft": [
+        "Registering look-alike email domains using foreign characters that visually mimic real vendor names",
+        "Referencing valid open invoice numbers to build false credibility",
+        "Providing fake phone numbers on request forms to intercept verification calls",
+        "Directing funds to secondary holding accounts with names that vaguely resemble the genuine vendor"
+      ]
+    },
+    "d3836670033bd0c5228f61fef0de601b658cb05648feb470fcb177fa7b24047b": {
+      "assessment": "This operation attempts to divert large district vendor payments by impersonating established contractors through deceptive lookalike email domains. It stands out by using valid open invoice numbers to appear legitimate while embedding subtle letter-swaps in reply addresses and offering fake phone numbers to bypass standard administrative checks.",
+      "confidence": 0.35,
+      "designation": "Shadow Transit",
+      "indicators": [
+        "The Reply-To email address differs from the sender domain or uses lookalike characters",
+        "The phone number provided on the change request does not match the vendor directory phone number on file",
+        "The domain name used in the communication was registered very recently",
+        "The proposed bank account holder name does not match the vendor's registered legal entity name"
+      ],
+      "likely_next_target": "The operator is likely to target high-value service contractors, such as student transportation or facilities maintenance providers, because their large and recurring invoice amounts make routine treasury or banking updates appear plausible.",
+      "tradecraft": [
+        "Registering domain names using visually identical foreign characters",
+        "Citing legitimate pending invoice numbers to build trust",
+        "Supplying attacker-controlled phone numbers on change requests",
+        "Directing payments to generic holding company bank accounts"
+      ]
+    },
+    "d4c45e280dedc421e5c8190178af2b5cfddae3ea69ddd1d23c12fd06a05058d6": {
+      "confidence": 0.95,
+      "reasoning": "This request matches the known 'Veiled Route' operation by using an identical beneficiary name ('NW Holdings Group') alongside a 6-day-old unicode confusable lookalike domain targeting Tidewater Nutrition. District staff should immediately reject this payment change and verify all vendor communications using the established contact details on file.",
+      "same_operator": true,
+      "verdict": "contradicts"
+    },
+    "d6af3b5674437f45a3608450625cca324a13c7d3e7922d52aa83cb12fe00151a": {
+      "confidence": 0.98,
+      "reasoning": "This request matches the known 'Veiled Route' operation by pairing an 11-day-old lookalike domain containing a Unicode confusable character with the identical beneficiary name and bank previously used in blocked attacks. Do not process this update, and initiate out-of-band verification using the vendor's established contact information on file.",
+      "same_operator": true,
+      "verdict": "contradicts"
+    },
+    "d829cbfc3a2ebce6e77a2f54d6a9ab8988e150618442ddd31625682af3b655bc": {
+      "reasoning": "The innocent explanation completely collapses under forensic evidence of a deliberate Cyrillic homoglyph domain spoof and an explicit denial from the vendor on their verified number of record. The request is an active, confirmed payment hijacking attempt and must remain blocked.",
+      "rebuttals": [
+        {
+          "argument": "Regional holding companies and banks could share similar naming conventions and banking relationships by coincidence during corporate consolidations; however, matching the exact threat actor profile, registration window, and homoglyph tradecraft of 'Veiled Route' cannot be explained innocently.",
+          "finding_id": "F-attribution-1B7C38",
+          "succeeds": false
+        },
+        {
+          "argument": "The individual answering the historical operational number of record might not have been briefed on executive treasury decisions; however, an explicit denial from the verified vendor contact directly refutes authorization.",
+          "finding_id": "F-callback-out_of",
+          "succeeds": false
+        },
+        {
+          "argument": "The presence of a legitimate open invoice for $150,000 and 6.2 years of consistent relationship shows real business activity; however, possessing legitimate invoice details is standard in payment interception schemes and does not validate the new banking details.",
+          "finding_id": "F-ledger-relati",
+          "succeeds": false
+        },
+        {
+          "argument": "While corporate rebranding or IT migrations can introduce new domains, the deliberate use of a Cyrillic homoglyph character in the Reply-To header serves exclusively to deceive recipients and has no legitimate administrative function.",
+          "finding_id": "F-provenance-artifa",
+          "succeeds": false
+        },
+        {
+          "argument": "Parent holding companies frequently operate under different legal names than operating subsidiaries during treasury consolidations; however, without documented corporate authorization or verified linkage, the severe mismatch indicates unauthorized redirection.",
+          "finding_id": "F-registry-check-entity",
+          "succeeds": false
+        }
+      ],
+      "strongest_legitimate_explanation": "Northwind Student Transport LLC may have undergone a corporate restructuring or acquisition by a parent entity, NW Holdings Group, prompting a legitimate treasury consolidation that directs invoice payments to a centralized holding account at Cascade Union Trust. Under this scenario, the newly registered communication domain could have been part of an IT/administrative transition, and the local operational contact reached on the historical phone number may simply have been uninformed about executive-level treasury changes.",
+      "survived": false
+    },
+    "da300f0c978b66da85a50e8a3412ef1d481d5243d54aca1ecea3cc1d8215f1f5": {
+      "confidence": 1.0,
+      "dissenting_findings": [],
+      "outcome": "BLOCK",
+      "rationale": "Payment detail update request is a confirmed fraud attempt matching the 'Veiled Route' threat group. Artifact forensics detected a newly registered spoofed domain utilizing Cyrillic homoglyphs in the Reply-To header. Furthermore, an out-of-band callback to the vendor's verified phone number of record resulted in an explicit denial of the requested banking changes."
+    },
+    "def39efbe4262b78dc94557bc58bb1fe426eaa0d9319ef7bd91cb66b3a3cace3": {
+      "confidence": 0.99,
+      "dissenting_findings": [],
+      "outcome": "BLOCK",
+      "rationale": "Multiple definitive indicators establish this request as an active payment redirection attack. Key evidence includes explicit denial during out-of-band callback verification to the vendor of record, technical forensics showing an email domain using Cyrillic homoglyph characters registered just six days prior, an extreme mismatch between the vendor name and new beneficiary ('NW Holdings Group'), and direct attribution matching known threat actor infrastructure. The adversarial challenge failed entirely to substantiate any legitimate explanation."
+    },
+    "e3248eb3ed8e0ebab8b212ad3da9acaa6d7b0e9e0bcff5b3cebda643f0852b06": {
+      "reasoning": "The combination of an explicit denial during an out-of-band callback and active domain spoofing via a Cyrillic homograph registered 11 days prior confirms malicious impersonation. The legitimate explanation cannot overcome clear technical evidence of business email compromise.",
+      "rebuttals": [
+        {
+          "argument": "The individual answering the legacy contact number might be a frontline staff member unaware of corporate treasury changes initiated by executive leadership or parent company management.",
+          "finding_id": "F-callback-e8dfce",
+          "succeeds": false
+        },
+        {
+          "argument": "A long-standing tenure without previous banking changes is standard for stable vendors, and an initial treasury consolidation naturally represents a first-time account modification.",
+          "finding_id": "F-ledger-553dd6",
+          "succeeds": true
+        },
+        {
+          "argument": "There is no plausible administrative explanation for a legitimate vendor to utilize a newly registered domain containing a Cyrillic homograph character in their Reply-To header.",
+          "finding_id": "F-provenance-95ee09",
+          "succeeds": false
+        },
+        {
+          "argument": "NW Holdings Group could represent the legitimate parent entity or master treasury operating company managing cash management for subsidiaries.",
+          "finding_id": "F-registry-check-3ed870",
+          "succeeds": false
+        }
+      ],
+      "strongest_legitimate_explanation": "Northwind Student Transport LLC could have undergone a corporate restructuring or acquisition by a parent entity, NW Holdings Group, which consolidated treasury operations and directed payments to a centralized holding account. Under this scenario, the local operational contact reached at the historical system-of-record phone number might not have been briefed on upper-level treasury migrations, leading to their denial.",
+      "survived": false
+    },
+    "e6cae9badcfc1ae9d1cab882785ea52d2a2ac90c9a13112cf5b51773c24f51f6": {
+      "confidence": 0.85,
+      "reasoning": "Vendor V-2001 maintains a 5.4-year history with $3.14M in lifetime payments and zero prior banking detail changes, making a sudden modification request notable. Although referenced invoice INV-3101 is genuinely open, invoice correlation alone is weak proof of authenticity and cannot settle the request's legitimacy.",
+      "verdict": "inconclusive"
+    },
+    "eb567e9849dc13170da236061ce55de4fcedd3b35bccf28d33ae47a860bb0fc6": {
+      "confidence": 0.98,
+      "reasoning": "This change request originates from an 11-day-old spoofed domain using a Cyrillic homoglyph character and directs funds to 'NW Holdings Group' at Cascade Union Trust, identical to the infrastructure and tradecraft used by the 'Veiled Route' operation. Do not process this request or use the provided contact details, as it is an active payment hijacking attempt.",
+      "same_operator": true,
+      "verdict": "contradicts"
+    },
+    "eb66b7c0d9f2025dbeec53d72e32911edbae177eebe144928e037ddf87666c92": {
+      "reasoning": "The change is fully authenticated through an out-of-band callback to the official phone number of record and verified against corporate registry data with a perfect name match. The absence of prior banking changes over 7.4 years is expected during post-acquisition treasury consolidation rather than an indicator of compromise.",
+      "rebuttals": [
+        {
+          "argument": "The out-of-band callback was conducted against the verified phone number of record, not contact info provided in the update request, and yielded explicit vendor confirmation.",
+          "finding_id": "F-callback-bbd8b9",
+          "succeeds": true
+        },
+        {
+          "argument": "The absence of previous bank changes over a 7.4-year history is entirely consistent with an acquisition event triggering a first-time treasury migration, and referencing a genuine open invoice due in 8 days aligns with ordinary operational transition timing.",
+          "finding_id": "F-ledger-c7a9c3",
+          "succeeds": true
+        },
+        {
+          "argument": "The destination account holder name is an exact 1.0 match to the registered corporate entity name within the vendor's home jurisdiction, eliminating risk of diversion to an unrelated third party.",
+          "finding_id": "F-registry-check-bf7c87",
+          "succeeds": true
+        }
+      ],
+      "strongest_legitimate_explanation": "Kestrel Athletic Equipment Inc. is executing a routine post-acquisition treasury consolidation, updating its bank account details to integrate with the acquiring or newly restructured treasury infrastructure. This change is corroborated by direct out-of-band verbal confirmation using the official phone number of record in the vendor master, alongside a 100% exact name match between the destination account holder and the registered corporate legal entity in the domestic US jurisdiction. A vendor with a 7.4-year stable relationship undergoing an acquisition would naturally experience its first banking update under these exact circumstances.",
+      "survived": true
+    },
+    "ec505c268109dfc1848540253a1f72acebe2783e75a60d40960b960be428fb72": {
+      "reasoning": "The legitimate explanation collapses against the combination of active homograph domain spoofing and an explicit callback denial on the verified phone of record. These findings conclusively demonstrate an adversarial payment redirection attempt rather than an internal corporate restructuring.",
+      "rebuttals": [
+        {
+          "argument": "A frontline staff member answering the historical phone number of record might not have been informed of higher-level corporate treasury restructuring or newly assigned banking accounts. However, the explicit denial combined with an attempt to provide an alternative unverified contact number strongly indicates an unauthorized change attempt.",
+          "finding_id": "F-callback-cc92e4",
+          "succeeds": false
+        },
+        {
+          "argument": "A 6.2-year stable payment history with zero previous updates does not inherently indicate fraud; legitimate vendors eventually consolidate banking or change institutions after long periods of stability.",
+          "finding_id": "F-ledger-7d1bc6",
+          "succeeds": true
+        },
+        {
+          "argument": "While corporate migrations sometimes involve newly registered domains, the deliberate insertion of a Cyrillic homograph character in the Reply-To address is an active technical spoofing technique with no legitimate operational explanation.",
+          "finding_id": "F-provenance-8a46cc",
+          "succeeds": false
+        },
+        {
+          "argument": "Beneficiary name discrepancies frequently occur when a parent company or centralized treasury entity (such as NW Holdings Group) collects disbursements on behalf of operating subsidiaries like Northwind Student Transport LLC.",
+          "finding_id": "F-registry-check-4cb8b7",
+          "succeeds": false
+        }
+      ],
+      "strongest_legitimate_explanation": "Northwind Student Transport LLC may have recently been acquired by or consolidated into a parent entity, NW Holdings Group, which is centralizing treasury operations and banking across subsidiaries. Under this scenario, the local administrative contact reached at the phone of record was simply unaware of executive-level treasury restructuring, and the new domain was set up as part of a brand transition.",
+      "survived": false
+    },
+    "ed829971b1efe97229576f856b187ac441607c9d9ffd7bf56de85f9faa5846ea": {
+      "confidence": 1.0,
+      "reasoning": "The request utilizes a spoofed reply-to domain registered 11 days ago containing a Cyrillic homoglyph to mimic the vendor's actual domain. Furthermore, the attached PDF document producer diverges from the vendor's historical baseline, indicating fraudulent manipulation.",
+      "verdict": "contradicts"
+    },
+    "edfbaeb317ea7f48d2f1cee367490cc89e427d5f8b91fe9cfb1dc1250d7fbf0e": {
+      "confidence": 1.0,
+      "reasoning": "Out-of-band verification was conducted using the vendor's official phone number held in the system of record. The vendor explicitly confirmed the payee-detail change request as genuine.",
+      "verdict": "supports"
+    },
+    "ef6aff19c108cb18e9d2d2f2a098d3adf967894f25d1a58356c23954d8432c7b": {
+      "confidence": 1.0,
+      "dissenting_findings": [],
+      "outcome": "BLOCK",
+      "rationale": "The transaction change is confirmed fraudulent. Forensic analysis identified an intentional Cyrillic homograph domain spoof in the Reply-To header, the vendor explicitly denied authorizing any banking changes when contacted via their verified number of record, and the proposed payee name ('NW Holdings Group') does not match the registered legal entity ('Northwind Student Transport LLC')."
+    },
+    "f01c596807aa8ae0ea26bfec33e1baff15732ea1aa18c231ad8d15ae5b12c6fb": {
+      "confidence": 0.98,
+      "reasoning": "This request matches the 'Veiled Route' threat operation, utilizing a lookalike domain with a Cyrillic character substitution ('ashfield-scienc\u0435.test') and redirecting funds to the previously identified 'NW Holdings Group' account at Cascade Union Trust. Do not process this banking update or use the provided contact details, and verify all invoice communications using the established vendor phone number on record.",
+      "same_operator": true,
+      "verdict": "contradicts"
+    },
+    "f14ab36d914416695c5e432de10101d7bbbaf25705a7eef6cc324e750ad143c6": {
+      "reasoning": "The transaction change is supported by gold-standard out-of-band verification on the phone number of record and an exact 1.0 match on the registered legal entity name. The legitimate explanation overwhelmingly holds, and there is no indication of fraudulent tampering.",
+      "rebuttals": [
+        {
+          "argument": "This finding affirmatively supports the change; the verification was completed using the established number of record rather than any attacker-provided contact information, satisfying the primary safeguard against payment redirection fraud.",
+          "finding_id": "F-callback-04ddec",
+          "succeeds": true
+        },
+        {
+          "argument": "While a change after 7.4 years is a deviation from historical baseline, vendors periodically switch primary banking partners for commercial or treasury reasons. The finding itself notes that out-of-band verification is required, which was completed and confirmed with 100% confidence.",
+          "finding_id": "F-ledger-563efe",
+          "succeeds": true
+        },
+        {
+          "argument": "This finding confirms that the account name matches the legal corporate entity perfectly (similarity score 1.0) in the correct jurisdiction, leaving no ambiguity regarding third-party redirection.",
+          "finding_id": "F-registry-check-f6629e",
+          "succeeds": true
+        }
+      ],
+      "strongest_legitimate_explanation": "Kestrel Athletic Equipment Inc. is a trusted, long-term vendor of over seven years that is executing a standard corporate treasury or banking change. The update is fully legitimate as confirmed directly via an out-of-band verification using the pre-existing contact number of record, and the new destination account is explicitly registered under the vendor's exact legal entity name within their established operating jurisdiction.",
+      "survived": true
+    },
+    "f233d7519af619c5bab2cac4a0df052560d6fb018cc06d95e0db8bb90dec5461": {
+      "confidence": 0.9,
+      "reasoning": "The requested account holder name 'NW Holdings Group' shows a critical mismatch with the vendor's legal entity 'Northwind Student Transport LLC' (similarity score 0.138). Despite matching US banking jurisdictions, this unexplained beneficiary discrepancy strongly indicates a fraudulent payment redirection attempt.",
+      "verdict": "contradicts"
+    },
+    "f3f08468a4a03e6c234a6b60dd2d4d5c5ea4aefdbd80f6ffaf7559b7071be49e": {
+      "assessment": "This operation impersonates long-standing district contractors using lookalike email domains with hidden foreign characters to hijack large invoice payments. It pairs legitimate open invoice details with fake contact phone numbers in an effort to bypass routine staff verification.",
+      "confidence": 0.35,
+      "designation": "Veiled Route",
+      "indicators": [
+        "Email reply addresses that use subtle letter variations or newly registered domain names",
+        "Payment change requests listing a new telephone contact rather than the vendor phone number on file",
+        "Bank account owner names that do not match the exact legal business name in the vendor record",
+        "Unsolicited account changes on vendor accounts with long, previously unchanged payment histories"
+      ],
+      "likely_next_target": "The operator will likely target another high-volume service provider, such as a facilities maintenance or student nutrition contractor, where large routine invoice payments offer high exposure and can be easily plausibly linked to corporate restructuring.",
+      "tradecraft": [
+        "Registering lookalike email domains using foreign character substitutions in reply-to addresses",
+        "Citing real open invoice numbers and exact dollar amounts to establish authenticity",
+        "Supplying fake alternative phone numbers on payment update requests to intercept confirmation calls",
+        "Listing generic holding or parent company names as the new bank account owner"
+      ]
+    },
+    "f48d46d2b492d5722acc8b7d9fc38f4bab5a407b5de97dd46c6c028147381822": {
+      "reasoning": "Shadow Transit specifically targets large facilities maintenance and service contractors where substantial recurring billings make fraudulent banking change requests plausible. We have targeted only the major facilities contractor disbursements matching this profile while clearing supply vendors to avoid administrative disruption.",
+      "swept_but_cleared": [
+        "PAY-9001",
+        "PAY-9008",
+        "PAY-9010",
+        "PAY-9009",
+        "PAY-9005",
+        "PAY-8821"
+      ],
+      "targets": [
+        {
+          "payment_id": "PAY-9003",
+          "reason": "Matches the dossier's targeted profile of high-value facilities maintenance contractors with a six-figure invoice ($235,000) vulnerable to lookalike domain diversion.",
+          "risk": "high"
+        },
+        {
+          "payment_id": "PAY-9011",
+          "reason": "Matches the dossier's profile for high-value recurring service and contracting providers with a major pending payment of $207,000.",
+          "risk": "high"
+        }
+      ]
+    },
+    "f537824eaf824b0e33cf545160f1bca209ba9a8929789f9b48a1cc53cc11a927": {
+      "confidence": 0.98,
+      "reasoning": "The proposed account holder name perfectly matches the vendor's registered legal entity name with a similarity score of 1.0. Additionally, the receiving bank's jurisdiction aligns with the vendor's operating country, supporting the legitimacy of this update.",
+      "verdict": "supports"
+    },
+    "fbad2b4e08b3b1715433745a29ed78add7e30540e7e595b847aff1e689f012df": {
+      "confidence": 0.9,
+      "dissenting_findings": [
+        "entity_attestation"
+      ],
+      "outcome": "ESCALATE",
+      "rationale": "Vendor V-9003 has requested a first-time bank account change after 7.4 years and 163 invoices ahead of a substantial disbursement ($186,000 exposure). Although entity attestation verifies an exact match between the account holder name and the registered legal entity within the correct jurisdiction, the mandatory out-of-band callback went unanswered. Controller action is required to establish positive voice confirmation with the verified contact on record prior to releasing funds."
+    },
+    "fe00dafe110cfad7f229381daeb81048767037bae34b4fbdb4bf9f024a274610": {
+      "confidence": 1.0,
+      "reasoning": "The reply-to domain diverges from the sender's domain and uses a newly registered domain containing a Cyrillic homograph character. This indicates a fraudulent domain spoofing attempt, so payment detail changes must be stopped immediately.",
+      "verdict": "contradicts"
+    }
+  },
+  "note": "Recorded model responses. Generated by `make record`; do not edit by hand. Keyed by SHA-256 of (agent, model, prompt, context) \u2014 see CACHE.md."
+}

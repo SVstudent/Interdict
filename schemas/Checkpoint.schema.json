@@ -1,0 +1,110 @@
+{
+  "$defs": {
+    "CaseState": {
+      "enum": [
+        "opened",
+        "held",
+        "verifying",
+        "awaiting_callback",
+        "challenging",
+        "adjudicating",
+        "escalated",
+        "released",
+        "blocked"
+      ],
+      "title": "CaseState",
+      "type": "string"
+    },
+    "CheckpointStatus": {
+      "enum": [
+        "started",
+        "completed",
+        "failed"
+      ],
+      "title": "CheckpointStatus",
+      "type": "string"
+    }
+  },
+  "description": "Written before a step runs and updated after it completes. On restart the runner replays\nthe checkpoint log to decide what it may skip.",
+  "properties": {
+    "seq": {
+      "title": "Seq",
+      "type": "integer"
+    },
+    "case_id": {
+      "title": "Case Id",
+      "type": "string"
+    },
+    "step": {
+      "title": "Step",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/CheckpointStatus",
+      "default": "started"
+    },
+    "state_before": {
+      "$ref": "#/$defs/CaseState"
+    },
+    "state_after": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CaseState"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "input_hash": {
+      "title": "Input Hash",
+      "type": "string"
+    },
+    "output_hash": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Output Hash"
+    },
+    "attempt": {
+      "default": 1,
+      "title": "Attempt",
+      "type": "integer"
+    },
+    "started_at": {
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    },
+    "completed_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Completed At"
+    }
+  },
+  "required": [
+    "seq",
+    "case_id",
+    "step",
+    "state_before",
+    "input_hash",
+    "started_at"
+  ],
+  "title": "Checkpoint",
+  "type": "object"
+}

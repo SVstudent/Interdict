@@ -1,0 +1,45 @@
+{
+  "description": "Only fragments are ever stored. Full account and routing numbers are never persisted,\neven synthetic ones \u2014 a screenshot of this system must not teach a bad habit.",
+  "properties": {
+    "account_name": {
+      "title": "Account Name",
+      "type": "string"
+    },
+    "account_last4": {
+      "pattern": "^\\d{4}$",
+      "title": "Account Last4",
+      "type": "string"
+    },
+    "routing_last4": {
+      "pattern": "^\\d{4}$",
+      "title": "Routing Last4",
+      "type": "string"
+    },
+    "bank_name": {
+      "title": "Bank Name",
+      "type": "string"
+    },
+    "bank_country": {
+      "description": "ISO 3166-1 alpha-2",
+      "maxLength": 2,
+      "minLength": 2,
+      "title": "Bank Country",
+      "type": "string"
+    },
+    "effective_from": {
+      "format": "date-time",
+      "title": "Effective From",
+      "type": "string"
+    }
+  },
+  "required": [
+    "account_name",
+    "account_last4",
+    "routing_last4",
+    "bank_name",
+    "bank_country",
+    "effective_from"
+  ],
+  "title": "BankingDetails",
+  "type": "object"
+}

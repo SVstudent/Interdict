@@ -1,0 +1,221 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Interdict API contract",
+  "base_url": "http://localhost:8077",
+  "openapi": "/openapi.json",
+  "notes": [
+    "All money fields are DECIMAL STRINGS, never floats \u2014 parse with a decimal type.",
+    "All timestamps are ISO-8601 with timezone, sourced from the injected Clock.",
+    "POST /api/demo/inject_scenario/* makes real model calls and costs money.",
+    "GET /api/events is Server-Sent Events and stays open."
+  ],
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/healthz",
+      "returns": "Health"
+    },
+    {
+      "method": "GET",
+      "path": "/api/cases",
+      "returns": "CaseSummary[]",
+      "notes": "sorted by exposure_amount descending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/cases/{case_id}",
+      "returns": "CaseDetail"
+    },
+    {
+      "method": "GET",
+      "path": "/api/cases/{case_id}/trace",
+      "returns": "{case_id, spans: Span[]}"
+    },
+    {
+      "method": "GET",
+      "path": "/api/cases/{case_id}/checkpoints",
+      "returns": "{case_id, checkpoints: Checkpoint[], effects: Effect[]}"
+    },
+    {
+      "method": "GET",
+      "path": "/api/cases/{case_id}/memory",
+      "returns": "{case_id, session_id, age_days, events[]}"
+    },
+    {
+      "method": "GET",
+      "path": "/api/vendors",
+      "returns": "Vendor[]"
+    },
+    {
+      "method": "GET",
+      "path": "/api/ledger",
+      "returns": "LedgerTotals"
+    },
+    {
+      "method": "GET",
+      "path": "/api/registry",
+      "returns": "{entries: RegistryEntry[], backend}"
+    },
+    {
+      "method": "GET",
+      "path": "/api/registry/{agent_id}",
+      "returns": "RegistryEntry"
+    },
+    {
+      "method": "GET",
+      "path": "/api/posture",
+      "returns": "{events: PostureEvent[], gateway_decisions[], scope_manifest[]}"
+    },
+    {
+      "method": "GET",
+      "path": "/api/audit",
+      "returns": "{records: AuditRecord[], verification}"
+    },
+    {
+      "method": "GET",
+      "path": "/api/audit/{case_id}",
+      "returns": "AuditRecord"
+    },
+    {
+      "method": "GET",
+      "path": "/api/audit/{case_id}/download",
+      "returns": "AuditRecord (attachment)"
+    },
+    {
+      "method": "GET",
+      "path": "/api/events",
+      "returns": "text/event-stream"
+    },
+    {
+      "method": "GET",
+      "path": "/api/demo/scenarios",
+      "returns": "Scenario[]"
+    },
+    {
+      "method": "POST",
+      "path": "/api/demo/reset",
+      "cost": "free"
+    },
+    {
+      "method": "POST",
+      "path": "/api/demo/inject_scenario/{id}",
+      "cost": "MODEL CALLS \u2014 ~$0.01"
+    },
+    {
+      "method": "POST",
+      "path": "/api/demo/advance_clock",
+      "cost": "free"
+    },
+    {
+      "method": "POST",
+      "path": "/api/demo/kill_runner",
+      "cost": "free"
+    },
+    {
+      "method": "POST",
+      "path": "/api/demo/resume_runner",
+      "cost": "may resume model calls"
+    },
+    {
+      "method": "POST",
+      "path": "/api/demo/force_scope_violation",
+      "cost": "free"
+    },
+    {
+      "method": "GET",
+      "path": "/api/demo/timings",
+      "returns": "{beats, mode, platform}"
+    },
+    {
+      "method": "GET",
+      "path": "/api/redteam/runs",
+      "returns": "{runs: RedTeamRun[], scoreboard: RedTeamScoreboard}"
+    },
+    {
+      "method": "GET",
+      "path": "/api/redteam/runs/{run_id}",
+      "returns": "RedTeamRun"
+    },
+    {
+      "method": "POST",
+      "path": "/api/redteam/run",
+      "body": "{variants: int = 3 (clamped 1..5), dry_run: bool = true}",
+      "cost": "MODEL CALLS \u2014 one variant generation plus a full pipeline run per variant; dry_run costs the generation only and executes nothing"
+    },
+    {
+      "method": "GET",
+      "path": "/api/precedent",
+      "returns": "{precedents: Precedent[], count}",
+      "query": "tenant_id (optional)"
+    },
+    {
+      "method": "GET",
+      "path": "/api/precedent/{precedent_id}",
+      "returns": "Precedent"
+    },
+    {
+      "method": "GET",
+      "path": "/api/cases/{case_id}/precedent",
+      "returns": "PrecedentMatchResult"
+    },
+    {
+      "method": "POST",
+      "path": "/api/cases/{case_id}/resolve",
+      "returns": "PrecedentResolution",
+      "cost": "free \u2014 records the human's resolution as precedent"
+    },
+    {
+      "method": "GET",
+      "path": "/api/tenants",
+      "returns": "{tenants: TenantSummary[], exchange_id}"
+    },
+    {
+      "method": "GET",
+      "path": "/api/tenants/{tenant_id}",
+      "returns": "TenantDetail"
+    },
+    {
+      "method": "GET",
+      "path": "/api/exchange",
+      "returns": "ExchangeFeed + withheld: string[]"
+    }
+  ],
+  "sse_events": [
+    "demo_reset",
+    "case_opened",
+    "state_changed",
+    "step_started",
+    "step_completed",
+    "step_failed",
+    "lane_started",
+    "lane_failed",
+    "finding_added",
+    "challenge_completed",
+    "decision_rendered",
+    "payments_held",
+    "payments_finalized",
+    "clock_advanced",
+    "runner_killed",
+    "runner_resumed",
+    "scope_denied",
+    "recall_hit",
+    "dossier_written",
+    "fingerprint_recorded",
+    "inbox_triaged",
+    "sweep_completed",
+    "callback_recorded",
+    "callback_window_expired",
+    "attribution_unavailable",
+    "scribe_unavailable",
+    "redteam_run_started",
+    "redteam_variant_generated",
+    "redteam_trial_completed",
+    "redteam_run_completed",
+    "precedent_recorded",
+    "precedent_cited",
+    "precedent_unavailable",
+    "tenant_switched",
+    "exchange_published",
+    "exchange_recognised"
+  ]
+}

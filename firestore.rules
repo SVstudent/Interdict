@@ -1,0 +1,51 @@
+rules_version = '2';
+
+// Interdict holds synthetic vendor and payment data, but the shape is real: banking fragments,
+// case findings, and an immutable audit chain. The rules below are what the equivalent
+// production deployment would use — all writes go through the backend service account, and no
+// client may ever mutate an audit record or an effect.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isBackend() {
+      return request.auth != null && request.auth.token.get('interdict_backend', false) == true;
+    }
+
+    // Operator-readable case data. Writes are backend-only: a client that could edit a case
+    // could edit its way to a release.
+    match /cases/{caseId} {
+      allow read: if request.auth != null;
+      allow write: if isBackend();
+
+      match /checkpoints/{seq} {
+        allow read: if request.auth != null;
+        allow write: if isBackend();
+      }
+    }
+
+    match /vendors/{vendorId}   { allow read: if request.auth != null; allow write: if isBackend(); }
+    match /invoices/{invoiceId} { allow read: if request.auth != null; allow write: if isBackend(); }
+    match /payments/{paymentId} { allow read: if request.auth != null; allow write: if isBackend(); }
+    match /change_requests/{id} { allow read: if request.auth != null; allow write: if isBackend(); }
+    match /posture_events/{id}  { allow read: if request.auth != null; allow write: if isBackend(); }
+
+    // The exactly-once ledger. Create-only, even for the backend: an effect that could be
+    // updated or deleted is not a guarantee.
+    match /effects/{key} {
+      allow read:   if request.auth != null;
+      allow create: if isBackend();
+      allow update, delete: if false;
+    }
+
+    // Hash-chained audit records are append-only. Immutability is the point of the chain.
+    match /audit_records/{recordId} {
+      allow read:   if request.auth != null;
+      allow create: if isBackend();
+      allow update, delete: if false;
+    }
+
+    match /replay_cache/{hash} { allow read, write: if isBackend(); }
+
+    match /{document=**} { allow read, write: if false; }
+  }
+}
