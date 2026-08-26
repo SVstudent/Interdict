@@ -48,7 +48,7 @@ React/Vite front end with four surfaces: Console, Docket, Registry, Posture.
 See `ARCHITECTURE.md`.
 
 ## Current state
-12 agents, 198 tests, four surfaces, two tenants. tsc + vite build clean. LIGHT theme.
+12 agents, 219 tests, four surfaces, two tenants. tsc + vite build clean. LIGHT theme.
 Capabilities: inbox triage -> case -> 4-lane fan-out -> adversarial challenge -> deterministic
 rails -> named threat dossier -> proactive sweep -> cross-case attribution -> cross-TENANT
 exchange -> human precedent. Plus a Red Team that attacks the fleet and scores it.

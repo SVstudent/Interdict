@@ -384,7 +384,8 @@ backend/app/
   audit/         hash-chained Nacha Phase 2 audit records
   demo/          the replay cache and its prompt-hash keying
   guardrails/    inbound artifact screening and redaction
-  llm/           Vertex and Gemini providers, jittered retry on RPM throttling
+  llm/           provider identity and the sanctioned-provider compliance gate; ADK owns the
+                 model transport itself
   models/        the Pydantic domain model; invariants are validators, not prose
   orchestrator/  the durable runner, the pipeline steps, the concurrent fan-out
   platform/      nine Protocol bindings, each with a GEAP and a local implementation

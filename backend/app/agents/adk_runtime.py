@@ -44,7 +44,7 @@ from google.adk.tools import FunctionTool
 from google.genai import types as genai_types
 
 from ..config import Settings
-from ..llm.provider import Provider
+from ..llm.provider import Provider, with_retry
 from .scopes import FLEET_SCOPES, ScopeViolation
 from .tools import TOOL_SPECS
 
@@ -296,9 +296,14 @@ async def infer_via_adk(
         )],
     )
 
-    text_parts: list[str] = []
-    input_tokens = output_tokens = 0
-    try:
+    # Retry wraps the WHOLE run, not a single HTTP call. Moving inference onto ADK moved it off
+    # `LLMProvider.complete`, which was where the throttle backoff used to live — so for a window
+    # a 429 mid-recording had no backoff at all and would have failed a take outright. ADK owns
+    # the request now, so the retriable unit is the run: a throttled step replays its own tool
+    # calls, which are deterministic reads over the case and safe to repeat.
+    async def _run_once() -> tuple[list[str], int, int]:
+        text_parts: list[str] = []
+        input_tokens = output_tokens = 0
         async for event in runner.run_async(
             user_id=ctx.case_id, session_id=session_id, new_message=message,
         ):
@@ -320,6 +325,12 @@ async def infer_via_adk(
                         scope=(TOOL_SPECS[part.function_call.name].scope
                                if part.function_call.name in TOOL_SPECS else "unknown"),
                     )
+        return text_parts, input_tokens, output_tokens
+
+    try:
+        text_parts, input_tokens, output_tokens = await with_retry(
+            _run_once, label=f"adk:{agent.name}:{agent.model}",
+        )
     finally:
         await runner.close()
 
