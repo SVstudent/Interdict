@@ -48,15 +48,18 @@ React/Vite front end with four surfaces: Console, Docket, Registry, Posture.
 See `ARCHITECTURE.md`.
 
 ## Current state
-12 agents, 219 tests, four surfaces, two tenants. tsc + vite build clean. LIGHT theme.
+12 agents, 230 tests, four surfaces, two tenants. tsc + vite build clean. LIGHT theme.
 Capabilities: inbox triage -> case -> 4-lane fan-out -> adversarial challenge -> deterministic
 rails -> named threat dossier -> proactive sweep -> cross-case attribution -> cross-TENANT
 exchange -> human precedent. Plus a Red Team that attacks the fleet and scores it.
 
-VERIFIED LIVE end to end against real Gemini on Vertex, through ADK (2026-08-25):
-  reset 20ms | S1 BLOCK 67.6s | S2 BLOCK 64.7s | S3 dormant 14.4s | S4 RELEASE 41.6s
-  advance_clock 4d wakes S3 -> ESCALATE | S5 kill+resume skips hold_payments and
-  begin_verification, still BLOCK | cross-tenant recognised 0.85 -> BLOCK at Harborview.
+VERIFIED LIVE, whole runbook, three consecutive clean runs (2026-08-29): 57 checks, 0 failures.
+  Every beat asserted on substance, not just status: BLOCK with 4 evidenced findings and a named
+  safety rail; the literal injected sentence struck through; abstention; clock wake -> ESCALATE;
+  kill+resume skipping hold_payments and begin_verification; hash-chained audit; identity denial;
+  cross-district recognition at Harborview; ledger totals. `/tmp/interdict-run/runthrough.py`.
+BEAT 2 ON CAMERA: hold 2.5s | lanes 2.7s | findings 10.9-12.4s | steelman defeated 24.2s |
+  VERDICT 30.4s. The injection request returns ~65s but that tail is background learning work.
 REPLAY serves the whole runbook offline, no credentials, ~1.8s per scenario, identical outcomes.
   TODO  deploy, video. README + ARCHITECTURE written.
 
