@@ -159,6 +159,32 @@ export function Console({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tick]);
 
+  /* FOLLOW THE CASE THAT JUST OPENED.
+
+     Without this the console is a queue that fills up while the centre pane stays on whatever
+     was selected before — so injecting a scenario advanced a row from `verifying` to `blocked`
+     in the list while the fan-out, the balance and the verdict all played out off screen. The
+     entire point of the surface happened somewhere the operator was not looking.
+
+     Bound to `case_opened` rather than to the injection request, because that request does not
+     return until the fleet has also written its dossier and run its sweep — a minute after the
+     case exists. The event lands about two seconds in, which is when there is something to
+     watch. Following the newest case is also just what a live interdiction queue should do. */
+  const followed = useRef<string | null>(null);
+  useEffect(() => {
+    for (let i = events.length - 1; i >= 0; i -= 1) {
+      const e = events[i];
+      if (e?.event !== 'case_opened') continue;
+      const id = typeof e.data?.case_id === 'string' ? e.data.case_id : null;
+      if (id && id !== followed.current) {
+        followed.current = id;
+        onSelectCase(id);
+      }
+      return;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [events]);
+
   useEffect(() => {
     if (!selectedCase) { setDetail(null); return; }
     void api.case(selectedCase).then(setDetail).catch(() => setDetail(null));

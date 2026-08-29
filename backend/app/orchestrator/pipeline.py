@@ -441,6 +441,26 @@ class AdjudicateStep:
                 },
             )
 
+        # Announce the verdict HERE — the moment it exists and the money has moved — not at the
+        # end of the step. Everything below this line is the fleet learning from the case: the
+        # dossier, the exchange publication, the proactive sweep. That work is valuable and slow,
+        # and it used to sit between the decision and the event that renders it, so the operator
+        # watched a decided case sit silent for another thirty-one seconds. Measured on the
+        # flagship case: money blocked at 32s, verdict on screen at 63s.
+        #
+        # The comment further down already claimed a slow dossier "cannot delay the verdict the
+        # operator is waiting on". It could, and did. This is the line that makes that true.
+        case.state = next_state = {
+            "RELEASE": CaseState.RELEASED,
+            "BLOCK": CaseState.BLOCKED,
+            "ESCALATE": CaseState.ESCALATED,
+        }[decision.outcome]
+        await ctx.repo.save_case(case)
+        await ctx.emit(
+            "decision_rendered",
+            {"case_id": case.case_id, "outcome": decision.outcome},
+        )
+
         # Learn from it. A blocked attempt is the only outcome worth remembering as tradecraft:
         # remembering a release would teach the fleet to distrust legitimate behaviour.
         if self.recall is not None and decision.outcome == "BLOCK":
@@ -531,16 +551,9 @@ class AdjudicateStep:
                     "fingerprint": fp_dict,
                 })
 
-        next_state = {
-            "RELEASE": CaseState.RELEASED,
-            "BLOCK": CaseState.BLOCKED,
-            "ESCALATE": CaseState.ESCALATED,
-        }[decision.outcome]
+        # The verdict was announced above, before the learning work. Persist once more so the
+        # dossier, exchange entry and sweep results written since then are durable too.
         await ctx.repo.save_case(case)
-        await ctx.emit(
-            "decision_rendered",
-            {"case_id": case.case_id, "outcome": decision.outcome},
-        )
         return StepOutcome(next_state, {"outcome": decision.outcome})
 
 

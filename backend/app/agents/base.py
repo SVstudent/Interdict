@@ -81,6 +81,37 @@ see and reason from what you have.
 """
 
 
+# Appended to the instruction on ONE repair attempt when the model's reply will not parse.
+#
+# These are thinking models with tools: a step can end having spent its output on reasoning and a
+# tool call and emitted no final text at all, or emitted a sentence of prose around the JSON. That
+# is a formatting miss, not a failure of judgment, and re-asking costs a few seconds where giving
+# up costs the case. One attempt only — a model that cannot produce JSON twice is not going to on
+# the third try, and a demo that silently loops is worse than one that fails loudly.
+REPAIR_SUFFIX = """
+
+FORMAT CORRECTION
+Your previous reply could not be parsed as JSON. Reply again with the SAME judgment, as a single
+raw JSON object and nothing else. No markdown fence, no commentary before or after, no trailing
+text. Begin your reply with { and end it with }.
+"""
+
+
+class MalformedModelOutput(RuntimeError):
+    """The model's reply could not be parsed as JSON, twice.
+
+    Carries the raw text so a failure during a recording is diagnosable from the log rather than
+    from a bare JSONDecodeError several frames later.
+    """
+
+    def __init__(self, agent: str, model: str, raw: str) -> None:
+        super().__init__(
+            f"{agent} on {model} returned unparseable output after a repair attempt. "
+            f"Raw reply (truncated): {raw[:400]!r}"
+        )
+        self.agent, self.model, self.raw = agent, model, raw
+
+
 class AgentTimeout(RuntimeError):
     """A step exceeded its wall-clock budget. Loop containment, not a generic error."""
 
@@ -169,6 +200,24 @@ class InterdictAgent:
             text, input_tokens, output_tokens = await infer_via_adk(
                 self, ctx, instruction=instruction, observations=observations,
             )
+            parsed, raw = self._parse(text, input_tokens, output_tokens, ctx)
+
+            if parsed is None:
+                # One repair attempt, then give up loudly. See REPAIR_SUFFIX.
+                ctx.telemetry.tool_call(
+                    case_id=ctx.case_id, agent=self.name,
+                    tool="format_repair", scope="findings:read",
+                )
+                text, retry_in, retry_out = await infer_via_adk(
+                    self, ctx, instruction=instruction + REPAIR_SUFFIX,
+                    observations=observations,
+                )
+                input_tokens += retry_in
+                output_tokens += retry_out
+                parsed, raw = self._parse(text, input_tokens, output_tokens, ctx)
+                if parsed is None:
+                    raise MalformedModelOutput(self.name, self.model, raw)
+
             ctx.telemetry.record_tokens(
                 case_id=ctx.case_id,
                 agent=self.name,
@@ -177,13 +226,32 @@ class InterdictAgent:
             # Any scope denial the MODEL provoked is written here rather than inside the ADK
             # callback: that callback is synchronous, and a posture event is a repository write.
             await self._flush_denials(ctx)
-            completion = Completion(
-                text=text, model=self.model, provider=ctx.llm.name,
-                input_tokens=input_tokens, output_tokens=output_tokens,
-            )
-            return completion.json()
+            return parsed
 
         return await ctx.replay.resolve(key, live_call, label=f"{self.name}:{self.signal}")
+
+    def _parse(
+        self, text: str, input_tokens: int, output_tokens: int, ctx: AgentContext,
+    ) -> tuple[dict[str, Any] | None, str]:
+        """Parse a reply, or report that it could not be parsed. Never raises.
+
+        Returns `(None, raw)` rather than raising so the caller owns the repair decision — and so
+        an empty reply, which is what a thinking model returns when it spends its whole output
+        budget on reasoning, is handled by the same path as malformed text rather than by a
+        different exception type several frames away.
+        """
+        completion = Completion(
+            text=text, model=self.model, provider=getattr(ctx.llm, "name", None),
+            input_tokens=input_tokens, output_tokens=output_tokens,
+        )
+        if not text.strip():
+            return None, ""
+        try:
+            parsed = completion.json()
+        except (json.JSONDecodeError, ValueError, IndexError):
+            return None, text
+        # A JSON scalar or list parses but is not a result object, and every caller indexes it.
+        return (parsed, text) if isinstance(parsed, dict) else (None, text)
 
     async def _flush_denials(self, ctx: AgentContext) -> None:
         """Persist scope denials collected during an ADK run."""

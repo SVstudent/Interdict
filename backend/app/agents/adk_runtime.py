@@ -30,6 +30,7 @@ WHAT IS DELIBERATELY UNCHANGED
 """
 from __future__ import annotations
 
+import asyncio
 import functools
 import json
 import uuid
@@ -37,7 +38,8 @@ from typing import TYPE_CHECKING, Any
 
 from google import genai
 from google.adk import Runner
-from google.adk.agents import LlmAgent
+from google.adk.agents import LlmAgent, RunConfig
+from google.adk.agents.invocation_context import LlmCallsLimitExceededError
 from google.adk.models.google_llm import Gemini
 from google.adk.sessions import InMemorySessionService
 from google.adk.tools import FunctionTool
@@ -52,6 +54,32 @@ if TYPE_CHECKING:  # pragma: no cover - import cycle; AgentContext lives in base
     from .base import AgentContext
 
 APP_NAME = "interdict"
+
+# The model's budget for ONE reasoning step: the opening call plus up to three tool round-trips.
+#
+# ADK defaults `max_llm_calls` to 500. That is a runaway guard for a long-lived assistant, not a
+# budget for a step that already has its observations in front of it, and it is not survivable
+# here: a model that keeps reaching for tools loops for as long as it likes while the case sits
+# in `verifying` and the console shows a lane that never lands. A full run-through stalled for
+# twenty-nine minutes on exactly this before the cap existed.
+#
+# Four is deliberate rather than tight. The observations are gathered deterministically before the
+# model is asked anything, so the expected number of tool calls is zero; three is headroom for an
+# agent that genuinely wants to confirm something, and hitting the ceiling means the model is
+# looping rather than working.
+MAX_LLM_CALLS_PER_STEP = 4
+
+# Hard wall-clock ceiling on one step, independent of the call budget.
+#
+# The fan-out already wraps each lane in `asyncio.wait_for`, but the Challenger and the Adjudicator
+# run as their own pipeline steps with nothing above them — so before this, a single hung request
+# there could stall a case indefinitely with no lane to blame and no timeout to fire. A ceiling
+# here covers every step by construction rather than covering the four we remembered to wrap.
+STEP_TIMEOUT_SECONDS = 90.0
+
+
+class AdkStepTimeout(RuntimeError):
+    """One reasoning step exceeded its wall-clock ceiling."""
 
 
 class AdkUnavailable(RuntimeError):
@@ -304,32 +332,51 @@ async def infer_via_adk(
     async def _run_once() -> tuple[list[str], int, int]:
         text_parts: list[str] = []
         input_tokens = output_tokens = 0
-        async for event in runner.run_async(
-            user_id=ctx.case_id, session_id=session_id, new_message=message,
-        ):
-            usage = getattr(event, "usage_metadata", None)
-            if usage is not None:
-                # Thinking tokens are billed as output and must be counted as output, or the
-                # telemetry under-reports the cost of exactly the models we chose for reasoning.
-                input_tokens += getattr(usage, "prompt_token_count", 0) or 0
-                output_tokens += (getattr(usage, "candidates_token_count", 0) or 0) + \
-                                 (getattr(usage, "thoughts_token_count", 0) or 0)
-            content = getattr(event, "content", None)
-            for part in (getattr(content, "parts", None) or []) if content else []:
-                if getattr(part, "text", None):
-                    text_parts.append(part.text)
-                if getattr(part, "function_call", None):
-                    ctx.telemetry.tool_call(
-                        case_id=ctx.case_id, agent=agent.name,
-                        tool=part.function_call.name,
-                        scope=(TOOL_SPECS[part.function_call.name].scope
-                               if part.function_call.name in TOOL_SPECS else "unknown"),
-                    )
+        # A model that spends the whole budget on tool calls is stopped, not failed. ADK raises
+        # LlmCallsLimitExceededError out of the generator; letting it propagate would turn a
+        # chatty step into a dead case, and the step usually has usable text by then anyway.
+        # If it does not, the caller's repair attempt asks once more with a format correction.
+        try:
+            async for event in runner.run_async(
+                user_id=ctx.case_id, session_id=session_id, new_message=message,
+                run_config=RunConfig(max_llm_calls=MAX_LLM_CALLS_PER_STEP),
+            ):
+                usage = getattr(event, "usage_metadata", None)
+                if usage is not None:
+                    # Thinking tokens are billed as output and must be counted as output, or the
+                    # telemetry under-reports the cost of the models we chose for reasoning.
+                    input_tokens += getattr(usage, "prompt_token_count", 0) or 0
+                    output_tokens += (getattr(usage, "candidates_token_count", 0) or 0) + \
+                                     (getattr(usage, "thoughts_token_count", 0) or 0)
+                content = getattr(event, "content", None)
+                for part in (getattr(content, "parts", None) or []) if content else []:
+                    if getattr(part, "text", None):
+                        text_parts.append(part.text)
+                    if getattr(part, "function_call", None):
+                        ctx.telemetry.tool_call(
+                            case_id=ctx.case_id, agent=agent.name,
+                            tool=part.function_call.name,
+                            scope=(TOOL_SPECS[part.function_call.name].scope
+                                   if part.function_call.name in TOOL_SPECS else "unknown"),
+                        )
+        except LlmCallsLimitExceededError:
+            ctx.telemetry.tool_call(
+                case_id=ctx.case_id, agent=agent.name,
+                tool="llm_call_budget_exhausted", scope="findings:read",
+            )
         return text_parts, input_tokens, output_tokens
+
+    async def _run_bounded() -> tuple[list[str], int, int]:
+        try:
+            return await asyncio.wait_for(_run_once(), timeout=STEP_TIMEOUT_SECONDS)
+        except asyncio.TimeoutError as exc:
+            raise AdkStepTimeout(
+                f"{agent.name} on {agent.model} exceeded {STEP_TIMEOUT_SECONDS:.0f}s"
+            ) from exc
 
     try:
         text_parts, input_tokens, output_tokens = await with_retry(
-            _run_once, label=f"adk:{agent.name}:{agent.model}",
+            _run_bounded, label=f"adk:{agent.name}:{agent.model}",
         )
     finally:
         await runner.close()

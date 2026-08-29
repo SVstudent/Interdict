@@ -68,19 +68,33 @@ class ChallengerAgent(InterdictAgent):
         rebuttals = [
             Rebuttal(
                 finding_id=r["finding_id"],
-                argument=r["argument"],
+                argument=str(r.get("argument") or "").strip() or "(no argument given)",
                 succeeds=bool(r.get("succeeds")),
             )
-            for r in result.get("rebuttals", [])
+            # A malformed rebuttal entry is dropped, not fatal. `isinstance` because a model that
+            # returns a list of strings here would otherwise raise on `.get`.
+            for r in (result.get("rebuttals") or [])
+            if isinstance(r, dict)
             # A rebuttal against a finding that does not exist cannot defeat anything.
-            if r.get("finding_id") in valid_ids
+            and r.get("finding_id") in valid_ids
         ]
         ctx.telemetry.tool_call(
             case_id=ctx.case_id, agent=self.name, tool="rebut_findings", scope="findings:read"
         )
+        # Read defensively, unlike the Adjudicator's rails, for opposite reasons: the Adjudicator
+        # can afford strictness because Python decides the outcome whatever the model says, while
+        # this agent's output is narrative. A missing key here used to raise KeyError and sink the
+        # case at the exact moment beat 2 peaks — losing the whole take to a formatting miss on
+        # the one field nobody reads aloud.
         return ChallengeResult(
-            strongest_legitimate_explanation=result["strongest_legitimate_explanation"],
+            strongest_legitimate_explanation=(
+                str(result.get("strongest_legitimate_explanation") or "").strip()
+                or "No legitimate explanation could be constructed for this change."
+            ),
             rebuttals=rebuttals,
             survived=bool(result.get("survived")),
-            reasoning=result["reasoning"],
+            reasoning=(
+                str(result.get("reasoning") or "").strip()
+                or "The challenge returned no reasoning; the findings stand unrebutted."
+            ),
         )
