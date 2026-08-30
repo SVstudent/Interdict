@@ -6,8 +6,11 @@ import sys
 from contextlib import asynccontextmanager
 from typing import Any
 
+from pathlib import Path
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from .api import (audit, callback, cases, demo, events, inbox, posture, precedent,
                   redteam, registry, tenants)
@@ -121,3 +124,16 @@ async def healthz() -> dict[str, Any]:
         "clock": state.clock.now().isoformat(),
         "synthetic_data": True,
     }
+
+
+# --- single-container hosting ----------------------------------------------------------------
+#
+# Mounted LAST so every API route above still wins. Present only when a built front end exists,
+# which is the case in the container image and not in local development, where Vite serves the
+# app on its own port and proxies /api here.
+#
+# `html=True` makes the mount serve index.html for unknown paths, so a deep link into a surface
+# reloads instead of 404ing.
+_WEB_DIST = Path(__file__).resolve().parents[2] / "web" / "dist"
+if _WEB_DIST.is_dir():
+    app.mount("/", StaticFiles(directory=str(_WEB_DIST), html=True), name="web")

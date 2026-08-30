@@ -1,7 +1,7 @@
 # gcloud on this machine dies on system Python 3.13 (pyOpenSSL mismatch). See DECISIONS D-002d.
 export CLOUDSDK_PYTHON := /Library/Frameworks/Python.framework/Versions/3.14/bin/python3
 
-.PHONY: dev test seed schemas check-schema types record rehearse verify deploy probe-geap clean
+.PHONY: dev test seed schemas check-schema types record rehearse verify image deploy probe-geap clean
 
 dev:        ## run api + web against emulators
 	docker compose up --build
@@ -55,8 +55,46 @@ verify:     ## prove the whole runbook replays offline with no credentials
 	@DEMO_MODE=replay PLATFORM_BACKEND=local ./.venv/bin/python -m pytest backend/tests -q
 	@cd web && npx tsc --noEmit && npx vite build >/dev/null && echo "web: tsc + build clean"
 
-deploy:
-	@echo "Phase 6. Not wired yet."
+# --- deployment ------------------------------------------------------------------------------
+# ONE INTERACTIVE STEP FIRST, and it is not one this repo can do for you:
+#
+#   gcloud auth login            # as the account that OWNS the project
+#   gcloud config set project $(GCP_PROJECT)
+#
+# The other gcloud accounts on this machine cannot see the project (ADC can, but `gcloud run
+# deploy` uses gcloud's own credentials, not ADC). `make deploy` fails fast if that is not done.
+GCP_PROJECT ?= interdict-demo-57216
+REGION      ?= us-central1
+SERVICE     ?= interdict
+
+image:      ## build the container locally and prove it serves the demo
+	docker build -t $(SERVICE):local .
+	@echo "run it:  docker run --rm -p 8099:8080 -e DEMO_MODE=replay $(SERVICE):local"
+
+deploy:     ## build and deploy to Cloud Run. Requires `gcloud auth login` as the project owner.
+	@gcloud projects describe $(GCP_PROJECT) >/dev/null 2>&1 || ( \
+	  echo "gcloud cannot see $(GCP_PROJECT)."; \
+	  echo "Run: gcloud auth login   (as the account that owns the project)"; \
+	  echo "then: gcloud config set project $(GCP_PROJECT)"; exit 1 )
+	gcloud run deploy $(SERVICE) \
+	  --source . \
+	  --project $(GCP_PROJECT) \
+	  --region $(REGION) \
+	  --allow-unauthenticated \
+	  --memory 2Gi \
+	  --cpu 2 \
+	  --timeout 300 \
+	  --max-instances 1 \
+	  --set-env-vars "DEMO_MODE=$(DEMO_MODE),PLATFORM_BACKEND=local,LLM_PROVIDER=vertex,GCP_PROJECT_ID=$(GCP_PROJECT),VERTEX_LOCATION=global"
+	@echo
+	@echo "The service account needs Vertex AI access for DEMO_MODE=live:"
+	@echo "  gcloud projects add-iam-policy-binding $(GCP_PROJECT) \\"
+	@echo "    --member=serviceAccount:$$(gcloud projects describe $(GCP_PROJECT) --format='value(projectNumber)')-compute@developer.gserviceaccount.com \\"
+	@echo "    --role=roles/aiplatform.user"
+
+# `replay` by default: a hosted URL a judge can click should not spend model quota or depend on
+# one project's rate limits to answer. Deploy live for the recording with `make deploy DEMO_MODE=live`.
+DEMO_MODE ?= replay
 
 clean:
 	rm -rf dist node_modules .pytest_cache

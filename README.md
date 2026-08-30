@@ -6,6 +6,117 @@ refuses to release it until the payee has been independently verified.
 Twelve Google ADK agents on Gemini 3.x via Vertex AI, behind a durable case state machine with
 deterministic safety rails. All data in this repository is synthetic.
 
+Built for **All Things Agentic**, track: **Fortified Enterprise Fleet**.
+
+---
+
+## Reproduce every claim in this README, offline, in two minutes
+
+You do not need a Google Cloud account, credentials, or an API key to run the entire demo
+runbook. `DEMO_MODE=replay` serves real recorded Gemini responses keyed by a hash of the prompt,
+at roughly **1.8 seconds per scenario**, producing byte-identical case IDs and the same outcomes
+as the live run.
+
+```bash
+git clone <repo> && cd Interdict
+python3 -m venv .venv && ./.venv/bin/pip install -r backend/requirements.txt
+
+# 230 tests, replay mode, local platform, no credentials
+DEMO_MODE=replay PLATFORM_BACKEND=local ./.venv/bin/python -m pytest backend/tests -q
+
+cd backend && DEMO_MODE=replay PLATFORM_BACKEND=local ../.venv/bin/python -m uvicorn app.main:app --port 8077
+```
+
+Then, in another shell, run the whole runbook:
+
+```bash
+curl -X POST localhost:8077/api/demo/reset
+curl -X POST localhost:8077/api/demo/inject_scenario/S1     # -> BLOCK
+curl -X POST localhost:8077/api/demo/inject_scenario/S2     # -> BLOCK, injection stripped
+curl -X POST localhost:8077/api/demo/inject_scenario/S3     # -> declines to decide
+curl -X POST localhost:8077/api/demo/inject_scenario/S4     # -> RELEASE
+curl -X POST localhost:8077/api/demo/advance_clock -H 'content-type: application/json' -d '{"days":4}'   # -> S3 ESCALATEs
+curl -X POST localhost:8077/api/demo/inject_cross_tenant    # -> BLOCK at the second district
+```
+
+### Or in one command, with Docker
+
+No Python version to match and no virtualenv to build. The image is the same one that deploys to
+Cloud Run, and it serves the API and the built front end from a single origin:
+
+```bash
+docker build -t interdict .
+docker run --rm -p 8099:8080 -e DEMO_MODE=replay interdict
+# open http://localhost:8099 and drive the demo from the control bar
+```
+
+The container build is also the only honest check that this repository installs from scratch —
+it caught `requirements.txt` pinning `fastapi==0.118.0` against `google-adk`'s `>=0.133` floor,
+which made a clean `pip install` impossible while the developer's own virtualenv kept working.
+
+**Why this is a replay and not a mock.** Replay serves the actual responses the models returned
+during a recording run; it never synthesises one. A cache miss raises `ReplayMiss`, surfaced as
+HTTP 503 with the prompt hash, rather than degrading to a stub. A beat therefore either replays a
+real model response or fails loudly — it cannot quietly fake one. The keying, the recording
+procedure and the determinism work that makes it possible are in [CACHE.md](CACHE.md).
+
+For the front end as well, add `cd web && npm install && npm run dev` (port 5173, proxying
+`/api` to 8077) and drive the same endpoints from the UI.
+
+---
+
+## Contents
+
+- [Category fit](#category-fit)
+- [Who this is for](#who-this-is-for)
+- [The problem](#the-problem)
+- [What Interdict does](#what-interdict-does)
+- [The agent fleet](#the-agent-fleet)
+- [How a case flows, end to end](#how-a-case-flows-end-to-end)
+- [Failure containment: loops, hallucinations and dead lanes](#failure-containment-loops-hallucinations-and-dead-lanes)
+- [What is genuinely running on Google Cloud](#what-is-genuinely-running-on-google-cloud)
+- [Demo scenarios and verified outcomes](#demo-scenarios-and-verified-outcomes)
+- [Quickstart](#quickstart)
+- [Repo layout](#repo-layout)
+- [Synthetic data](#synthetic-data)
+- [Every claim in this README, and how to check it](#every-claim-in-this-readme-and-how-to-check-it)
+
+---
+
+## Category fit
+
+The Fortified Enterprise Fleet track asks four questions. Interdict answers each one with a
+surface you can open, not a paragraph — and each surface is a beat of the recorded demo.
+
+| Track question | Surface | Demo beat | What it shows |
+|---|---|---|---|
+| Discover your agents | **Registry** | 1 | All twelve agents, versions and changelogs, and each agent's granted *and denied* identity scopes as a rendered manifest |
+| Audit their reasoning | **Docket** | 7 | The full reasoning trace per case — every finding with its cited evidence, the challenge and its rebuttals, latency and tokens per node, and the hash-chained Nacha audit record with `prev_record_hash` visible |
+| Trust their data handling | **Posture** | 3 and 7 | Every guardrail screening with the literal removed content, every scope decision including model-initiated ones, and the nine fields the cross-district exchange withholds |
+| Scale them safely | **Console** + fleet health strip | 2 | Four verification lanes fanning out concurrently under a durable runner, with checkpoints, an idempotent effects ledger, per-step call and time ceilings, and Python rails that bound what any of them can cause |
+
+The demo runbook is `context/DEMO_RUNBOOK.md`.
+
+---
+
+## Who this is for
+
+**The business manager of a mid-size public school district.** One person, or a small business
+office, signing seven-figure payment runs — the bus contractor, food services, custodial supply,
+athletics, textbooks, a roofing project — with no security team, no fraud analyst and no budget
+for enterprise payment controls. The money is public.
+
+This is not an analyst tool and it is deliberately not built for one. There is nobody in this
+building whose job is fraud. The system has to hold the money, do the verification work itself,
+and hand back either a decision it can defend line by line or an honest refusal to decide. The
+people who lose most to this attack are the ones who can least afford to defend against it, and
+they are the ones who get no product built for them.
+
+Everything downstream follows from that user. Abstention is a first-class outcome because a lone
+business manager cannot audit a confident guess. The audit record is a downloadable artifact
+because the person who needs it is the one who will be asked for it. The reasoning trace is
+readable prose with citations because the reader is not a security engineer.
+
 ---
 
 ## The problem
@@ -49,14 +160,6 @@ must run risk-based processes to identify entries initiated under false pretense
 authorised through deception — and must document that process. Interdict's hash-chained audit
 record is that documentation. It is why the record is a first-class artifact with a download
 rather than a log line.
-
-### Who it is for
-
-The business manager of a mid-size public school district. One person, or a small business office,
-signing seven-figure payment runs — the bus contractor, food services, custodial supply,
-athletics, textbooks, a roofing project — with no security team, no fraud analyst and no budget
-for enterprise payment controls. The money is public. The people who lose most to this attack are
-the ones who can least afford to defend against it.
 
 ---
 
@@ -202,6 +305,60 @@ is why every rail is one-directional.
 
 ---
 
+## Failure containment: loops, hallucinations and dead lanes
+
+The honest question about any agent fleet is what happens when a worker agent loops, stalls, or
+returns something it made up. Six mechanisms answer it, and none of them is a prompt.
+
+**A hallucinated verdict cannot reach adjudication.** `Finding` is a Pydantic model with a
+`model_validator` that rejects any verdict other than `inconclusive` that cites no evidence. An
+agent that asserts "this is fraudulent" with an empty `evidence` list raises a `ValidationError` at
+construction — the finding is never committed, never reaches the Challenger, and never reaches the
+Adjudicator. `inconclusive` is the only verdict permitted to cite nothing, which is exactly the
+verdict an agent should reach when it has nothing. Confabulation is a schema violation here, not a
+judgment call. `backend/app/models/domain.py`; the test is
+`test_committed_verdict_without_evidence_is_rejected` in `backend/tests/test_invariants.py`.
+
+**A dead lane becomes a recorded gap, not a dead case.** Each of the four fan-out lanes is wrapped
+in `asyncio.wait_for` with a 45-second budget. A lane that raises or times out does not propagate;
+it is recorded as an absent lane, and the Adjudicator is shown the gap and must weigh it. The
+fleet degrades to fewer independent checks — which the rails then treat more conservatively,
+because rail 5 requires two independent supporting agents including a positive callback for any
+RELEASE. Losing a lane can only ever move the outcome toward caution.
+
+**A tool-calling loop is stopped, not fatal.** ADK defaults `max_llm_calls` to 500, which is a
+runaway guard for a long-lived assistant, not a budget for a step whose observations were already
+gathered. `MAX_LLM_CALLS_PER_STEP = 4` — the opening call plus three tool round-trips. The expected
+number of tool calls is zero, so hitting the ceiling means the model is looping rather than
+working, and the step ends. Before this cap existed, a full run-through stalled for twenty-nine
+minutes on exactly this.
+
+**Every step has a wall-clock ceiling.** `STEP_TIMEOUT_SECONDS = 90.0`, applied in
+`adk_runtime.py` around every step rather than only around the four we remembered to wrap. The
+fan-out lanes have their own timeout; the Challenger and the Adjudicator run as their own pipeline
+steps with nothing above them, so a single hung request there would otherwise stall a case
+indefinitely with no lane to blame. The ceiling covers every step by construction.
+
+**An unparseable model reply gets one repair attempt, then fails loudly.** A repair suffix is
+appended to the instruction and the step is retried exactly once. A second failure raises with the
+agent and model named. It does not fall back to a default verdict, and it does not silently drop
+the step — a silently missing finding is indistinguishable from a clean one, which is the failure
+mode that matters when the output decides whether money moves.
+
+**The rails decide the outcome whatever the model says.** The Adjudicator's outcome is advisory.
+The six rules in the table above are Python that runs after the model, they are one-directional,
+and they can only ever make the outcome more conservative. A model that hallucinates its way to a
+confident RELEASE still meets rail 4's exposure ceiling and rail 5's two-independent-agents
+requirement. The worst case for a fully compromised reasoning step is an escalation to a human,
+not a payment.
+
+Underneath all six, the runner is durable: a checkpoint before each step and a completion after
+it, with an idempotent effects ledger keyed by `idempotency_key`, so a killed process resumes
+without re-executing work or emitting a second side effect. Scenario S5 demonstrates this with a
+genuinely killed runner, not a simulated one.
+
+---
+
 ## What is genuinely running on Google Cloud
 
 This section is split deliberately. "We enabled the API" and "the demo calls it" are different
@@ -227,7 +384,7 @@ going to claim a service is running because its API is enabled.
 | **Firestore** | project default | `store/firestore.py` is the durable repository — cases, findings, checkpoints, payments, audit records, posture events, the effects ledger and the replay cache. The exactly-once guarantee is a transactional `create()` enforced by the database rather than the caller. Selected by `PLATFORM_BACKEND=geap` or by pointing `FIRESTORE_EMULATOR_HOST` at the emulator. |
 | **Vertex AI Agent Runtime** (`reasoningEngines`) | `us-central1` | `platform/runtime.py` — `create`, `asyncQuery`, `list` against `v1beta1`. Surface and location verified by `make probe-geap`. |
 | **Agent Registry** (`agents`) | `global` | Bound in `platform/registry.py`, but it **does not provision on this project** and the Registry surface is served by `LocalRegistry` — `GET /api/registry` reports `"backend": "local"` so the UI never claims otherwise. `projects.locations.agents` is not a generic catalog: the discovery document permits exactly one `base_agent` value, and a create returns HTTP 200 with a long-running operation that never completes while `agents.list` stays empty (DECISIONS D-013a). The catalog is our own record either way; what the platform would add is hosting for it. |
-| **Pub/Sub, Cloud Run, Cloud Scheduler** | project | Enabled on the project for the hosted path — Cloud Run as the container target, Cloud Scheduler as the tick that wakes dormant cases whose callback grace window has lapsed. `make deploy` is not wired; nothing is deployed. |
+| **Pub/Sub, Cloud Run, Cloud Scheduler** | project | Enabled on the project for the hosted path — Cloud Run as the container target, Cloud Scheduler as the tick that wakes dormant cases whose callback grace window has lapsed. `make deploy` is not wired; **nothing is deployed and there is no hosted URL.** |
 
 Two location facts caused real work and are worth stating plainly, because they are not
 discoverable from the docs alone:
@@ -260,7 +417,9 @@ supplies an artifact and its metadata; what the fleet concludes is up to the fle
 escalating, the fixture is wrong, not the rules.
 
 Every outcome below was observed end to end against live Gemini calls on Vertex AI, through the
-ADK runtime, with the wall-clock timings taken from that run. A demo reset takes 20ms.
+ADK runtime, with the wall-clock timings taken from that run. A demo reset takes 20ms. The same
+outcomes reproduce offline in `replay` at about 1.8 seconds per scenario. Three consecutive clean
+run-throughs of the whole runbook were recorded live: **57 checks, 0 failures.**
 
 | ID | Scenario | What the fleet did |
 |---|---|---|
@@ -270,6 +429,25 @@ ADK runtime, with the wall-clock timings taken from that run. A demo reset takes
 | **S3 → wake** | the clock advances 4 days, past the 48-hour callback grace window | The case stops waiting and decides: **ESCALATE**, on the rail that says silence is not confirmation |
 | **S4** | `delayed_release` — the vendor returns the callback four days later and confirms the change | Dormant session rehydrates with prior findings visible, the new callback finding supersedes the stale one, and the case reaches **RELEASE** in 41.6 seconds |
 | **S5** | `crash_resume` — S1 with the runner genuinely killed mid fan-out, then resumed | The resumed run re-executes only `recall_prior_art`, `fanout_verification`, `adversarial_challenge` and `adjudication`; `hold_payments` and `begin_verification` are **skipped — not re-executed** — the case still reaches **BLOCK**, and the effects ledger holds exactly one entry |
+
+### What the flagship case looks like on the clock
+
+Beat 2 of the demo, measured on camera against live Gemini on Vertex, from the click to each
+visible event:
+
+| t | What appears |
+|---|---|
+| 2.5s | Hold fires. `$340,000` moves into HELD on the ledger, the case enters the queue and is selected |
+| 2.7s | Four lanes go live, staggered 0.6s apart |
+| 10.9–12.4s | Four findings land, chips slot into the rail |
+| 24.2s | Steelman lands and is struck through — 4 rebuttals, 4 defeated |
+| **30.4s** | **Balance tips, BLOCK renders, the money is committed** |
+| ~65s | The injection HTTP request returns |
+
+That last row is not the user-visible latency and this README does not present it as one. The
+verdict is on screen at 30.4 seconds; the remaining time is background learning work — the
+dossier, the exchange publish and the proactive sweep — and nothing on screen changes while it
+runs.
 
 ### The cross-tenant moment
 
@@ -300,7 +478,8 @@ system makes about its own detection that is not a claim about attacks it has al
 
 ## Quickstart
 
-Judges do not need to run this. If you want to anyway:
+The two-minute offline path is at the [top of this README](#reproduce-every-claim-in-this-readme-offline-in-two-minutes).
+This section covers the rest, including live runs.
 
 ### Prerequisites
 
@@ -341,7 +520,7 @@ PLATFORM_BACKEND=local
 ### Test
 
 ```bash
-make test        # 198 tests, replay mode, local platform, no credentials
+make test          # 230 tests, replay mode, local platform, no credentials
 make check-schema  # fails if schemas/ has drifted from the Pydantic models
 ```
 
@@ -359,6 +538,8 @@ cd web && npm run dev
 `synthetic_data: true`. The four surfaces are Console, Docket, Registry and Posture; `Cmd-K` opens
 the command palette. Drive a scenario with
 `curl -X POST localhost:8077/api/demo/inject_scenario/S1`.
+
+Nothing is hosted. `make deploy` is not wired, and there is no deployed URL for this project.
 
 ### The three demo modes
 
@@ -408,7 +589,7 @@ backend/app/
   seed/          the synthetic corpus, the five scenarios, the second district, the inbox
   services/      payments (the only code allowed to move money) and the red-team sandbox
   store/         Repository (in-memory + Firestore), the checkpoint log, the effects ledger
-backend/tests/   198 tests, including a grep test that forbids datetime.now() under app/
+backend/tests/   230 tests, including a grep test that forbids datetime.now() under app/
 context/         the durable spec: PRODUCT, AGENTS, PLATFORM, DATA_MODEL, DEMO_RUNBOOK,
                  UI_SPEC, and DECISIONS — the judgment log, with the reasoning behind each call
 fixtures/        the recorded replay cache
@@ -442,3 +623,26 @@ banner saying so.
   callback number — are real and documented; the artifacts carrying them are not.
 - Seeded historical cases in `seed/history.py` are corpus, not agent output, and are never
   presented as live reasoning.
+
+---
+
+## Every claim in this README, and how to check it
+
+Nothing here asks to be taken on trust. Each row is a command or a file.
+
+| Claim | How to verify |
+|---|---|
+| **230 tests, and they run with no credentials** | `DEMO_MODE=replay PLATFORM_BACKEND=local ./.venv/bin/python -m pytest backend/tests -q`, or `make test`. No `GOOGLE_APPLICATION_CREDENTIALS`, no project, no key. |
+| **The fleet really runs on Google ADK** | `grep -rn "google.adk" backend/app --include=*.py` returns hits in exactly one file: `agents/adk_runtime.py`. Every reasoning step goes through that one construction site — `LlmAgent`, `Runner`, `FunctionTool`, `before_tool_callback`. There is no second path and no direct-API fallback. |
+| **A hallucinated verdict cannot be committed** | Read the `Finding` `model_validator` in `backend/app/models/domain.py`. Run `test_committed_verdict_without_evidence_is_rejected` and `test_inconclusive_may_cite_nothing` in `backend/tests/test_invariants.py`: a `supports` or `contradicts` verdict with an empty `evidence` list raises `ValidationError`; only `inconclusive` may cite nothing. |
+| **A looping agent is bounded** | `MAX_LLM_CALLS_PER_STEP = 4` and `STEP_TIMEOUT_SECONDS = 90.0` in `backend/app/agents/adk_runtime.py`, both applied at the call site — `RunConfig(max_llm_calls=...)` and an `asyncio.wait_for` around every step. |
+| **Scope denial is enforced, not asserted** | `curl -X POST localhost:8077/api/demo/force_scope_violation` — `callback` attempts `vendor:banking:read`, the call is refused, and a posture event is written. For the model-initiated path, `backend/tests/test_adk_runtime.py` asserts the `before_tool_callback` returns `{"error": "scope_denied", ...}` to the model, and that a permitted call returns `None` so the gate is not simply denying everything. |
+| **No agent is declared a tool its identity denies** | `test_no_agent_is_declared_a_tool_its_identity_denies` in `backend/tests/test_adk_runtime.py` is parameterised across the whole fleet: for every agent, every declared `FunctionTool`'s required scope must be in that agent's grant. Companion tests assert `callback` is declared `contact_of_record` and *not* `read_vendor_banking`, and that `challenger` is declared no tools at all. |
+| **The injection is really stripped, and the log is literal** | Run S2 — `curl -X POST localhost:8077/api/demo/inject_scenario/S2` — and read `screening.neutralizations[0].excerpt` in the response body. It is the removed sentence verbatim, with its technique, location and offset. The same object renders on the Posture surface. The case still reaches BLOCK, on evidence gathered independently of the artifact's instructions. |
+| **The demo outcomes are not hard-coded** | `backend/app/seed/scenarios.py` supplies artifacts and metadata only; no scenario carries an outcome. `backend/tests/test_scenario_fixtures.py` enforces the coupling between the fixtures and the thresholds — notably that S3/S4 exposure stays below the auto-release ceiling, so S4 can reach RELEASE through rail 4 rather than around it. |
+| **Replay cannot fake a beat** | Delete or corrupt an entry in `fixtures/` and re-run the scenario: it returns HTTP 503 with the prompt hash, not a plausible answer. See [CACHE.md](CACHE.md). |
+| **Time is never read from the wall clock** | `backend/tests/test_no_wallclock.py` greps `backend/app/` and fails on any `datetime.now()`. Every time read goes through the injected Clock, which is what makes `advance_clock` a real 4-day jump rather than a fixture swap. |
+| **Nothing re-executes after a crash** | Run S5. The resume report lists `hold_payments` and `begin_verification` as skipped on checkpoint match, re-executes only the four remaining steps, and the effects ledger holds exactly one entry. `backend/tests/test_durability.py`. |
+| **The exchange withholds what it says it withholds** | `backend/tests/test_tenancy.py` checks the nine withheld field names against the published exchange entries themselves, so the UI cannot advertise a withheld field the exchange is in fact publishing. |
+| **All data is synthetic** | Every domain is on `.test` (RFC 2606 — cannot resolve); every phone number is a 555 number; and `BankingDetails` in `backend/app/models/domain.py` has only `account_last4` and `routing_last4`, each validated to exactly four digits, with no field for the rest. `GET /healthz` reports `synthetic_data: true`. |
+| **The generated schemas match the models** | `make check-schema` regenerates from the Pydantic models and fails on any drift. `schemas/_invariants.json` lists the enforced invariants, including the evidence rule above. |
