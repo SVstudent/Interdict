@@ -36,11 +36,11 @@ export function InboxPanel({ onCaseOpened }: { onCaseOpened: () => void }) {
     return map;
   }, [run]);
 
-  const process = async () => {
+  const process = async (triageOnly = false) => {
     setBusy(true);
     try {
-      setRun(await api.processInbox());
-      onCaseOpened();
+      setRun(await api.processInbox(triageOnly));
+      if (!triageOnly) onCaseOpened();
     } finally {
       setBusy(false);
     }
@@ -75,9 +75,19 @@ export function InboxPanel({ onCaseOpened }: { onCaseOpened: () => void }) {
         ) : (
           <span className="label-micro">{messages.length} messages</span>
         )}
-        <span className="ml-auto shrink-0">
-          <Button tone="brass" disabled={busy} onClick={process}>
-            {busy ? 'Reading…' : 'Process inbox'}
+        {/* Two verbs because they are two different things to watch, on very different clocks.
+            Triage reads the whole morning and decides what deserves the fleet — cheap, concurrent,
+            a few seconds. Investigating drives each flagged message through six model calls, one
+            case at a time to stay under the rate ceiling, and takes minutes. Collapsing them into
+            one button meant the only way to see the triage was to commit to the whole run. */}
+        <span className="ml-auto flex shrink-0 items-center gap-1">
+          <Button tone="brass" disabled={busy} onClick={() => process(true)}
+                  title="Read and triage the morning's post. No cases are opened.">
+            {busy ? 'Reading…' : 'Triage'}
+          </Button>
+          <Button variant="minimal" disabled={busy} onClick={() => process(false)}
+                  title="Triage, then drive every flagged message through the fleet. Minutes.">
+            Investigate
           </Button>
         </span>
       </div>

@@ -35,7 +35,9 @@ import smtplib
 import ssl
 import sys
 import time
+from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
+from email.utils import format_datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -60,52 +62,64 @@ def load_env() -> None:
 def build_messages(address: str) -> list[EmailMessage]:
     """The scenario artifacts, plus ordinary mail for the triage ratio to be about something."""
     from app.config import DEMO_EPOCH
-    from app.seed.inbox import build_inbox
+    from app.seed.inbox import SCENARIO_MESSAGES, build_inbox
     from app.seed.scenarios import CATALOG, build_request
 
     out: list[EmailMessage] = []
+    attachments = {sid: name for sid, _, _, name in SCENARIO_MESSAGES}
+    sent_at = datetime.now(timezone.utc)
 
-    # The three that are asking to move money. Bodies come from the same fixture builder the
-    # fleet reads, so what lands in the inbox is what the console will show.
-    for scenario_id in ("S1", "S2", "S3"):
-        scenario = CATALOG[scenario_id]
-        request = build_request(scenario_id, DEMO_EPOCH, f"REQ-{scenario_id}")
-        meta = request.artifact_metadata
-
+    # ONE loop over the fixture, oldest first, so the order is DERIVED rather than restated.
+    #
+    # The order is carried two ways because they are read by two different things. The backdated
+    # `Date` header is what the console sorts on after fetching. Sending oldest-first is what
+    # makes GMAIL'S OWN list agree, since Gmail orders by its internal receipt time — and the
+    # whole beat is a cut from one list to the other. Backdating also makes the mailbox read like
+    # a real morning (7 minutes ago, 27, 48 …) instead of 25 messages stamped the same second.
+    for message in reversed(build_inbox(DEMO_EPOCH)):
+        age = DEMO_EPOCH - message.received_at
         msg = EmailMessage()
-        msg["From"] = f"Accounts Receivable <{address}>"
         msg["To"] = address
-        msg["Subject"] = str(meta.get("subject") or f"Remittance update — {scenario.slug}")
-        # Correlates the fetched message back to its fixture. Read by platform/mailbox.py.
-        msg["X-Interdict-Scenario"] = scenario_id
-        # The sender the ARTIFACT claims, kept as a header rather than forged into the envelope:
-        # this script authenticates as you and sends to you, and spoofing the envelope would only
-        # get the message rejected. The fleet reads the claimed addresses from the fixture.
-        msg["X-Interdict-Claimed-From"] = str(meta.get("from") or "")
-        msg["X-Interdict-Claimed-Reply-To"] = str(meta.get("reply_to") or "")
-        msg.set_content(request.raw_artifact)
+        msg["Date"] = format_datetime(sent_at - age)
+        # Scopes the console's fetch to this repository's own messages, so it never reads — or
+        # renders on camera — the presenter's genuine private mail.
+        msg["X-Interdict-Demo"] = "1"
 
-        if scenario_id == "S2":
-            # The poisoned attachment. Plain text on purpose: the hidden-instruction span has to
-            # survive transit intact for the guardrail beat to strike through the real thing.
-            msg.add_attachment(
-                request.raw_artifact.encode(),
-                maintype="text", subtype="plain",
-                filename="remittance-advice.txt",
-            )
-        out.append(msg)
-
-    # Ordinary morning post. Without it the triage beat has nothing to be right about: a fleet
-    # that flags the only three messages in an inbox of three has not demonstrated judgment.
-    for message in build_inbox(DEMO_EPOCH):
         if message.scenario_id:
-            continue
-        msg = EmailMessage()
-        msg["From"] = f"{message.sender_name} <{address}>"
-        msg["To"] = address
-        msg["Subject"] = message.subject
-        msg["X-Interdict-Claimed-From"] = message.sender_email
-        msg.set_content(message.body)
+            request = build_request(message.scenario_id, DEMO_EPOCH, f"REQ-{message.scenario_id}")
+            meta = request.artifact_metadata
+            msg["From"] = f"Accounts Receivable <{address}>"
+            msg["Subject"] = message.subject
+            # Correlates the fetched message back to its fixture. Read by platform/mailbox.py.
+            msg["X-Interdict-Scenario"] = message.scenario_id
+            # The addresses the ARTIFACT claims, kept as headers rather than forged into the
+            # envelope: this script authenticates as you and sends to you, and spoofing the
+            # envelope would only get the message rejected.
+            msg["X-Interdict-Claimed-From"] = str(meta.get("from") or "")
+            msg["X-Interdict-Claimed-Reply-To"] = str(meta.get("reply_to") or "")
+            msg.set_content(request.raw_artifact)
+            if attachments.get(message.scenario_id):
+                # Plain text on purpose: the hidden-instruction span has to survive transit
+                # intact for the guardrail beat to strike through the real thing.
+                msg.add_attachment(
+                    request.raw_artifact.encode(), maintype="text", subtype="plain",
+                    filename=attachments[message.scenario_id],
+                )
+        else:
+            msg["From"] = f"{message.sender_name} <{address}>"
+            msg["Subject"] = message.subject
+            msg["X-Interdict-Claimed-From"] = message.sender_email
+            msg.set_content(message.body)
+            if message.attachment_name:
+                # Six of the ordinary messages carry an attachment in the fixture, and the pane
+                # renders a paperclip for each. Without one here the live path shows six fewer
+                # paperclips than the seeded pane — a difference nobody would predict and the
+                # camera would show. The content is a placeholder; only its presence is read.
+                msg.add_attachment(
+                    b"Synthetic demo attachment. No real document.",
+                    maintype="text", subtype="plain", filename=message.attachment_name,
+                )
+
         out.append(msg)
 
     return out

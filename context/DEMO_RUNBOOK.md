@@ -7,6 +7,7 @@ Four minutes, unedited, one take. Total budget 4:00; the table below sums to 3:5
 | # | Beat | Surface | Budget | Proves |
 |---|---|---|---|---|
 | 0 | Hook: 74% hit, $3B lost, 17% defending | slide | 0:15 | Stakes |
+| 0.5 | **The inbox** — the morning's post in a real mailbox, then the same messages in the console; one click triages 25 and flags 3 | Gmail + Console | 0:20 | It reads real mail, and it leaves most of it alone |
 | 1 | **Discovery** — find the fleet, open Challenger version history + scope manifest | Registry | 0:20 | Agent discovery |
 | 2 | **The block** — email lands, hold fires, four lanes fan out, steelman defeated, balance tips, $340K held | Console | 1:10 | Orchestration at scale |
 | 3 | **The injection** — poisoned PDF, guardrail strikes it through, case proceeds on real evidence | Console + Posture | 0:20 | Guardrails |
@@ -23,6 +24,7 @@ Four minutes, unedited, one take. Total budget 4:00; the table below sums to 3:5
 | # | Command / action | Expected visible result |
 |---|---|---|
 | 0 | (slide) | — |
+| 0.5 | Show the Gmail inbox, cut to Console -> INBOX tab, click `Triage` | Same 25 subjects in both, `live mailbox` pill in the console header, then: 25 read, 22 dismissed **without a model call**, 3 flagged with a reason line each |
 | 1 | Navigate Registry, click `interdict.challenger` -> Versions | v1.x -> v2.0.0 changelog, granted/denied scope chips |
 | 2 | `POST /api/demo/inject_scenario/S1` | Hold fires, four lanes go live concurrently, chips slot into rail, steelman lands then is struck through, balance tips to BLOCK, ledger increments $340,000 held |
 | 3 | `POST /api/demo/inject_scenario/S2` | Posture shows the literal injected sentence struck through; case still reaches BLOCK on genuine evidence |
@@ -54,6 +56,23 @@ the verdict lands rather than waiting for the request. Beat 3 measures 53-58s th
 
 **Beat 2's HTTP time varies 64-70s run to run.** The verdict timing does not, because the variance
 is in the learning work that happens after it. Judge the beat by the verdict, not the spinner.
+
+## Beat 0.5 — the inbox, and what is real about it
+
+The console can read a real mailbox over IMAP (`INBOX_SOURCE=gmail`). Setup, ordering and the
+things that break are in `context/DEMO_INBOX.md`. Two rules for the recording:
+
+- **Click `Triage`, never `Investigate`.** Triage reads and sorts the whole morning in a few
+  seconds. Investigate additionally drives each flagged message through the full fleet, one case
+  at a time — about three minutes, which is most of the video. The scenario beats open their own
+  cases directly.
+- **If the `live mailbox` pill is absent, the console is showing fixtures.** The mailbox degraded
+  and said so. That is a fine thing to record — the subjects are identical either way, because
+  the sender script builds them from the same fixtures — but do not narrate it as a live inbox.
+
+Run `python3 scripts/check_demo_inbox.py` before the take. It fails on the things that are
+invisible until they are on camera: headers stripped in transit, the three attack messages
+sorting to the bottom, or your own address rendering as a sender.
 
 ## Hard rules
 - **`kill_runner` must actually kill the runner.** The inherited implementation broadcasts a fake

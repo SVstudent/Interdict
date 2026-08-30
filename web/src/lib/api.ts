@@ -59,7 +59,10 @@ export const api = {
     // implied a live mailbox would be claiming something it had not done.
     source?: 'seed' | 'gmail'; correlation?: 'fixture' | 'header'; degraded?: string | null;
   }>('/api/inbox'),
-  processInbox: () => post<InboxRun>('/api/inbox/process'),
+  // `triageOnly` reads and sorts the morning's post without driving the flagged cases
+  // through the fleet. Seconds rather than minutes — see the endpoint's docstring.
+  processInbox: (triageOnly = false) =>
+    post<InboxRun>(`/api/inbox/process${triageOnly ? '?triage_only=true' : ''}`),
   callbackInstructions: (caseId: string) =>
     req<CallbackInstructions>(`/api/cases/${caseId}/callback`),
   recordCallback: (caseId: string, outcome: 'confirmed' | 'denied' | 'no_answer',

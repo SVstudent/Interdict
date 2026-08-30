@@ -49,6 +49,12 @@ log = logging.getLogger("interdict.mailbox")
 
 # The header the demo sender stamps so a fetched message can be matched to its fixture.
 SCENARIO_HEADER = "X-Interdict-Scenario"
+# The addresses the artifact claims. Written by scripts/send_demo_inbox.py; see _parse.
+CLAIMED_FROM_HEADER = "X-Interdict-Claimed-From"
+CLAIMED_REPLY_TO_HEADER = "X-Interdict-Claimed-Reply-To"
+# Stamped on every message the demo sender puts in the mailbox, and the thing the fetch is
+# scoped to. See _fetch_blocking.
+DEMO_HEADER = "X-Interdict-Demo"
 
 IMAP_HOST = "imap.gmail.com"
 IMAP_PORT = 993
@@ -147,12 +153,30 @@ class GmailMailbox:
             client.login(self._address, self._password)
             # readonly: this session cannot change a flag, let alone delete anything.
             client.select(self._folder, readonly=True)
-            status, data = client.search(None, "ALL")
+
+            # Scoped to the messages this repository's own sender put there, NOT to the whole
+            # mailbox. `ALL` fetched the presenter's genuine private mail — which would then be
+            # rendered on camera, shipped in the API response, and stored in a system whose
+            # standing claim is that every address in it is synthetic. Reading a real mailbox
+            # does not require reading someone's real correspondence.
+            #
+            # It also makes the newest-N window mean "the newest N demo messages", so the two
+            # fetches this beat performs — one on page load, one on the click — agree even if
+            # ordinary mail arrives between them. They are correlated by message id in the panel,
+            # and a shifted window silently renders rows with no verdict.
+            status, data = client.search(None, "HEADER", DEMO_HEADER, "1")
+            if status != "OK" or not (data and data[0]):
+                # A mailbox populated some other way still works; the failure mode is the old
+                # one rather than an empty pane. The preflight reports which path was taken.
+                status, data = client.search(None, "ALL")
             if status != "OK":
                 raise RuntimeError(f"IMAP search failed: {status}")
 
             ids = (data[0] or b"").split()
-            # Newest first, and only as many as the console shows.
+            # Take the tail of the mailbox — the most recently arrived — then sort by the
+            # message's own Date below. IMAP sequence order is arrival order, which is close to
+            # but not the same as Date order, and the console renders whatever order this
+            # returns: `InboxPanel` does not sort.
             ids = list(reversed(ids))[: self._limit]
 
             out: list[FetchedMessage] = []
@@ -161,6 +185,14 @@ class GmailMailbox:
                 if status != "OK" or not payload or not isinstance(payload[0], tuple):
                     continue
                 out.append(_parse(payload[0][1], raw_id.decode(), now))
+
+            # Newest first, exactly like the seeded inbox (`seed/inbox.py` sorts the same way).
+            #
+            # This sort is NOT what puts the three attack messages at the top — the sender's
+            # backdated `Date` headers do that, and before those existed reordering the send did.
+            # What the sort buys is independence from IMAP sequence numbering and from send
+            # jitter, so a partial re-send or a mailbox that renumbers cannot reorder the pane.
+            out.sort(key=lambda m: m.received_at, reverse=True)
             return out
         finally:
             try:
@@ -212,6 +244,21 @@ def _payload_text(part: Message) -> str:
 def _parse(raw: bytes, fallback_id: str, now: datetime) -> FetchedMessage:
     msg = email.message_from_bytes(raw)
     sender_name, sender_email = email.utils.parseaddr(_decode(msg.get("From")))
+
+    # The address the ARTIFACT claims, not the envelope it arrived in.
+    #
+    # Two reasons, and the second is the important one. First, the demo's messages are sent by
+    # the presenter to themselves, so the envelope `From` is their own personal address — which
+    # would put a real email address into a system whose standing claim is that every address in
+    # it is synthetic. Second, and generally: in a business-email-compromise the envelope sender
+    # is frequently a genuinely compromised mailbox, and the interesting address is the one the
+    # message asks you to reply to. Reading the claimed header is closer to what the analysis is
+    # actually about, not merely convenient for the recording.
+    claimed = _decode(msg.get(CLAIMED_FROM_HEADER))
+    if claimed:
+        claimed_name, claimed_email = email.utils.parseaddr(claimed)
+        sender_email = claimed_email or claimed
+        sender_name = sender_name or claimed_name
     body, has_attachment, attachment_name = _body_of(msg)
 
     # The injected clock, not the wall clock. A message with an unreadable Date header still has

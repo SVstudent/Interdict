@@ -87,8 +87,17 @@ async def read_inbox(state: AppState = Depends(get_state)) -> dict[str, Any]:
 
 
 @router.post("/process")
-async def process_inbox(state: AppState = Depends(get_state)) -> dict[str, Any]:
+async def process_inbox(
+    triage_only: bool = False, state: AppState = Depends(get_state)
+) -> dict[str, Any]:
     """Triage every message, then run the fleet on whatever survives triage.
+
+    `triage_only=true` stops after the triage. Triage is cheap and concurrent — most of the
+    morning is settled by a deterministic scan with no model call at all — so it answers in a few
+    seconds, while driving the flagged cases is six model calls each and about a minute apiece,
+    run one at a time to stay under the provider's rate ceiling. Those are two different things
+    to watch, and the demo wants the first without waiting three minutes for the second. The
+    scenario beats open their cases directly.
 
     Triage runs concurrently — it is cheap and mostly free. The resulting CASES are driven one at
     a time on purpose: each is six model calls across a bursty fan-out, and firing three of those
@@ -121,7 +130,7 @@ async def process_inbox(state: AppState = Depends(get_state)) -> dict[str, Any]:
     by_id = {m.message_id: m for m in messages}
     opened: list[dict[str, Any]] = []
 
-    for verdict in verdicts:
+    for verdict in verdicts if not triage_only else []:
         if not verdict.investigate:
             continue
         message = by_id[verdict.message_id]
@@ -179,6 +188,7 @@ async def process_inbox(state: AppState = Depends(get_state)) -> dict[str, Any]:
     return {
         "ok": True,
         **provenance,
+        "triage_only": triage_only,
         "messages_read": len(messages),
         "triage": {
             "investigate": sum(1 for v in verdicts if v.investigate),

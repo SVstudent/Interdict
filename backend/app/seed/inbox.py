@@ -125,6 +125,21 @@ ORDINARY: list[tuple[int, str, str, str, str, str | None]] = [
 ]
 
 
+# (scenario_id, minutes ago, subject, attachment filename or None)
+# Offsets are chosen against the ORDINARY offsets above so the three land at rows 1, 4 and 8.
+#
+# Two constraints pull against each other. They must stay INTERLEAVED — three suspicious messages
+# sitting together at the top of an otherwise clean inbox is a fixture arranging itself to be
+# found, and the claim is that the fleet picks them out of a real morning. But they must also be
+# reachable WITHOUT SCROLLING: the pane shows about ten rows once a triage run gives every row a
+# reason line, and a message the camera never sees is a message the demo did not show.
+SCENARIO_MESSAGES = (
+    ("S1", 7, "Updated remittance details — invoice INV-4471", None),
+    ("S2", 27, "Remittance update (see attached) — INV-5120", "remittance-advice.txt"),
+    ("S3", 48, "Remittance update following group acquisition — INV-6204", None),
+)
+
+
 def build_inbox(now: datetime, scenario_requests: dict[str, Any] | None = None) -> list[InboxMessage]:
     """The morning's post, newest first.
 
@@ -145,11 +160,15 @@ def build_inbox(now: datetime, scenario_requests: dict[str, Any] | None = None) 
         for i, (mins, name, email, subject, body, attachment) in enumerate(ORDINARY)
     ]
 
-    for scenario_id, minutes, subject in (
-        ("S1", 7, "Updated remittance details — invoice INV-4471"),
-        ("S2", 67, "Remittance update (see attached) — INV-5120"),
-        ("S3", 133, "Remittance update following group acquisition — INV-6204"),
-    ):
+    # Subjects here are the single source of truth for BOTH inbox paths: the seeded pane renders
+    # them directly, and scripts/send_demo_inbox.py imports them so the copy that lands in a real
+    # mailbox carries the same Subject line. They diverged once — S2 read one way in the console
+    # and another in Gmail — which is exactly the discontinuity a demo cut exposes.
+    #
+    # S2 carries an attachment because S2 IS the poisoned-attachment scenario. Without it the one
+    # message whose entire point is a malicious document was the only flagged row with no
+    # paperclip.
+    for scenario_id, minutes, subject, attachment in SCENARIO_MESSAGES:
         messages.append(InboxMessage(
             message_id=f"MSG-{scenario_id}",
             received_at=now - timedelta(minutes=minutes),
@@ -157,6 +176,8 @@ def build_inbox(now: datetime, scenario_requests: dict[str, Any] | None = None) 
             sender_email="—",
             subject=subject,
             body="",          # filled from the scenario fixture at read time
+            has_attachment=bool(attachment),
+            attachment_name=attachment,
             scenario_id=scenario_id,
         ))
 
