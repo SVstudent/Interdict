@@ -6,6 +6,8 @@ instead of broadcasting a message about a kill that never happened (DECISIONS D-
 """
 from __future__ import annotations
 
+import logging
+
 import asyncio
 from dataclasses import dataclass, field
 from typing import Any
@@ -50,6 +52,9 @@ class AppState:
     # ids and every evidence locator built from them — repeat exactly across rehearsals of the
     # same beat order, which is what lets replay mode serve a whole case. Reset clears it.
     injection_seq: int = 0
+    # Where the morning's post comes from. Built once at startup so a real mailbox
+    # holds one connection policy rather than one per request.
+    mailbox: Any = None
     agents: dict[str, Any] = field(default_factory=dict)
 
     # --- events ------------------------------------------------------------------
@@ -226,6 +231,20 @@ def _safe_provider(settings: Settings):
         return _UnconfiguredProvider(str(exc))
 
 
+def _safe_mailbox(settings):
+    """Never let mailbox configuration stop the service starting."""
+    from .platform.mailbox import SeededMailbox, build_mailbox
+
+    try:
+        return build_mailbox(settings)
+    except Exception as exc:  # noqa: BLE001
+        logging.getLogger("interdict").warning(
+            "inbox source %r unavailable (%s); using the seeded inbox",
+            getattr(settings, "INBOX_SOURCE", "seed"), exc,
+        )
+        return SeededMailbox()
+
+
 def build_state(settings: Settings | None = None, repo: Repository | None = None) -> AppState:
     settings = settings or Settings()
     if repo is None:
@@ -249,6 +268,9 @@ def build_state(settings: Settings | None = None, repo: Repository | None = None
         # Constructed lazily-safe: replay mode never calls it, so a missing key is only an
         # error at the moment a real model call is actually attempted.
         llm=_safe_provider(settings),
+        # `seed` unless INBOX_SOURCE says otherwise. A misconfigured real mailbox degrades to the
+        # fixtures rather than raising, so a bad app password cannot stop the service booting.
+        mailbox=_safe_mailbox(settings),
     )
     state.agents = {
         "sentry": SentryAgent(settings),

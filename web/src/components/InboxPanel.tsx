@@ -14,11 +14,14 @@ import { Button, Dot, NonIdealState, Pill } from './primitives';
  */
 export function InboxPanel({ onCaseOpened }: { onCaseOpened: () => void }) {
   const [messages, setMessages] = useState<InboxMessage[]>([]);
+  const [source, setSource] = useState<string | null>(null);
   const [run, setRun] = useState<InboxRun | null>(null);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    void api.inbox().then((r) => setMessages(r.messages)).catch(() => setMessages([]));
+    void api.inbox()
+      .then((r) => { setMessages(r.messages); setSource(r.degraded ? 'seed' : (r.source ?? null)); })
+      .catch(() => { setMessages([]); setSource(null); });
   }, []);
 
   const verdictFor = useMemo(() => {
@@ -48,6 +51,12 @@ export function InboxPanel({ onCaseOpened }: { onCaseOpened: () => void }) {
        grows past the flex container and its rows render underneath the panel footer. */
     <div className="flex h-full min-h-0 flex-col overflow-hidden">
       <div className="flex h-[30px] shrink-0 items-center gap-2 rule-b px-3">
+        {/* Where the post came from. Only shown when it is a real mailbox: labelling the default
+            "seed" would be noise, but letting a recording imply a live inbox that was actually
+            fixtures would be a claim the system had not earned. */}
+        {source === 'gmail' && (
+          <Pill tone="verdigris" minWidth={0}>live mailbox</Pill>
+        )}
         {run ? (
           <span className="flex min-w-0 items-baseline gap-2 truncate">
             <span className="label-micro">Read</span>

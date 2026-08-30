@@ -52,7 +52,13 @@ export const api = {
     req<Vendor[]>(`/api/vendors${tenantId ? `?tenant_id=${tenantId}` : ''}`),
   threatLibrary: (tenantId?: string) =>
     req<ThreatLibrary>(`/api/threat-library${tenantId ? `?tenant_id=${tenantId}` : ''}`),
-  inbox: () => req<{ messages: InboxMessage[]; count: number }>('/api/inbox'),
+  inbox: () => req<{
+    messages: InboxMessage[]; count: number;
+    // Where the post came from. `seed` is the fixture inbox, `gmail` a real mailbox read over
+    // IMAP. Rendered in the panel header: a console that showed fixtures while the recording
+    // implied a live mailbox would be claiming something it had not done.
+    source?: 'seed' | 'gmail'; correlation?: 'fixture' | 'header'; degraded?: string | null;
+  }>('/api/inbox'),
   processInbox: () => post<InboxRun>('/api/inbox/process'),
   callbackInstructions: (caseId: string) =>
     req<CallbackInstructions>(`/api/cases/${caseId}/callback`),

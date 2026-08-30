@@ -135,6 +135,20 @@ class Settings(BaseSettings):
     PRO_MODEL: str = "gemini-3.1-pro-preview"
     USE_PRO_TIER_ACCEPTING_RULES_RISK: bool = False
 
+    # Where the morning's post comes from. `seed` is the fixture inbox and the default
+    # everywhere, including every test and every offline replay. `gmail` reads a real mailbox
+    # over IMAP, read-only, so the demo can open on messages that actually arrived — see
+    # platform/mailbox.py for what that does and does not make real.
+    #
+    # The app password is a credential and lives in .env, which is gitignored. Generate one at
+    # https://myaccount.google.com/apppasswords (needs 2-Step Verification). Nothing in this
+    # repository should ever contain its value.
+    INBOX_SOURCE: str = "seed"
+    GMAIL_ADDRESS: str = ""
+    GMAIL_APP_PASSWORD: str = ""
+    GMAIL_FOLDER: str = "INBOX"
+    GMAIL_MAX_MESSAGES: int = 25
+
     # Demo
     DEMO_MODE: DemoMode = DemoMode.REPLAY
     PLATFORM_BACKEND: PlatformBackend = PlatformBackend.LOCAL

@@ -15,7 +15,8 @@ from typing import Any
 
 from fastapi import APIRouter, Depends
 
-from ..seed.inbox import build_inbox
+from ..platform.mailbox import build_mailbox
+from ..seed.inbox import InboxMessage
 from ..seed.scenarios import CATALOG, build_request
 from ..state import AppState
 from .deps import get_state
@@ -23,28 +24,65 @@ from .deps import get_state
 router = APIRouter(prefix="/api/inbox", tags=["inbox"])
 
 
-def _materialise(state: AppState) -> list:
-    """The inbox with scenario bodies filled in from their fixtures."""
-    messages = build_inbox(state.clock.now())
+async def _materialise(state: AppState) -> tuple[list, dict[str, Any]]:
+    """The morning's post, and a truthful description of where it came from.
+
+    A message the fleet will actually open a case from needs a structured `ChangeRequest` behind
+    it. For the seeded inbox that is the fixture the message was built from. For a real mailbox it
+    is the fixture named by the message's own `X-Interdict-Scenario` header — the extraction step
+    that would parse it out of the body is not implemented, and is left visibly absent rather than
+    approximated. See platform/mailbox.py.
+    """
+    mailbox = state.mailbox
+    fetched = await mailbox.fetch(state.clock.now())
+
+    messages = [
+        InboxMessage(
+            message_id=f.message_id,
+            received_at=f.received_at,
+            sender_name=f.sender_name,
+            sender_email=f.sender_email,
+            subject=f.subject,
+            body=f.body,
+            has_attachment=f.has_attachment,
+            attachment_name=f.attachment_name,
+            scenario_id=f.scenario_id if f.scenario_id in CATALOG else None,
+        )
+        for f in fetched
+    ]
+
     for message in messages:
         if message.scenario_id and message.scenario_id in CATALOG:
             request = build_request(
                 message.scenario_id, state.clock.now(), f"REQ-{message.scenario_id}"
             )
-            message.body = request.raw_artifact
             meta = request.artifact_metadata
-            message.sender_name = "Accounts Receivable"
-            message.sender_email = str(meta.get("from", "—"))
+            # A real message keeps its own body and sender — that is the whole point of reading a
+            # real mailbox. Only the seeded inbox borrows the fixture's text.
+            if mailbox.source == "seed":
+                message.body = request.raw_artifact
+                message.sender_name = "Accounts Receivable"
+                message.sender_email = str(meta.get("from", "—"))
             message.metadata = {k: str(v) for k, v in meta.items() if v is not None}
-    return messages
+
+    provenance = {
+        "source": mailbox.source,
+        "correlation": "fixture" if mailbox.source == "seed" else "header",
+        "degraded": getattr(mailbox, "degraded", None),
+    }
+    if provenance["degraded"]:
+        # The fetch failed and we served fixtures. Say so rather than showing a quiet morning.
+        provenance["source"] = "seed"
+    return messages, provenance
 
 
 @router.get("")
 async def read_inbox(state: AppState = Depends(get_state)) -> dict[str, Any]:
-    messages = _materialise(state)
+    messages, provenance = await _materialise(state)
     return {
         "messages": [m.as_dict() for m in messages],
         "count": len(messages),
+        **provenance,
     }
 
 
@@ -58,7 +96,7 @@ async def process_inbox(state: AppState = Depends(get_state)) -> dict[str, Any]:
     """
     from .demo import _drive
 
-    messages = _materialise(state)
+    messages, provenance = await _materialise(state)
     sentry = state.agents["sentry"]
 
     async def triage(message):
@@ -140,6 +178,7 @@ async def process_inbox(state: AppState = Depends(get_state)) -> dict[str, Any]:
     free = sum(1 for v in verdicts if not v.used_model)
     return {
         "ok": True,
+        **provenance,
         "messages_read": len(messages),
         "triage": {
             "investigate": sum(1 for v in verdicts if v.investigate),
