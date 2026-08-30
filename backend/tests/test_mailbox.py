@@ -38,19 +38,28 @@ def _raw(subject="Hello", body="Body text", scenario=None, sender="Ada Lovelace 
 
 
 def test_the_default_source_is_the_seeded_inbox():
-    """Nothing about a credential-free run may depend on a mailbox being reachable."""
-    assert isinstance(build_mailbox(Settings()), SeededMailbox)
+    """Nothing about a credential-free run may depend on a mailbox being reachable.
+
+    Asserted against the field's declared default rather than a constructed `Settings()`, because
+    `Settings` reads the developer's `.env` — so once someone sets INBOX_SOURCE=gmail locally to
+    rehearse the demo, a test written the obvious way starts failing on their machine and passing
+    in CI. The suite must not depend on whose laptop it runs on.
+    """
+    assert Settings.model_fields["INBOX_SOURCE"].default == "seed"
+    assert isinstance(build_mailbox(Settings(INBOX_SOURCE="seed")), SeededMailbox)
 
 
 def test_gmail_requires_credentials_rather_than_failing_at_fetch_time():
     """A misconfiguration should be loud at construction, not a silently empty morning."""
     with pytest.raises(ValueError) as exc:
-        build_mailbox(Settings(INBOX_SOURCE="gmail"))
+        # Explicitly blank, not merely unset: a developer rehearsing the demo has real values in
+        # their .env and Settings would otherwise pick them up.
+        build_mailbox(Settings(INBOX_SOURCE="gmail", GMAIL_ADDRESS="", GMAIL_APP_PASSWORD=""))
     assert "GMAIL_APP_PASSWORD" in str(exc.value)
 
 
 def test_an_unknown_source_falls_back_to_seed():
-    assert isinstance(build_mailbox(Settings(INBOX_SOURCE="carrier-pigeon")), SeededMailbox)
+    assert isinstance(build_mailbox(Settings(INBOX_SOURCE="carrier-pigeon")), SeededMailbox)  # noqa: E501
 
 
 async def test_the_seeded_inbox_is_mostly_ordinary_mail():
@@ -296,4 +305,23 @@ def test_the_fetch_is_scoped_to_the_demos_own_messages():
         else inspect.getsource(module.GmailMailbox._fetch_blocking)
     assert 'DEMO_HEADER' in source and '"HEADER"' in source, (
         "the IMAP search is not scoped to the demo header; it would read real correspondence"
+    )
+
+
+def test_dotenv_is_read_regardless_of_working_directory():
+    """`.env` must resolve against the repo, not the process CWD.
+
+    The documented way to start the service is `cd backend && uvicorn app.main:app`, and with a
+    relative `env_file=".env"` that means `backend/.env` — which does not exist, so the file was
+    silently never read. It looked fine for months because the run commands passed the same values
+    as environment variables; the first setting that lived only in `.env` was the one that caught
+    it, by reporting the default while `.env` said otherwise.
+    """
+    from pathlib import Path
+
+    env_file = Settings.model_config.get("env_file")
+    assert env_file is not None, "Settings no longer reads a .env file at all"
+    assert Path(env_file).is_absolute(), (
+        f"env_file is {env_file!r}, which resolves against the process CWD; starting the service "
+        "from backend/ would silently ignore .env"
     )

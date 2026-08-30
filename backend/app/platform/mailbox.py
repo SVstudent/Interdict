@@ -40,7 +40,7 @@ import email.utils
 import imaplib
 import logging
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from email.header import decode_header, make_header
 from email.message import Message
 from typing import Any, Protocol, runtime_checkable
@@ -55,6 +55,13 @@ CLAIMED_REPLY_TO_HEADER = "X-Interdict-Claimed-Reply-To"
 # Stamped on every message the demo sender puts in the mailbox, and the thing the fetch is
 # scoped to. See _fetch_blocking.
 DEMO_HEADER = "X-Interdict-Demo"
+
+# How far back to look. A bare `HEADER` search makes Gmail scan the whole mailbox, and a real
+# mailbox is not a test one: on a 41,796-message account that search did not return inside a
+# twenty-second timeout, which would have taken the opening beat down. Narrowing by internal date
+# first uses Gmail's date index — the same search resolves in under a second — and the demo's
+# messages are sent shortly before recording, so a few days is generous.
+DEMO_LOOKBACK_DAYS = 7
 
 IMAP_HOST = "imap.gmail.com"
 IMAP_PORT = 993
@@ -138,7 +145,7 @@ class GmailMailbox:
             # imaplib is blocking and this is called from an async handler; a stalled mail
             # server would otherwise hold the event loop and stall every other surface with it.
             messages = await asyncio.wait_for(
-                asyncio.to_thread(self._fetch_blocking, now), timeout=20,
+                asyncio.to_thread(self._fetch_blocking, now), timeout=45,
             )
             self.degraded = None
             return messages
@@ -164,7 +171,8 @@ class GmailMailbox:
             # fetches this beat performs — one on page load, one on the click — agree even if
             # ordinary mail arrives between them. They are correlated by message id in the panel,
             # and a shifted window silently renders rows with no verdict.
-            status, data = client.search(None, "HEADER", DEMO_HEADER, "1")
+            since = (now - timedelta(days=DEMO_LOOKBACK_DAYS)).strftime("%d-%b-%Y")
+            status, data = client.search(None, "SINCE", since, "HEADER", DEMO_HEADER, "1")
             if status != "OK" or not (data and data[0]):
                 # A mailbox populated some other way still works; the failure mode is the old
                 # one rather than an empty pane. The preflight reports which path was taken.
@@ -179,12 +187,33 @@ class GmailMailbox:
             # returns: `InboxPanel` does not sort.
             ids = list(reversed(ids))[: self._limit]
 
+            # ONE fetch for the whole set, not one per message.
+            #
+            # Twenty-five sequential round trips to Gmail took nine to eleven seconds, and the
+            # inbox pane has no loading state that survives that: the beat opened on the words
+            # "Inbox empty" for ten seconds. Batched, the same fetch is a single round trip.
+            #
+            # Falls back to per-message on any parsing trouble, because a batched FETCH response
+            # is a flat list of alternating tuples and closing bytes rather than the tidy shape
+            # the single-message call returns, and one odd server reply should cost latency, not
+            # the whole inbox.
             out: list[FetchedMessage] = []
-            for raw_id in ids:
-                status, payload = client.fetch(raw_id, "(RFC822)")
-                if status != "OK" or not payload or not isinstance(payload[0], tuple):
-                    continue
-                out.append(_parse(payload[0][1], raw_id.decode(), now))
+            try:
+                status, payload = client.fetch(b",".join(ids), "(RFC822)")
+                if status == "OK" and payload:
+                    for part in payload:
+                        if isinstance(part, tuple) and len(part) >= 2 and part[1]:
+                            out.append(_parse(part[1], "batch", now))
+            except Exception:  # noqa: BLE001 - fall through to the reliable path
+                out = []
+
+            if len(out) != len(ids):
+                out = []
+                for raw_id in ids:
+                    status, payload = client.fetch(raw_id, "(RFC822)")
+                    if status != "OK" or not payload or not isinstance(payload[0], tuple):
+                        continue
+                    out.append(_parse(payload[0][1], raw_id.decode(), now))
 
             # Newest first, exactly like the seeded inbox (`seed/inbox.py` sorts the same way).
             #

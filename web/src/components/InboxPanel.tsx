@@ -15,13 +15,19 @@ import { Button, Dot, NonIdealState, Pill } from './primitives';
 export function InboxPanel({ onCaseOpened }: { onCaseOpened: () => void }) {
   const [messages, setMessages] = useState<InboxMessage[]>([]);
   const [source, setSource] = useState<string | null>(null);
+  // Starts true. A real mailbox takes seconds to fetch, and without this the pane
+  // renders the words 'Inbox empty' for the whole of it — which is what the beat
+  // opens on. An empty state is a claim that there is nothing there; while a fetch
+  // is outstanding that claim is not yet true.
+  const [loading, setLoading] = useState(true);
   const [run, setRun] = useState<InboxRun | null>(null);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
     void api.inbox()
       .then((r) => { setMessages(r.messages); setSource(r.degraded ? 'seed' : (r.source ?? null)); })
-      .catch(() => { setMessages([]); setSource(null); });
+      .catch(() => { setMessages([]); setSource(null); })
+      .finally(() => setLoading(false));
   }, []);
 
   const verdictFor = useMemo(() => {
@@ -75,25 +81,47 @@ export function InboxPanel({ onCaseOpened }: { onCaseOpened: () => void }) {
         ) : (
           <span className="label-micro">{messages.length} messages</span>
         )}
-        {/* Two verbs because they are two different things to watch, on very different clocks.
-            Triage reads the whole morning and decides what deserves the fleet — cheap, concurrent,
-            a few seconds. Investigating drives each flagged message through six model calls, one
-            case at a time to stay under the rate ceiling, and takes minutes. Collapsing them into
-            one button meant the only way to see the triage was to commit to the whole run. */}
-        <span className="ml-auto flex shrink-0 items-center gap-1">
-          <Button tone="brass" disabled={busy} onClick={() => process(true)}
-                  title="Read and triage the morning's post. No cases are opened.">
-            {busy ? 'Reading…' : 'Triage'}
-          </Button>
-          <Button variant="minimal" disabled={busy} onClick={() => process(false)}
-                  title="Triage, then drive every flagged message through the fleet. Minutes.">
-            Investigate
+        {/* ONE control, two states, because the pane is 368px and after a run the header already
+            carries a pill and three label/value pairs. Two buttons truncated the counts — which
+            are the whole point of the beat — so the label describes what the next click does:
+
+              nothing run yet        -> Triage        (read the morning, open nothing)
+              a triage run flagged n -> Open n cases  (drive them through the fleet, minutes)
+              a full run             -> Triage        (back to the top)
+
+            Both actions stay reachable and the expensive one is never the default. */}
+        <span className="ml-auto shrink-0">
+          <Button
+            tone="brass"
+            disabled={busy}
+            onClick={() => process(!(run && run.triage.investigate > 0 && run.triage_only))}
+            title={run && run.triage_only && run.triage.investigate > 0
+              ? 'Drive every flagged message through the fleet. Several minutes.'
+              : "Read and triage the morning's post. No cases are opened."}
+          >
+            {busy
+              ? 'Reading…'
+              : run && run.triage_only && run.triage.investigate > 0
+                ? `Open ${run.triage.investigate} cases`
+                : 'Triage'}
           </Button>
         </span>
       </div>
 
       <div className="min-h-0 flex-1 overflow-y-auto">
-        {messages.length === 0 ? (
+        {loading && messages.length === 0 ? (
+          /* Reserved rows at the real row height, so the list does not jump when it arrives.
+             The runbook forbids a layout shift at a beat's peak, and this beat's peak is the
+             moment the morning's post appears. */
+          <div aria-busy="true" aria-label="Reading the mailbox">
+            {Array.from({ length: 10 }, (_, i) => (
+              <div key={i} className="flex h-[51px] flex-col justify-center gap-1.5 rule-b-muted px-3">
+                <div className="h-[10px] w-[38%] rounded-[2px] bg-[var(--color-fill-neutral)]" />
+                <div className="h-[10px] w-[72%] rounded-[2px] bg-[var(--color-fill-neutral)]" />
+              </div>
+            ))}
+          </div>
+        ) : messages.length === 0 ? (
           <NonIdealState title="Inbox empty" />
         ) : (
           messages.map((m) => {

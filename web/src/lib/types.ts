@@ -291,6 +291,8 @@ export interface TriageVerdict {
 }
 
 export interface InboxRun {
+  /** True when the run stopped after triage and opened no cases. */
+  triage_only?: boolean;
   ok: boolean;
   messages_read: number;
   triage: {

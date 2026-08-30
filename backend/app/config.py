@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal
+from pathlib import Path
 from enum import Enum
 from typing import Protocol, runtime_checkable
 
@@ -109,7 +110,15 @@ DEMO_EPOCH = datetime(2026, 8, 3, 14, 30, 0, tzinfo=timezone.utc)
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    # Absolute, not ".env". A relative path resolves against the PROCESS CWD, and the documented
+    # way to start this service is `cd backend && uvicorn app.main:app` — from there ".env" means
+    # `backend/.env`, which does not exist, so the file was silently never read. Every setting
+    # appeared to work only because the run commands happened to pass the same values as
+    # environment variables; the first setting that lived only in .env (INBOX_SOURCE) was the one
+    # that exposed it, by reporting `seed` while .env said `gmail`.
+    model_config = SettingsConfigDict(
+        env_file=Path(__file__).resolve().parents[2] / ".env", extra="ignore",
+    )
 
     # Model access. `gemini` is the ONLY provider permitted for anything that gets judged —
     # the rules mandate Gemini API or Vertex AI. `tokenrouter` is a third-party aggregator kept
