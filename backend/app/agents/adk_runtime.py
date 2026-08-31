@@ -34,6 +34,7 @@ import asyncio
 import functools
 import json
 import uuid
+from collections.abc import Callable
 from typing import TYPE_CHECKING, Any
 
 from google import genai
@@ -232,7 +233,7 @@ def _tool_wrappers(ctx: AgentContext, objects: dict[str, Any]) -> dict[str, Any]
     }
 
 
-def _scope_gate(agent_name: str, ctx: AgentContext):
+def _scope_gate(agent_name: str, ctx: AgentContext) -> Callable[..., dict[str, Any] | None]:
     """`before_tool_callback`: refuse a model-initiated call outside the agent's grant.
 
     Returning a dict short-circuits the call in ADK and hands that dict back to the model as the
@@ -242,7 +243,7 @@ def _scope_gate(agent_name: str, ctx: AgentContext):
     """
     grant = FLEET_SCOPES[agent_name]
 
-    def before_tool(tool, args, tool_context):  # noqa: ANN001 - ADK callback signature
+    def before_tool(tool, args, tool_context) -> dict[str, Any] | None:  # noqa: ANN001 - ADK callback signature
         spec = TOOL_SPECS.get(tool.name)
         if spec is None or grant.permits(spec.scope):
             return None

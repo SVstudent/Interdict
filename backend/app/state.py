@@ -9,13 +9,13 @@ from __future__ import annotations
 import asyncio
 import logging
 from dataclasses import dataclass, field
-from typing import Any
+from typing import TYPE_CHECKING, Any, NoReturn
 
 from .agents.adjudicator import AdjudicatorAgent
 from .agents.base import AgentContext
 from .agents.callback import CallbackAgent
 from .agents.challenger import ChallengerAgent
-from .agents.hunter import HunterAgent
+from .agents.hunter import HunterAgent, SweepResult
 from .agents.ledger import LedgerAgent
 from .agents.precedent import PrecedentClerkAgent
 from .agents.provenance import ProvenanceAgent
@@ -26,6 +26,7 @@ from .agents.sentry import SentryAgent
 from .config import Clock, PlatformBackend, Settings, make_clock
 from .demo.replay import ReplayCache
 from .llm.provider import LLMProvider, build_provider
+from .models.domain import Case, ChallengeResult, Decision, Finding
 from .orchestrator.fanout import VerificationFanout
 from .orchestrator.pipeline import build_pipeline
 from .orchestrator.runner import CaseRunner, StepContext
@@ -33,6 +34,11 @@ from .platform.factory import Platform, build_platform
 from .services.payments import PaymentService
 from .store.base import Repository
 from .store.memory import InMemoryRepository
+
+if TYPE_CHECKING:
+    # Imported lazily at runtime inside `_safe_mailbox` so a mailbox misconfiguration
+    # can never stop the service starting; the Protocol is still needed for the signature.
+    from .platform.mailbox import Mailbox
 
 
 @dataclass
@@ -101,23 +107,26 @@ class AppState:
         }
         fanout = VerificationFanout(verification, self.agent_ctx)
 
-        async def challenge(ctx: StepContext, findings):
+        async def challenge(ctx: StepContext, findings: list[Finding]) -> ChallengeResult:
             await self.platform.gateway.route("orchestrator", "challenger", {})
             return await self.agents["challenger"].review(
                 self.agent_ctx(ctx, "challenger"), findings
             )
 
-        async def attribute(ctx: StepContext, dossier, match, request_summary):
+        async def attribute(
+            ctx: StepContext, dossier: dict[str, Any],
+            match: dict[str, Any], request_summary: dict[str, Any],
+        ) -> dict[str, Any]:
             return await self.agents["attribution"].attribute(
                 self.agent_ctx(ctx, "attribution"), dossier, match, request_summary
             )
 
-        async def scribe(ctx: StepContext, case):
+        async def scribe(ctx: StepContext, case: Case) -> dict[str, Any]:
             return await self.agents["scribe"].write_dossier(
                 self.agent_ctx(ctx, "scribe"), case
             )
 
-        async def hunt(ctx: StepContext, dossier, case):
+        async def hunt(ctx: StepContext, dossier: dict[str, Any], case: Case) -> SweepResult:
             # Exclude the vendor we just interdicted: their payments are already held by
             # this case, and re-freezing them would double-count the exposure.
             return await self.agents["hunter"].sweep(
@@ -125,7 +134,7 @@ class AppState:
                 {case.vendor_id} if case.vendor_id else set(), case.tenant_id,
             )
 
-        async def cite_precedent(ctx: StepContext, case):
+        async def cite_precedent(ctx: StepContext, case: Case) -> dict[str, Any] | None:
             """The deterministic half of precedent: reduce the case to its four
             characteristics and ask the book. Built here rather than in the pipeline because the
             exposure bands a precedent keys on ARE the adjudication thresholds."""
@@ -175,7 +184,10 @@ class AppState:
                 await self.platform.precedent.cite(top.precedent_id, case.case_id)
             return citation
 
-        async def adjudicate(ctx: StepContext, findings, challenge_result):
+        async def adjudicate(
+            ctx: StepContext, findings: list[Finding],
+            challenge_result: ChallengeResult | None,
+        ) -> Decision:
             await self.platform.gateway.route("orchestrator", "adjudicator", {})
             return await self.agents["adjudicator"].decide(
                 self.agent_ctx(ctx, "adjudicator"), ctx.case, findings, challenge_result
@@ -221,18 +233,18 @@ class _UnconfiguredProvider:
     def __init__(self, reason: str) -> None:
         self._reason = reason
 
-    async def complete(self, **_: object):
+    async def complete(self, **_: object) -> NoReturn:
         raise RuntimeError(self._reason)
 
 
-def _safe_provider(settings: Settings):
+def _safe_provider(settings: Settings) -> LLMProvider:
     try:
         return build_provider(settings)
     except RuntimeError as exc:
         return _UnconfiguredProvider(str(exc))
 
 
-def _safe_mailbox(settings):
+def _safe_mailbox(settings: Settings) -> Mailbox:
     """Never let mailbox configuration stop the service starting."""
     from .platform.mailbox import SeededMailbox, build_mailbox
 

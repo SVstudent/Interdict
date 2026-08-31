@@ -15,6 +15,7 @@ from typing import Any
 
 from fastapi import APIRouter, Depends
 
+from ..agents.sentry import TriageVerdict
 from ..seed.inbox import InboxMessage
 from ..seed.scenarios import CATALOG, build_request
 from ..state import AppState
@@ -107,7 +108,7 @@ async def process_inbox(
     messages, provenance = await _materialise(state)
     sentry = state.agents["sentry"]
 
-    async def triage(message):
+    async def triage(message: Any) -> TriageVerdict | None:
         ctx = state.agent_ctx_for_request(None, case_id=f"TRIAGE-{message.message_id}")
         try:
             return await sentry.triage(ctx, message)

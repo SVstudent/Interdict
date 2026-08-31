@@ -116,6 +116,13 @@ INTERDICT_FLEET: list[RegistryEntry] = [
            "Denied write access to the library it tests against.",
            "Security Engineering", "restricted", [IA],
            [{"version": "1.0.0", "note": "Initial release. Detection claims become a measured number."}]),
+    _entry("hunter", "1.0.0",
+           "Proactive exposure sweep. After an interdiction, reads the operation's dossier, "
+           "decides which indicators are actionable against the payment book, and freezes what "
+           "matches before the attacker's next message arrives. Every freeze opens a normal case "
+           "that goes through the whole fleet: Hunter can interrupt, but it cannot conclude.",
+           "Treasury Controls", "restricted", [AP, TR],
+           [{"version": "1.0.0", "note": "Initial release. The fleet stops being purely reactive."}]),
     _entry("precedent-clerk", "1.0.0",
            "Institutional memory for human decisions. Records how a named reviewer resolved an "
            "escalation and why, then argues whether that ruling governs a later case with the "

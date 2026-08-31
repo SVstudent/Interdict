@@ -9,11 +9,11 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import Any
 
-from ..models.domain import BankingDetails, ChangeRequest
+from ..models.domain import BankingDetails, ChangeRequest, Vendor
 from .generate import SCENARIO_VENDOR_FOR, SCENARIO_VENDORS
 
 
-def _vendor(scenario_id: str):
+def _vendor(scenario_id: str) -> Vendor:
     return SCENARIO_VENDORS[SCENARIO_VENDOR_FOR[scenario_id]]
 
 

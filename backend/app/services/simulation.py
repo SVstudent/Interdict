@@ -45,7 +45,10 @@ from ..models.domain import (
     SIMULATION_TENANT_ID,
     BankingDetails,
     CaseState,
+    ChallengeResult,
     ChangeRequest,
+    Decision,
+    Finding,
     Invoice,
     Payment,
     Vendor,
@@ -123,18 +126,24 @@ def build_sandbox_runner(state: Any) -> CaseRunner:
     }
     fanout = VerificationFanout(verification, state.agent_ctx)
 
-    async def challenge(ctx: StepContext, findings):
+    async def challenge(ctx: StepContext, findings: list[Finding]) -> ChallengeResult:
         await state.platform.gateway.route("orchestrator", "challenger", {})
         return await state.agents["challenger"].review(
             state.agent_ctx(ctx, "challenger"), findings
         )
 
-    async def attribute(ctx: StepContext, dossier, match, request_summary):
+    async def attribute(
+        ctx: StepContext, dossier: dict[str, Any],
+        match: dict[str, Any], request_summary: dict[str, Any],
+    ) -> dict[str, Any]:
         return await state.agents["attribution"].attribute(
             state.agent_ctx(ctx, "attribution"), dossier, match, request_summary
         )
 
-    async def adjudicate(ctx: StepContext, findings, challenge_result):
+    async def adjudicate(
+        ctx: StepContext, findings: list[Finding],
+        challenge_result: ChallengeResult | None,
+    ) -> Decision:
         await state.platform.gateway.route("orchestrator", "adjudicator", {})
         return await state.agents["adjudicator"].decide(
             state.agent_ctx(ctx, "adjudicator"), ctx.case, findings, challenge_result

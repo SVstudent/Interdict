@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import asyncio
 import copy
-from typing import Any
+from typing import Any, TypeVar
 
 from ..models.domain import (
     Case,
@@ -21,6 +21,8 @@ from ..models.domain import (
     Vendor,
 )
 from .base import EffectOutcome
+
+_T = TypeVar("_T")
 
 
 class InMemoryRepository:
@@ -42,7 +44,7 @@ class InMemoryRepository:
     # returned Case would silently edit "persisted" state and the crash-resume tests would pass
     # for the wrong reason.
     @staticmethod
-    def _clone(obj):
+    def _clone(obj: _T) -> _T:
         return copy.deepcopy(obj)
 
     # --- vendors -------------------------------------------------------------------

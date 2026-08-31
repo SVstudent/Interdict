@@ -130,7 +130,7 @@ class VertexProvider:
         self._location = location
         self._client = None
 
-    def _get_client(self):
+    def _get_client(self) -> Any:
         if self._client is None:
             from google import genai
 
@@ -181,7 +181,7 @@ class GeminiProvider:
         self._api_key = api_key
         self._client = None
 
-    def _get_client(self):
+    def _get_client(self) -> Any:
         if self._client is None:
             from google import genai
 

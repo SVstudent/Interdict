@@ -181,7 +181,7 @@ class GeapTelemetry(LocalTelemetry):
         self._project_id = project_id
         self._exporter = None
 
-    def _ensure_exporter(self):  # pragma: no cover - requires cloud credentials
+    def _ensure_exporter(self) -> Any:  # pragma: no cover - requires cloud credentials
         if self._exporter is None:
             from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
 

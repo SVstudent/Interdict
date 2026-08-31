@@ -129,7 +129,7 @@ class FirestoreRepository:
         return [c for c in await self.list_cases() if not c.state.is_terminal]
 
     # --- durability ---------------------------------------------------------------
-    def _checkpoints(self, case_id: str):
+    def _checkpoints(self, case_id: str) -> Any:
         return self._db.collection(CASES).document(case_id).collection(CHECKPOINTS)
 
     async def append_checkpoint(self, checkpoint: Checkpoint) -> None:
