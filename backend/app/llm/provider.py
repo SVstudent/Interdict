@@ -1,10 +1,14 @@
 """Model access.
 
-Two providers behind one Protocol:
+Three providers behind one Protocol, plus an optional open-model tier:
 
   gemini       Direct Gemini API (google-genai). This is the COMPLIANT path and the one the
                recorded demo must run on — the competition rules mandate "Gemini 3.5 or newer
                accessed through Gemini API or Vertex AI".
+
+  gemma        Gemma 3 on Vertex AI via ADC. A SUPPLEMENTARY tier, never the judged path:
+               it runs Sentry's high-volume triage disambiguation so the reasoning fleet is
+               only spent where it is needed. Not in SANCTIONED — see the note there.
 
   tokenrouter  OpenAI-compatible aggregator. Useful for development iteration because it does
                not burn free-tier quota or GCP credits, but it is NOT Gemini API or Vertex AI.
@@ -68,10 +72,17 @@ async def with_retry(
 class Provider(str, Enum):
     VERTEX = "vertex"          # Vertex AI via ADC — sanctioned, and same auth path as GEAP
     GEMINI = "gemini"          # Gemini Developer API via API key — sanctioned
+    GEMMA = "gemma"            # Gemma 3 on Vertex AI via ADC — open-model triage tier
     TOKENROUTER = "tokenrouter"  # third-party aggregator — development only
 
 
 # The rules mandate "Gemini 3.5 or newer accessed through Gemini API or Vertex AI".
+#
+# GEMMA IS DELIBERATELY NOT IN THIS SET. Gemma is an open model, not Gemini 3.5+, so it may
+# never be the provider that decides whether money moves. It is a supplementary tier: it runs
+# the high-volume triage disambiguation ahead of the fleet, and every finding, challenge and
+# adjudication still goes through a sanctioned provider. `assert_compliant` enforces that, so
+# enabling Gemma can never quietly move the judged path off Gemini.
 SANCTIONED = frozenset({Provider.VERTEX, Provider.GEMINI})
 
 
@@ -214,6 +225,72 @@ class GeminiProvider:
         )
 
 
+class GemmaProvider:
+    """Gemma 3 on Vertex AI, authenticated by the same Application Default Credentials.
+
+    Why an open model earns a place in a fraud fleet: the expensive question and the cheap
+    question are not the same question. Deciding whether a $340,000 payment is fraudulent is
+    worth a reasoning model. Deciding whether a message is *about* a bank-detail change at all
+    is a sentence-level classification over the whole morning's post — high volume, low stakes,
+    and reversible, because a false positive costs one extra case and a false negative is caught
+    by the deterministic keyword screen that runs alongside it.
+
+    Sentry's triage is exactly that shape (see `SentryAgent.triage`): most messages are settled
+    for free by the deterministic screen, and only the genuinely ambiguous middle — money
+    language without change language — reaches a model. Pointing Gemma at that middle keeps the
+    fleet affordable per mailbox without putting an open model anywhere near a release decision.
+
+    Served through the same `aiplatform.googleapis.com` endpoint and the same ADC path as
+    `VertexProvider`, so enabling it adds no new credential.
+    """
+
+    name = Provider.GEMMA
+
+    def __init__(self, project_id: str, location: str) -> None:
+        if not project_id:
+            raise RuntimeError(
+                "GCP_PROJECT_ID is required for the Gemma triage tier. "
+                "Authenticate with `gcloud auth application-default login`."
+            )
+        self._project_id = project_id
+        self._location = location
+        self._client = None
+
+    def _get_client(self) -> Any:
+        if self._client is None:
+            from google import genai
+
+            self._client = genai.Client(
+                vertexai=True, project=self._project_id, location=self._location
+            )
+        return self._client
+
+    async def complete(
+        self, *, model: str, system: str, user: str, json_mode: bool = True
+    ) -> Completion:
+        # Gemma has no separate system-instruction channel the way Gemini does, so the
+        # instruction is prepended to the turn. Prepending rather than dropping it matters for
+        # the replay cache: the text that reaches the model is the text that gets hashed.
+        config: dict[str, Any] = {"automatic_function_calling": {"disable": True}}
+        if json_mode:
+            config["response_mime_type"] = "application/json"
+
+        response = await with_retry(
+            lambda: self._get_client().aio.models.generate_content(
+                model=model, contents=f"{system}\n\n{user}", config=config
+            ),
+            label=f"gemma:{model}",
+        )
+        usage = getattr(response, "usage_metadata", None)
+        return Completion(
+            text=response.text or "",
+            model=model,
+            provider=Provider.GEMMA,
+            input_tokens=getattr(usage, "prompt_token_count", 0) or 0,
+            output_tokens=getattr(usage, "candidates_token_count", 0) or 0,
+        )
+
+
 class TokenRouterProvider:
     """OpenAI-compatible aggregator. Development only — see the module docstring."""
 
@@ -271,6 +348,8 @@ class TokenRouterProvider:
 def build_provider(settings) -> LLMProvider:
     if settings.LLM_PROVIDER is Provider.VERTEX:
         return VertexProvider(settings.GCP_PROJECT_ID, settings.VERTEX_LOCATION)
+    if settings.LLM_PROVIDER is Provider.GEMMA:
+        return GemmaProvider(settings.GCP_PROJECT_ID, settings.VERTEX_LOCATION)
     if settings.LLM_PROVIDER is Provider.TOKENROUTER:
         return TokenRouterProvider(
             settings.TOKENROUTER_API_KEY,
@@ -278,6 +357,18 @@ def build_provider(settings) -> LLMProvider:
             settings.TOKENROUTER_MODEL_PREFIX,
         )
     return GeminiProvider(settings.GEMINI_API_KEY)
+
+
+def build_triage_provider(settings) -> LLMProvider | None:
+    """The optional open-model tier that runs ahead of the fleet.
+
+    Returns None unless `USE_GEMMA_TRIAGE` is set, so the default path is unchanged and the
+    recorded demo is unaffected. When it is set, Sentry's ambiguous-middle classification runs
+    on Gemma and everything downstream still runs on the sanctioned provider.
+    """
+    if not getattr(settings, "USE_GEMMA_TRIAGE", False):
+        return None
+    return GemmaProvider(settings.GCP_PROJECT_ID, settings.VERTEX_LOCATION)
 
 
 def assert_compliant(provider: LLMProvider) -> None:

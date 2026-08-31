@@ -11,6 +11,7 @@ been independently verified — or refuse to decide at all, and say so.**
 [![tests](https://img.shields.io/badge/tests-255%20passing-2f7a63?style=flat-square)](#verify-every-claim)
 [![live](https://img.shields.io/badge/live-Cloud%20Run-4285F4?style=flat-square)](https://interdict-192346570826.us-central1.run.app/)
 [![models](https://img.shields.io/badge/Gemini-3.6%20%C2%B7%203.7%20Flash-4285F4?style=flat-square)](#google-cloud)
+[![gemma](https://img.shields.io/badge/Gemma-3--27b--it-4285F4?style=flat-square)](#two-model-families-pointed-where-each-is-worth-it)
 [![ADK](https://img.shields.io/badge/Google%20ADK-2.7.1-4285F4?style=flat-square)](#the-fleet)
 [![Vertex AI](https://img.shields.io/badge/Vertex%20AI-global-4285F4?style=flat-square)](#google-cloud)
 
@@ -190,6 +191,37 @@ is up to the fleet. **Three consecutive clean run-throughs: 57 checks, 0 failure
 | ⏱️ | **A killed runner resumes without re-executing** | `.../S5`, then `kill_runner`, then `resume_runner` |
 | 🔒 | **Scope is enforced on the path the *model* takes** | `POST .../force_scope_violation` → `{"error":"scope_denied"}` |
 | 🌐 | **A second district recognises the operators at 0.85 on tradecraft alone** | `POST .../inject_cross_tenant` |
+
+---
+
+## Two model families, pointed where each is worth it
+
+The expensive question and the cheap question are not the same question, so they do not get the
+same model.
+
+| Tier | Model | Runs | Why |
+|---|---|---|---|
+| **Reasoning** | `gemini-3.7-flash` | Challenger, Adjudicator | Decides whether money moves. Adversarial review and the rationale behind a BLOCK |
+| **Routine** | `gemini-3.6-flash` | The four verification lanes, Scribe, Hunter | Evidence gathering and dossier work |
+| **Triage** *(opt-in)* | **`gemma-3-27b-it`** on Vertex AI | Sentry's ambiguous-middle classification | Open model for the high-volume half — deciding whether a message is even *about* a bank-detail change, across the whole morning's post |
+
+**Why Gemma sits where it does.** Most of the mailbox is settled for free by a deterministic
+screen: no payment language at all, or payment *and* change language together. What is left is the
+genuinely ambiguous middle — a statement of account and a request to change an account read alike
+to a keyword filter. That is a sentence-level classification over high volume, and it is
+reversible: anything Gemma routes to `investigate` still goes through the full Gemini fleet before
+a dollar moves, and a miss is caught by the deterministic screen running alongside it.
+
+**Gemma is never on the judged path.** It is deliberately excluded from `SANCTIONED` in
+`llm/provider.py`, so it can never serve a finding, a challenge or an adjudication — the rules
+mandate Gemini 3.5+ for those, and `assert_compliant` enforces it. Enable with:
+
+```ini
+USE_GEMMA_TRIAGE=true
+GEMMA_MODEL=gemma-3-27b-it     # served through the same Vertex endpoint and the same ADC
+```
+
+Off by default, so the recorded demo runs entirely on the sanctioned providers.
 
 ---
 

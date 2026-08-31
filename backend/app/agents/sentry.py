@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import re
 from dataclasses import dataclass
 from datetime import timedelta
@@ -106,6 +107,38 @@ class SentryAgent(InterdictAgent):
             any(hit(t) for t in CHANGE_TERMS),
         )
 
+    async def _triage_via_gemma(
+        self, ctx: AgentContext, observations: dict[str, Any]
+    ) -> dict[str, Any]:
+        """Run the triage classification on the open-model tier.
+
+        Goes through the same replay cache as every other model call, keyed on the model that
+        actually served it, so a cache recorded with the tier on and one recorded with it off
+        never collide.
+        """
+        from ..demo.replay import prompt_hash
+
+        model = ctx.settings.GEMMA_MODEL
+        key = prompt_hash(self.name, model, TRIAGE_PROMPT, observations)
+
+        async def live_call() -> dict[str, Any]:
+            completion = await ctx.triage_llm.complete(
+                model=model, system=TRIAGE_PROMPT,
+                user=json.dumps(observations, sort_keys=True, default=str),
+                json_mode=True,
+            )
+            ctx.telemetry.record_tokens(
+                case_id=ctx.case_id, agent=self.name,
+                tokens=completion.input_tokens + completion.output_tokens,
+            )
+            try:
+                return completion.json()
+            except Exception:  # noqa: BLE001 - an unparseable triage must not eat the message
+                return {"action": "investigate", "confidence": 0.5,
+                        "reason": "Triage reply unparseable; escalating to the fleet."}
+
+        return await ctx.replay.resolve(key, live_call, label=f"{self.name}:triage:gemma")
+
     async def triage(self, ctx: AgentContext, message: Any) -> TriageVerdict:
         """Decide whether one message deserves the fleet's attention.
 
@@ -133,12 +166,22 @@ class SentryAgent(InterdictAgent):
             return TriageVerdict(mid, "investigate", 0.92,
                                  "Asks to change where money is sent.", used_model=False)
 
-        result = await self.infer(ctx, TRIAGE_PROMPT, {
+        observations = {
             "subject": getattr(message, "subject", ""),
             "body": (getattr(message, "body", "") or "")[:1500],
             "sender": getattr(message, "sender_email", ""),
             "has_attachment": getattr(message, "has_attachment", False),
-        })
+        }
+        # The ambiguous middle is the one place an open model earns its keep: it is a
+        # sentence-level classification, it runs over the whole mailbox, and it is reversible —
+        # the deterministic screen above already caught every unambiguous case, and anything
+        # Gemma routes to `investigate` still goes through the full Gemini fleet before a
+        # single dollar moves. When the tier is off, this is the original Gemini path.
+        result = (
+            await self._triage_via_gemma(ctx, observations)
+            if ctx.triage_llm is not None
+            else await self.infer(ctx, TRIAGE_PROMPT, observations)
+        )
         action = result.get("action", "ignore")
         return TriageVerdict(
             mid,

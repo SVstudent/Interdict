@@ -130,6 +130,9 @@ class AgentContext:
     replay: ReplayCache
     telemetry: Telemetry
     llm: LLMProvider
+    # Optional open-model tier for high-volume classification. None unless USE_GEMMA_TRIAGE
+    # is set; the reasoning fleet never reads it, so the judged path stays on Gemini.
+    triage_llm: LLMProvider | None = None
     payload: dict[str, Any] = field(default_factory=dict)
     # Scope denials provoked by the MODEL during an ADK run. ADK's before_tool_callback is
     # synchronous and a posture event is an async repository write, so the callback queues

@@ -143,6 +143,13 @@ class Settings(BaseSettings):
     # Escape hatch only. Setting this to a 3.1/2.5 Pro model breaks rules compliance.
     PRO_MODEL: str = "gemini-3.1-pro-preview"
     USE_PRO_TIER_ACCEPTING_RULES_RISK: bool = False
+    # --- Gemma, the open-model triage tier -------------------------------------------
+    # Gemma runs the high-volume half of the workload — deciding whether a message is even
+    # ABOUT a bank-detail change — so the Gemini fleet is spent only on the cases that decide
+    # money. Off by default: the recorded demo runs entirely on the sanctioned providers, and
+    # Gemma is never permitted on the adjudication path (see SANCTIONED in llm/provider.py).
+    GEMMA_MODEL: str = "gemma-3-27b-it"
+    USE_GEMMA_TRIAGE: bool = False
 
     # Where the morning's post comes from. `seed` is the fixture inbox and the default
     # everywhere, including every test and every offline replay. `gmail` reads a real mailbox

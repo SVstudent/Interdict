@@ -25,7 +25,7 @@ from .agents.scribe import AttributionAgent, ScribeAgent
 from .agents.sentry import SentryAgent
 from .config import Clock, PlatformBackend, Settings, make_clock
 from .demo.replay import ReplayCache
-from .llm.provider import LLMProvider, build_provider
+from .llm.provider import LLMProvider, build_provider, build_triage_provider
 from .models.domain import Case, ChallengeResult, Decision, Finding
 from .orchestrator.fanout import VerificationFanout
 from .orchestrator.pipeline import build_pipeline
@@ -50,6 +50,7 @@ class AppState:
     replay: ReplayCache
     payments: PaymentService
     llm: LLMProvider
+    triage_llm: LLMProvider | None = None
     subscribers: list[asyncio.Queue] = field(default_factory=list)
     inflight: dict[str, asyncio.Task] = field(default_factory=dict)
     timings: dict[str, float] = field(default_factory=dict)
@@ -79,6 +80,7 @@ class AppState:
             replay=self.replay,
             telemetry=self.platform.telemetry,
             llm=self.llm,
+            triage_llm=self.triage_llm,
             payload={
                 "request_id": request_id,
                 "vendor_id": ctx.case.vendor_id,
@@ -97,6 +99,7 @@ class AppState:
             replay=self.replay,
             telemetry=self.platform.telemetry,
             llm=self.llm,
+            triage_llm=self.triage_llm,
             payload={"request_id": request.request_id} if request is not None else {},
         )
 
@@ -244,6 +247,15 @@ def _safe_provider(settings: Settings) -> LLMProvider:
         return _UnconfiguredProvider(str(exc))
 
 
+def _safe_triage(settings: Settings) -> LLMProvider | None:
+    """Never let the optional tier stop the service starting."""
+    try:
+        return build_triage_provider(settings)
+    except Exception as exc:  # noqa: BLE001
+        logging.getLogger("interdict").warning("gemma triage tier unavailable (%s)", exc)
+        return None
+
+
 def _safe_mailbox(settings: Settings) -> Mailbox:
     """Never let mailbox configuration stop the service starting."""
     from .platform.mailbox import SeededMailbox, build_mailbox
@@ -281,6 +293,7 @@ def build_state(settings: Settings | None = None, repo: Repository | None = None
         # Constructed lazily-safe: replay mode never calls it, so a missing key is only an
         # error at the moment a real model call is actually attempted.
         llm=_safe_provider(settings),
+        triage_llm=_safe_triage(settings),
         # `seed` unless INBOX_SOURCE says otherwise. A misconfigured real mailbox degrades to the
         # fixtures rather than raising, so a bad app password cannot stop the service booting.
         mailbox=_safe_mailbox(settings),
