@@ -1,85 +1,195 @@
+<div align="center">
+
 # Interdict
 
-An agent fleet that sits at the last controllable moment before money leaves a payments run and
-refuses to release it until the payee has been independently verified.
+### The last controllable moment before the money leaves.
 
-Twelve Google ADK agents on Gemini 3.x via Vertex AI, behind a durable case state machine with
-deterministic safety rails. All data in this repository is synthetic.
+**A fleet of twelve Google ADK agents that freezes a payment run and refuses to release it until
+the payee has been independently verified — or refuses to decide at all, and says so.**
 
-Built for **All Things Agentic**, track: **Fortified Enterprise Fleet**.
+[![tests](https://img.shields.io/badge/tests-255%20passing-2f7a63?style=flat-square)](#every-claim-in-this-readme-and-how-to-check-it)
+[![runs offline](https://img.shields.io/badge/runs%20offline-no%20credentials-2f7a63?style=flat-square)](#the-90-second-proof)
+[![models](https://img.shields.io/badge/Gemini-3.6%20%C2%B7%203.7%20Flash-4285F4?style=flat-square)](#what-is-genuinely-running-on-google-cloud)
+[![ADK](https://img.shields.io/badge/Google%20ADK-2.7.1-4285F4?style=flat-square)](#the-agent-fleet)
+[![Vertex AI](https://img.shields.io/badge/Vertex%20AI-global-4285F4?style=flat-square)](#what-is-genuinely-running-on-google-cloud)
+[![data](https://img.shields.io/badge/data-100%25%20synthetic-9a7529?style=flat-square)](#synthetic-data)
+
+**All Things Agentic** · track: **Fortified Enterprise Fleet**
+· [Architecture](ARCHITECTURE.md) · [Demo runbook](context/DEMO_RUNBOOK.md) · [Decision log](context/DECISIONS.md)
+
+</div>
 
 ---
 
-## Reproduce every claim in this README, offline, in two minutes
+## The 90-second proof
 
-You do not need a Google Cloud account, credentials, or an API key to run the entire demo
-runbook. `DEMO_MODE=replay` serves real recorded Gemini responses keyed by a hash of the prompt,
-at roughly **1.8 seconds per scenario**, producing byte-identical case IDs and the same outcomes
-as the live run.
+**You do not need a Google Cloud account, credentials, or an API key to run the entire demo
+runbook.** `DEMO_MODE=replay` serves the real Gemini responses recorded during a live run, keyed
+by a hash of the prompt — at ~1.8 seconds per scenario, producing byte-identical case IDs and the
+same outcomes as live.
 
 ```bash
-git clone <repo> && cd Interdict
-python3 -m venv .venv && ./.venv/bin/pip install -r backend/requirements.txt
-
-# 230 tests, replay mode, local platform, no credentials
-DEMO_MODE=replay PLATFORM_BACKEND=local ./.venv/bin/python -m pytest backend/tests -q
-
-cd backend && DEMO_MODE=replay PLATFORM_BACKEND=local ../.venv/bin/python -m uvicorn app.main:app --port 8077
+git clone https://github.com/SVstudent/Interdict.git && cd Interdict
+docker build -t interdict . && docker run --rm -p 8099:8080 -e DEMO_MODE=replay interdict
+# open http://localhost:8099 — drive every beat from the control bar along the bottom
 ```
 
-Then, in another shell, run the whole runbook:
+<details>
+<summary><b>No Docker? Three commands.</b></summary>
+
+```bash
+python3 -m venv .venv && ./.venv/bin/pip install -r backend/requirements.txt
+
+# 255 tests, replay mode, local platform, zero credentials
+DEMO_MODE=replay PLATFORM_BACKEND=local ./.venv/bin/python -m pytest backend/tests -q
+
+cd backend && DEMO_MODE=replay PLATFORM_BACKEND=local \
+  ../.venv/bin/python -m uvicorn app.main:app --port 8077
+```
+
+Then drive the whole runbook from another shell:
 
 ```bash
 curl -X POST localhost:8077/api/demo/reset
-curl -X POST localhost:8077/api/demo/inject_scenario/S1     # -> BLOCK
-curl -X POST localhost:8077/api/demo/inject_scenario/S2     # -> BLOCK, injection stripped
-curl -X POST localhost:8077/api/demo/inject_scenario/S3     # -> declines to decide
-curl -X POST localhost:8077/api/demo/inject_scenario/S4     # -> RELEASE
-curl -X POST localhost:8077/api/demo/advance_clock -H 'content-type: application/json' -d '{"days":4}'   # -> S3 ESCALATEs
-curl -X POST localhost:8077/api/demo/inject_cross_tenant    # -> BLOCK at the second district
+curl -X POST localhost:8077/api/demo/inject_scenario/S1   # -> BLOCK, $340,000 held
+curl -X POST localhost:8077/api/demo/inject_scenario/S2   # -> BLOCK, injection stripped
+curl -X POST localhost:8077/api/demo/inject_scenario/S3   # -> declines to decide
+curl -X POST localhost:8077/api/demo/inject_scenario/S4   # -> RELEASE
+curl -X POST localhost:8077/api/demo/advance_clock \
+     -H 'content-type: application/json' -d '{"days":4}'  # -> S3 ESCALATEs
+curl -X POST localhost:8077/api/demo/inject_cross_tenant  # -> BLOCK at a second district
 ```
 
-### Or in one command, with Docker
+For the front end: `cd web && npm install && npm run dev` (port 5173, proxying `/api` to 8077).
 
-No Python version to match and no virtualenv to build. The image is the same one that deploys to
-Cloud Run, and it serves the API and the built front end from a single origin:
+</details>
 
-```bash
-docker build -t interdict .
-docker run --rm -p 8099:8080 -e DEMO_MODE=replay interdict
-# open http://localhost:8099 and drive the demo from the control bar
+> **Why this is a replay, not a mock.** Replay serves the actual responses the models returned
+> during a recording run; it never synthesises one. A cache miss raises `ReplayMiss`, surfaced as
+> HTTP 503 with the prompt hash, rather than degrading to a stub. **A beat therefore either
+> replays a real model response or fails loudly — it cannot quietly fake one.** Keying, recording
+> procedure and the determinism work behind it: [CACHE.md](CACHE.md).
+
+---
+
+## What happens in the sixty seconds after a fraudulent email arrives
+
+```mermaid
+flowchart TD
+    A["Inbound artifact<br/><i>vendor asks to change bank details</i>"]
+    G{"Guardrails<br/>Model Armor + injection screen"}
+    S["<b>sentry</b> — triage, resolve vendor<br/><b>HOLD every scheduled payment</b>"]
+    R["<b>recall</b> — fingerprint the tradecraft<br/>own memory, then the shared exchange"]
+
+    C1["<b>callback</b><br/>out-of-band call to the<br/>number <i>on file</i>"]
+    C2["<b>ledger</b><br/>tenure, invoice history,<br/>prior change frequency"]
+    C3["<b>provenance</b><br/>reply-to, domain age,<br/>homoglyphs, PDF metadata"]
+    C4["<b>registry-check</b><br/>account holder vs<br/>legal entity"]
+
+    CH["<b>challenger</b> — steelman legitimacy,<br/>then rebut each finding individually"]
+    PR["<b>precedent-clerk</b> — does an earlier<br/>human resolution govern this?"]
+    AD["<b>adjudicator</b> — writes the rationale"]
+    RAILS{{"<b>6 deterministic rails in Python</b><br/>thresholds live in config, never in a prompt"}}
+
+    B(["🔴 <b>BLOCK</b>"])
+    E(["🟠 <b>ESCALATE</b><br/>to a named human"])
+    RE(["🟢 <b>RELEASE</b>"])
+
+    POST["<b>scribe</b> dossier → threat library →<br/>cross-district exchange → <b>hunter</b> sweep"]
+    AU["hash-chained Nacha audit record"]
+
+    A --> G
+    G -->|"removed spans logged verbatim"| S
+    S --> R
+    R --> C1 & C2 & C3 & C4
+    C1 -.->|"unanswered"| DORM["<b>DORMANT</b> — runner suspends.<br/>Silence is not confirmation."]
+    DORM -.->|"clock passes 48h grace"| AD
+    C1 & C2 & C3 & C4 --> CH
+    CH --> PR --> AD --> RAILS
+    RAILS --> B & E & RE
+    B --> POST
+    B & E & RE --> AU
+
+    classDef hold fill:#fdf3e6,stroke:#a8681c,color:#14181d
+    classDef block fill:#fbeeec,stroke:#a3322a,color:#14181d
+    classDef rel fill:#ecf6f2,stroke:#2f7a63,color:#14181d
+    classDef guard fill:#f5efe0,stroke:#9a7529,color:#14181d
+    class S,DORM,E hold
+    class B block
+    class RE rel
+    class G,RAILS guard
 ```
 
-The container build is also the only honest check that this repository installs from scratch —
-it caught `requirements.txt` pinning `fastapi==0.118.0` against `google-adk`'s `>=0.133` floor,
-which made a clean `pip install` impossible while the developer's own virtualenv kept working.
+**The whole product is in one line of that diagram:** the payment stops *first*, before anything
+has been decided, and it is released only if verification earns it. A payment held in error is
+paid a week late. A payment released in error is gone.
 
-**Why this is a replay and not a mock.** Replay serves the actual responses the models returned
-during a recording run; it never synthesises one. A cache miss raises `ReplayMiss`, surfaced as
-HTTP 503 with the prompt hash, rather than degrading to a stub. A beat therefore either replays a
-real model response or fails loudly — it cannot quietly fake one. The keying, the recording
-procedure and the determinism work that makes it possible are in [CACHE.md](CACHE.md).
+---
 
-For the front end as well, add `cd web && npm install && npm run dev` (port 5173, proxying
-`/api` to 8077) and drive the same endpoints from the UI.
+## Five things here that are unusual, and how to check each in one command
+
+| | Claim | Check it |
+|---|---|---|
+| 🧠 | **It refuses to decide.** Given a *genuine* banking change with an unanswered callback, the fleet parks the case in `awaiting_callback` and produces no verdict. Silence is never treated as confirmation. | `curl -X POST localhost:8077/api/demo/inject_scenario/S3` → `"state":"awaiting_callback"`, `"outcome":null` |
+| 🛡️ | **The prompt injection is really stripped, and the log is literal.** The removed sentence is reproduced verbatim with its technique, location and byte offset — and the case still blocks, on evidence the fleet gathered itself. | `curl -X POST .../inject_scenario/S2` → read `screening.neutralizations[0].excerpt` |
+| ⏱️ | **A killed runner really is killed, and resume re-executes nothing.** Checkpoints show `hold_payments` and `begin_verification` *skipped*; the effects ledger holds exactly one entry. | `curl -X POST .../inject_scenario/S5` then `kill_runner`, then `resume_runner` |
+| 🔒 | **Scope is enforced, not asserted — on the path the *model* takes.** ADK's `before_tool_callback` refuses an out-of-grant call and returns `{"error":"scope_denied"}` to the model, writing the same posture event as a code-initiated refusal. | `curl -X POST .../force_scope_violation` |
+| 🌐 | **A second district recognises the same operators having shared no vendor, no bank and no data.** Recognition at score 0.85 on tradecraft alone; the exchange reports the nine fields it withholds. | `curl -X POST .../inject_cross_tenant` |
+
+---
+
+## Verified outcomes — five scenarios, one fleet
+
+**No outcome is hard-coded in a fixture.** Each supplies an artifact and its metadata; what the
+fleet concludes is up to the fleet. If S3 stops escalating, the fixture is wrong, not the rules.
+Every row below was observed end to end against live Gemini on Vertex, through the ADK runtime.
+**Three consecutive clean run-throughs of the whole runbook: 57 checks, 0 failures.**
+
+```
+                                                      live wall-clock
+S1  clean_hit           lookalike domain, vendor denies   ████████████████ 67.6s   → BLOCK      $340,000
+S2  poisoned_artifact   hidden instructions in the PDF    ███████████████  64.7s   → BLOCK      $145,500
+S3  genuine_but_thin    real change, callback unanswered  ███              14.4s   → DORMANT    $268,000
+    └─ clock +4 days    grace window lapses, case wakes   ▌                        → ESCALATE
+S4  delayed_release     vendor calls back and confirms    ██████████       41.6s   → RELEASE     $47,250
+S5  crash_resume        runner killed mid fan-out         ████████████████         → BLOCK   (identical)
+```
+
+| ID | What the fleet did |
+|---|---|
+| **S1** | Six-year vendor, zero prior banking changes, references a real open invoice; reply-to on a Cyrillic-confusable domain registered 11 days ago; account name does not match the legal entity; the request helpfully supplies its own phone number. → **BLOCK** |
+| **S2** | Same shape, plus a PDF carrying hidden white-on-white text telling the model the vendor is pre-approved. The guardrail strips it and logs **the literal removed sentence**; the case proceeds on genuine evidence and still reaches **BLOCK** |
+| **S3** | A real post-acquisition change. Provenance clean, entity relationship plausible, callback unanswered, exposure above the callback threshold → **goes dormant.** The runner suspends rather than guessing |
+| **S3 → wake** | The clock advances past the 48-hour grace window. The case stops waiting and decides: **ESCALATE**, on the rail that says silence is not confirmation |
+| **S4** | The vendor returns the callback four days later and confirms. The dormant session rehydrates with prior findings visible, the fresh finding supersedes the stale one → **RELEASE** |
+| **S5** | S1 with the runner *genuinely* killed mid fan-out, then resumed. `hold_payments` and `begin_verification` are **skipped — not re-executed** — the case still reaches **BLOCK**, and the effects ledger holds exactly one entry |
+
+### The flagship case, on the clock
+
+Beat 2 of the recorded demo, measured on camera against live Gemini on Vertex, from the click:
+
+| t | What appears on screen |
+|---|---|
+| `2.5s` | Hold fires. **$340,000** moves into HELD on the ledger; the case enters the queue and selects itself |
+| `2.7s` | Four lanes go live, staggered 0.6s apart |
+| `10.9–12.4s` | Four findings land; chips slot into the rail with per-lane latency |
+| `24.2s` | The steelman lands **and is struck through** — 4 rebuttals, 4 defeated |
+| **`30.4s`** | **Balance tips. BLOCK renders. The money is committed.** |
+| `~65s` | The HTTP request returns — background learning work only; nothing on screen changes |
+
+That last row is not the user-visible latency and this README does not present it as one. The
+verdict is on screen at **30.4 seconds**; the rest is the dossier, the exchange publish and the
+proactive sweep.
 
 ---
 
 ## Contents
 
-- [Category fit](#category-fit)
-- [Who this is for](#who-this-is-for)
-- [The problem](#the-problem)
-- [What Interdict does](#what-interdict-does)
-- [The agent fleet](#the-agent-fleet)
-- [How a case flows, end to end](#how-a-case-flows-end-to-end)
-- [Failure containment: loops, hallucinations and dead lanes](#failure-containment-loops-hallucinations-and-dead-lanes)
-- [What is genuinely running on Google Cloud](#what-is-genuinely-running-on-google-cloud)
-- [Demo scenarios and verified outcomes](#demo-scenarios-and-verified-outcomes)
-- [Quickstart](#quickstart)
-- [Repo layout](#repo-layout)
-- [Synthetic data](#synthetic-data)
-- [Every claim in this README, and how to check it](#every-claim-in-this-readme-and-how-to-check-it)
+- [Category fit](#category-fit) · [Who this is for](#who-this-is-for) · [The problem](#the-problem)
+- [What Interdict does](#what-interdict-does) · [The agent fleet](#the-agent-fleet) · [How a case flows](#how-a-case-flows-end-to-end)
+- [Failure containment](#failure-containment-loops-hallucinations-and-dead-lanes) · [What is genuinely running on Google Cloud](#what-is-genuinely-running-on-google-cloud)
+- [Demo scenarios](#demo-scenarios-and-verified-outcomes) · [Quickstart](#quickstart) · [Repo layout](#repo-layout)
+- [Synthetic data](#synthetic-data) · [Every claim, and how to check it](#every-claim-in-this-readme-and-how-to-check-it)
 
 ---
 
@@ -281,11 +391,39 @@ inbound artifact
   -> hash-chained Nacha audit record
 ```
 
-The case state machine is `opened -> held -> verifying -> {awaiting_callback} -> challenging ->
-adjudicating -> {released | blocked | escalated}`, with an explicit adjacency map; anything not
-listed raises. A checkpoint is written before each step and completed after it, so a process
-killed mid fan-out resumes without re-executing work and without emitting a second side effect.
-See [ARCHITECTURE.md](ARCHITECTURE.md).
+### The case state machine
+
+Every transition is declared in an explicit adjacency map. Anything not listed raises — a case
+cannot reach an outcome by a path nobody wrote down.
+
+```mermaid
+stateDiagram-v2
+    direction LR
+    [*] --> opened
+    opened --> held: payments frozen
+    held --> verifying: fan-out begins
+    verifying --> awaiting_callback: callback unresolved
+    awaiting_callback --> adjudicating: grace window lapses
+    awaiting_callback --> verifying: vendor calls back
+    verifying --> challenging: findings complete
+    challenging --> adjudicating: steelman rebutted
+    adjudicating --> blocked
+    adjudicating --> escalated
+    adjudicating --> released
+    blocked --> [*]
+    escalated --> [*]
+    released --> [*]
+
+    note right of awaiting_callback
+      The runner SUSPENDS here.
+      It does not poll, and it
+      does not guess.
+    end note
+```
+
+A checkpoint is written before each step and completed after it, so a process killed mid fan-out
+resumes without re-executing work and without emitting a second side effect. See
+[ARCHITECTURE.md](ARCHITECTURE.md).
 
 ### The deterministic rails
 
@@ -308,7 +446,19 @@ is why every rail is one-directional.
 ## Failure containment: loops, hallucinations and dead lanes
 
 The honest question about any agent fleet is what happens when a worker agent loops, stalls, or
-returns something it made up. Six mechanisms answer it, and none of them is a prompt.
+returns something it made up. Six mechanisms answer it, and **none of them is a prompt.**
+
+| Failure | Containment | Where | Enforced by |
+|---|---|---|---|
+| Agent asserts a verdict it made up | A committed verdict with an empty `evidence` list **fails schema validation** and is never constructed | `models/domain.py` | Pydantic `model_validator` |
+| A lane hangs or raises | Becomes a **recorded gap**, not a dead case; the Adjudicator is shown the gap and must weigh it | `orchestrator/fanout.py` | `asyncio.wait_for`, 45s |
+| A model loops on tool calls | Step ends at **4 LLM calls** — the opening call plus three round-trips | `adk_runtime.py` | `MAX_LLM_CALLS_PER_STEP` |
+| A single request hangs | Every step, not just the ones we remembered to wrap, has a **90-second ceiling** | `adk_runtime.py` | `STEP_TIMEOUT_SECONDS` |
+| Reply will not parse | **One** repair attempt, then raises with agent and model named. Never a default verdict | `adk_runtime.py` | explicit retry |
+| The model is simply wrong | The Adjudicator's outcome is **advisory**; six Python rails decide | `agents/adjudicator.py` | `config.py` thresholds |
+
+Every row degrades toward caution. There is no failure path in this system that ends in money
+moving — the worst case is a payment held a week too long.
 
 **A hallucinated verdict cannot reach adjudication.** `Finding` is a Pydantic model with a
 `model_validator` that rejects any verdict other than `inconclusive` that cites no evidence. An
@@ -364,6 +514,43 @@ genuinely killed runner, not a simulated one.
 This section is split deliberately. "We enabled the API" and "the demo calls it" are different
 claims, and only the second one is worth anything.
 
+```mermaid
+flowchart LR
+    subgraph APP["Interdict — one FastAPI process"]
+        direction TB
+        ORCH["Durable runner<br/><i>checkpoint before each step</i>"]
+        ADK["google.adk.Runner<br/>LlmAgent + FunctionTool"]
+        PROTO["platform/ — Protocol boundary<br/><i>every binding carries its own location</i>"]
+        ORCH --> ADK
+        ORCH --> PROTO
+    end
+
+    subgraph GCP["Google Cloud — called on every live run"]
+        VX["<b>Vertex AI</b><br/>gemini-3.6-flash · gemini-3.7-flash<br/><code>location: global</code>"]
+        MA["<b>Model Armor</b><br/>sanitizeUserPrompt<br/><code>us-central1</code>"]
+    end
+
+    subgraph SEL["Bound and selectable — PLATFORM_BACKEND=geap"]
+        FS["Firestore<br/><i>durable repository</i>"]
+        RT["Agent Runtime<br/><code>reasoningEngines · us-central1</code>"]
+        RG["Agent Registry<br/><code>agents · global</code>"]
+        CR["Cloud Run + Cloud Scheduler<br/><i>container target · dormant-case tick</i>"]
+    end
+
+    ADK ==>|"every inference"| VX
+    PROTO ==>|"every inbound artifact"| MA
+    PROTO -.-> FS & RT & RG & CR
+
+    classDef live fill:#e8f0fe,stroke:#4285F4,color:#14181d
+    classDef sel fill:#f6f7fa,stroke:#ccd2dc,color:#454d58,stroke-dasharray: 4 3
+    class VX,MA live
+    class FS,RT,RG,CR sel
+```
+
+*Solid arrows are calls the default demo makes on every run. Dashed ones are real implementations
+behind the same Protocols, selected by `PLATFORM_BACKEND=geap` — not stubs, but this README will
+not claim a service is running because its API is enabled.*
+
 ### Live on every run
 
 | Service | Location | How Interdict uses it |
@@ -384,7 +571,7 @@ going to claim a service is running because its API is enabled.
 | **Firestore** | project default | `store/firestore.py` is the durable repository — cases, findings, checkpoints, payments, audit records, posture events, the effects ledger and the replay cache. The exactly-once guarantee is a transactional `create()` enforced by the database rather than the caller. Selected by `PLATFORM_BACKEND=geap` or by pointing `FIRESTORE_EMULATOR_HOST` at the emulator. |
 | **Vertex AI Agent Runtime** (`reasoningEngines`) | `us-central1` | `platform/runtime.py` — `create`, `asyncQuery`, `list` against `v1beta1`. Surface and location verified by `make probe-geap`. |
 | **Agent Registry** (`agents`) | `global` | Bound in `platform/registry.py`, but it **does not provision on this project** and the Registry surface is served by `LocalRegistry` — `GET /api/registry` reports `"backend": "local"` so the UI never claims otherwise. `projects.locations.agents` is not a generic catalog: the discovery document permits exactly one `base_agent` value, and a create returns HTTP 200 with a long-running operation that never completes while `agents.list` stays empty (DECISIONS D-013a). The catalog is our own record either way; what the platform would add is hosting for it. |
-| **Pub/Sub, Cloud Run, Cloud Scheduler** | project | Enabled on the project for the hosted path — Cloud Run as the container target, Cloud Scheduler as the tick that wakes dormant cases whose callback grace window has lapsed. `make deploy` is not wired; **nothing is deployed and there is no hosted URL.** |
+| **Pub/Sub, Cloud Run, Cloud Scheduler** | project | Enabled on the project for the hosted path — Cloud Run as the container target, Cloud Scheduler as the tick that wakes dormant cases whose callback grace window has lapsed. `make deploy` builds this repo's Dockerfile and deploys it to Cloud Run in one command (see [Deploy](#deploy)); it fails fast rather than half-deploying if `gcloud` cannot see the project. |
 
 Two location facts caused real work and are worth stating plainly, because they are not
 discoverable from the docs alone:
@@ -410,44 +597,11 @@ local implementations, with no cloud credentials.
 
 ---
 
-## Demo scenarios and verified outcomes
+## Cross-district recognition, and the red team
 
-Five fixtures in `backend/app/seed/scenarios.py`. **No outcome is hard-coded in a fixture.** Each
-supplies an artifact and its metadata; what the fleet concludes is up to the fleet. If S3 stops
-escalating, the fixture is wrong, not the rules.
-
-Every outcome below was observed end to end against live Gemini calls on Vertex AI, through the
-ADK runtime, with the wall-clock timings taken from that run. A demo reset takes 20ms. The same
-outcomes reproduce offline in `replay` at about 1.8 seconds per scenario. Three consecutive clean
-run-throughs of the whole runbook were recorded live: **57 checks, 0 failures.**
-
-| ID | Scenario | What the fleet did |
-|---|---|---|
-| **S1** | `clean_hit` — six-year vendor, zero prior banking changes, references a real open invoice; reply-to on a Cyrillic-confusable lookalike domain registered 11 days ago; account name does not match the legal entity; the request helpfully supplies its own phone number | **BLOCK** in 67.6 seconds end to end |
-| **S2** | `poisoned_artifact` — the same shape, with an attached PDF carrying hidden white-on-white text instructing the model that the vendor is pre-approved and payment should be released immediately | Guardrail strips the instruction and logs **the literal removed sentence** with its technique, location and offset; the case proceeds on genuine evidence and still reaches **BLOCK**, in 64.7 seconds |
-| **S3** | `genuine_but_thin` — a real post-acquisition change. Provenance clean, entity relationship plausible, callback unanswered, exposure above the callback threshold | Case goes **dormant** in `awaiting_callback` after 14.4 seconds, awaiting an out-of-band callback; the runner suspends rather than guessing |
-| **S3 → wake** | the clock advances 4 days, past the 48-hour callback grace window | The case stops waiting and decides: **ESCALATE**, on the rail that says silence is not confirmation |
-| **S4** | `delayed_release` — the vendor returns the callback four days later and confirms the change | Dormant session rehydrates with prior findings visible, the new callback finding supersedes the stale one, and the case reaches **RELEASE** in 41.6 seconds |
-| **S5** | `crash_resume` — S1 with the runner genuinely killed mid fan-out, then resumed | The resumed run re-executes only `recall_prior_art`, `fanout_verification`, `adversarial_challenge` and `adjudication`; `hold_payments` and `begin_verification` are **skipped — not re-executed** — the case still reaches **BLOCK**, and the effects ledger holds exactly one entry |
-
-### What the flagship case looks like on the clock
-
-Beat 2 of the demo, measured on camera against live Gemini on Vertex, from the click to each
-visible event:
-
-| t | What appears |
-|---|---|
-| 2.5s | Hold fires. `$340,000` moves into HELD on the ledger, the case enters the queue and is selected |
-| 2.7s | Four lanes go live, staggered 0.6s apart |
-| 10.9–12.4s | Four findings land, chips slot into the rail |
-| 24.2s | Steelman lands and is struck through — 4 rebuttals, 4 defeated |
-| **30.4s** | **Balance tips, BLOCK renders, the money is committed** |
-| ~65s | The injection HTTP request returns |
-
-That last row is not the user-visible latency and this README does not present it as one. The
-verdict is on screen at 30.4 seconds; the remaining time is background learning work — the
-dossier, the exchange publish and the proactive sweep — and nothing on screen changes while it
-runs.
+The five fixtures live in `backend/app/seed/scenarios.py`; their verified outcomes and the
+flagship case's on-camera timings are [above](#verified-outcomes--five-scenarios-one-fleet).
+Two capabilities do not fit in that table.
 
 ### The cross-tenant moment
 
@@ -520,7 +674,7 @@ PLATFORM_BACKEND=local
 ### Test
 
 ```bash
-make test          # 230 tests, replay mode, local platform, no credentials
+make test          # 255 tests, replay mode, local platform, no credentials
 make check-schema  # fails if schemas/ has drifted from the Pydantic models
 ```
 
@@ -539,7 +693,22 @@ cd web && npm run dev
 the command palette. Drive a scenario with
 `curl -X POST localhost:8077/api/demo/inject_scenario/S1`.
 
-Nothing is hosted. `make deploy` is not wired, and there is no deployed URL for this project.
+### Deploy
+
+The same container that runs the offline demo deploys to Cloud Run in one command. It needs one
+interactive step this repository cannot do for you — `gcloud run deploy` uses gcloud's own
+credentials, not ADC:
+
+```bash
+gcloud auth login                                    # as the account that OWNS the project
+gcloud config set project interdict-demo-57216
+make deploy                    # replay mode: a hosted URL should not spend model quota
+make deploy DEMO_MODE=live     # live Gemini + Model Armor, for the recording
+```
+
+`make deploy` refuses to start if gcloud cannot see the project, rather than half-deploying. For
+`DEMO_MODE=live` the runtime service account additionally needs `roles/aiplatform.user`; the
+target prints the exact binding command when it finishes.
 
 ### The three demo modes
 
@@ -589,9 +758,10 @@ backend/app/
   seed/          the synthetic corpus, the five scenarios, the second district, the inbox
   services/      payments (the only code allowed to move money) and the red-team sandbox
   store/         Repository (in-memory + Firestore), the checkpoint log, the effects ledger
-backend/tests/   230 tests, including a grep test that forbids datetime.now() under app/
+backend/tests/   255 tests, including a grep test that forbids datetime.now() under app/
 context/         the durable spec: PRODUCT, AGENTS, PLATFORM, DATA_MODEL, DEMO_RUNBOOK,
-                 UI_SPEC, and DECISIONS — the judgment log, with the reasoning behind each call
+                 RECORDING_SCRIPT, UI_SPEC, and DECISIONS — the judgment log, with the
+                 reasoning behind every call and every rejected alternative
 fixtures/        the recorded replay cache
 schemas/         generated JSON Schema — one file per model, an enum module and a bundle,
                  plus the API contract and the invariant manifest
@@ -632,7 +802,7 @@ Nothing here asks to be taken on trust. Each row is a command or a file.
 
 | Claim | How to verify |
 |---|---|
-| **230 tests, and they run with no credentials** | `DEMO_MODE=replay PLATFORM_BACKEND=local ./.venv/bin/python -m pytest backend/tests -q`, or `make test`. No `GOOGLE_APPLICATION_CREDENTIALS`, no project, no key. |
+| **255 tests, and they run with no credentials** | `DEMO_MODE=replay PLATFORM_BACKEND=local ./.venv/bin/python -m pytest backend/tests -q`, or `make test`. No `GOOGLE_APPLICATION_CREDENTIALS`, no project, no key. |
 | **The fleet really runs on Google ADK** | `grep -rn "google.adk" backend/app --include=*.py` returns hits in exactly one file: `agents/adk_runtime.py`. Every reasoning step goes through that one construction site — `LlmAgent`, `Runner`, `FunctionTool`, `before_tool_callback`. There is no second path and no direct-API fallback. |
 | **A hallucinated verdict cannot be committed** | Read the `Finding` `model_validator` in `backend/app/models/domain.py`. Run `test_committed_verdict_without_evidence_is_rejected` and `test_inconclusive_may_cite_nothing` in `backend/tests/test_invariants.py`: a `supports` or `contradicts` verdict with an empty `evidence` list raises `ValidationError`; only `inconclusive` may cite nothing. |
 | **A looping agent is bounded** | `MAX_LLM_CALLS_PER_STEP = 4` and `STEP_TIMEOUT_SECONDS = 90.0` in `backend/app/agents/adk_runtime.py`, both applied at the call site — `RunConfig(max_llm_calls=...)` and an `asyncio.wait_for` around every step. |
