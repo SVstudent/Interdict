@@ -12,11 +12,11 @@ longer than the same content in note form. That is the right trade — fragments
 reciting a spec — but it means nine beats fill a four-minute video almost exactly, and the margin
 is thinner than it looks. Read the second row of this table as the real plan:
 
-| Cut | Words | Video | Buffer under 4:00 |
+| Version | Words | Video | Buffer under 4:00 |
 |---|---|---|---|
-| **This one — nine beats** | **503** | **3:53** | 6s |
-| **…with the 3 cuttable lines dropped** | **460** | **3:35** | **24s** |
-| + the crash-and-resume beat | 565 | 4:22 | **over the cap** |
+| Every line spoken | 530 | 4:05 | **over** |
+| **The plan — 4 cuttable lines dropped** | **466** | **3:58** | 1s |
+| **…and beat 1 dropped too** | **432** | **3:41** | **19s** |
 
 **Only the crash-and-resume beat is cut.** It is a good beat and it does not fit; shoot it as a
 separate 20-second clip for the submission page — the repo proves it with one command, and the
@@ -31,22 +31,27 @@ nothing dormant to wake.
 
 Everything below is budgeted at **140 wpm** — clear, unhurried technical delivery, not fast.
 
-| Your pace | Spoken | Video | Buffer | With the 3 cuttable lines dropped |
-|---|---|---|---|---|
-| 150 wpm — brisk | 3:21 | 3:39 | 21s | 3:25 · 35s |
-| **140 wpm — the plan** | **3:35** | **3:53** | 6s — tight | **3:35 · 24s** |
-| 130 wpm — deliberate | 3:52 | 4:10 | over | 3:50 · 10s |
-| 120 wpm — slow | 4:11 | 4:29 | over | 4:08 — still over; see below |
+| Your pace | Every line spoken | With the 4 cuttable lines dropped |
+|---|---|---|
+| 150 wpm — brisk | 3:53 · 6s spare | 3:49 · 10s spare |
+| **140 wpm — the plan** | 4:05 · **over** | **3:58 · 1s spare** |
+| 130 wpm — deliberate | 4:22 · over | 4:11 · over |
 
-**Three lines are marked *(cuttable)*.** Dropping all three buys 43 words — about 18 seconds — and
-none of them is something you were asked to show:
+**Four lines are marked *(cuttable)*, worth 64 words — about 27 seconds.** Dropping all four *is
+the plan*, not a fallback; the every-line version runs 4:05 and does not fit. None of the four is
+something you were asked to show:
 
-1. **Beat 0's last line.** Beat 8 makes the same point at more length.
+1. **Beat 0's last line.** The close makes the same point at more length.
 2. **Beat 0.5's model-call sentence.** The header already reads `Model calls 3` on screen.
 3. **Beat 5's `3 · memory` line.** You still open the tab; you just let it speak for itself.
+4. **Beat 5's Google Cloud line.** The close now names the whole stack, so this one is a repeat —
+   though it sits under S4's latency, so saying it costs you almost nothing if you are ahead.
 
-At 120 wpm even that is not enough — drop beat 1 as well and let the Registry go, or accept a
-4:05 and trim in post. Everything above assumes an unedited take.
+**Nine beats plus the full stack rundown is a genuinely full four minutes.** The trimmed run is
+3:58 — it fits, but one second of margin is a coin flip, not a plan. **The release valve is beat 1:**
+cut the Registry surface and the take lands at **3:41 with 19 seconds in hand.** The close still
+says "Agent Registry for discovery and versioning" out loud, so the claim survives without the
+visit. Shoot it both ways in rehearsal and keep whichever take is clean.
 
 **And if you fumble a sentence, just say it again.** The recovery comes out of the silence, not out
 of the cap, and no beat needs you to speak continuously.
@@ -68,17 +73,20 @@ working whether anyone is watching or not.*
 
 ## Timeline
 
-| # | Beat | In → Out | Length | Latency floor | Surface |
+*Lengths are the **trimmed** run — the four `(cuttable)` lines dropped. Each beat's floor is
+whichever is longer: the model latency, or the time its own clicks take.*
+
+| # | Beat | In → Out | Length | Floor | Surface |
 |---|---|---|---|---|---|
-| 0 | Hook — the problem, and what we do about it | 0:00 → 0:24 | 0:24 | — | You / title card |
-| 0.5 | **The inbox** — where every case here comes from | 0:24 → 0:47 | 0:23 | ~4s | Gmail → Console |
-| 1 | Discovery | 0:47 → 1:06 | 0:19 | — | Registry |
-| 2 | **The block** | 1:06 → 1:40 | 0:34 | **30.4s** | Console |
-| 3 | The injection | 1:40 → 1:59 | 0:19 | instant on Posture | Console → Posture |
-| 4 | The abstention | 1:59 → 2:19 | 0:20 | **14.4s** | Console |
-| 5 | **Under the hood, and the cloud** *(over S4)* | 2:19 → 3:08 | 0:49 | **41.6s, spent** | Docket ×4 tabs → GCP → Console |
-| 6 | The wake | 3:08 → 3:25 | 0:17 | ~10s | Console |
-| 8 | Close — the number, and why it matters | 3:25 → 3:53 | 0:28 | — | Console |
+| 0 | Hook — the problem | 0:00 → 0:18 | 0:18 | — | You / title card |
+| 0.5 | **The inbox** — where every case here comes from | 0:18 → 0:38 | 0:20 | clicks ~18s | Gmail → Console |
+| 1 | Discovery | 0:38 → 0:54 | 0:17 | clicks ~14s | Registry |
+| 2 | **The block** | 0:54 → 1:29 | 0:34 | **30.4s model** | Console |
+| 3 | The injection | 1:29 → 1:47 | 0:18 | clicks ~16s | Console → Posture |
+| 4 | The abstention | 1:47 → 2:06 | 0:19 | **14.4s model** | Console |
+| 5 | **Under the hood, and the cloud** *(over S4)* | 2:06 → 2:50 | 0:44 | **41.6s model, spent** | Docket ×4 tabs → GCP → Console |
+| 6 | The wake | 2:50 → 3:07 | 0:17 | ~12s | Console |
+| 8 | **Close** — the stack, the number, the point | 3:07 → 3:58 | 0:51 | — | Console / end card |
 
 ---
 
@@ -162,19 +170,19 @@ cut), and two backends.
 
 ---
 
-## Beat 0 — Hook · 0:00 → 0:24 · you, or a title card
+## Beat 0 — Hook · 0:00 → 0:18 · you, or a title card
 
-> Someone emails your accounts payable office posing as a vendor you've paid for years, and asks
-> you to update their bank details. Everything checks out except the account number. It's a
-> three-billion-dollar-a-year problem, and it lands hardest where nobody's job is security.
+> Someone emails your accounts payable office posing as a vendor you've paid for years, asking you
+> to update their bank details. Everything checks out except the account number — a
+> three-billion-dollar-a-year problem that lands where nobody's job is security.
 >
 > *(cuttable)* So Interdict freezes the payment before anyone looks at it.
 
-*(52 words · 22s spoken)*
+*(48 words · 21s spoken)*
 
 ---
 
-## Beat 0.5 — The inbox · 0:24 → 0:47
+## Beat 0.5 — The inbox · 0:18 → 0:38
 
 Where every case in this video comes from. **The three messages triage flags are S1, S2 and S3** —
 the same three the next beats open — so this is not a separate demo, it is the first frame of the
@@ -198,17 +206,17 @@ minutes, most of your video. Triage reads and sorts; the beats that follow open 
 on screen are identical either way, so the shot still works — but say "the morning's post" and drop
 "read over IMAP".
 
-> This is a real mailbox — twenty-five messages that actually arrived this morning, read over IMAP.
-> One click sorts the whole thing: twenty-two dismissed, three flagged with a reason each.
+> A real mailbox — twenty-five messages that arrived this morning, read over IMAP. One click:
+> twenty-two dismissed, three flagged with a reason each.
 >
 > *(cuttable)* And it only spent three model calls doing it, because you shouldn't be paying Gemini
 > to read a parent newsletter.
 
-*(49 words · 21s spoken)*
+*(42 words · 18s spoken)*
 
 ---
 
-## Beat 1 — Discovery · 0:47 → 1:06
+## Beat 1 — Discovery · 0:38 → 0:54
 
 | t | Do this |
 |---|---|
@@ -221,15 +229,15 @@ on screen are identical either way, so the shot still works — but say "the mor
 ⚠︎ Don't linger on the **Platform** readout in the catalogue footer. It says `local`, which is
 accurate and documented — but it isn't the point of this beat.
 
-> Before anyone can trust a fleet, they have to find it — so here's the catalogue. This one's the
-> Challenger, granted one permission: to read findings. Everything that touches money is denied,
-> because its job is to argue, not to act.
+> Before anyone can trust a fleet, they have to find it. This one's the Challenger, granted one
+> permission: to read findings. Everything touching money is denied, because its job is to argue,
+> not act.
 
-*(40 words · 17s spoken)*
+*(34 words · 15s spoken)*
 
 ---
 
-## Beat 2 — The block · 1:06 → 1:40
+## Beat 2 — The block · 0:54 → 1:29
 
 Most of the video's value is in these thirty-eight seconds.
 
@@ -262,7 +270,7 @@ seconds, but **nothing on screen changes after the verdict.** Move on the verdic
 
 ---
 
-## Beat 3 — The injection · 1:40 → 1:59
+## Beat 3 — The injection · 1:29 → 1:47
 
 The guardrail event is written **before any agent parses the artifact**, so it's on Posture within a
 second of the click. That's what lets a 23-second beat sit on top of a 30-second verdict.
@@ -275,15 +283,15 @@ second of the click. That's what lets a 23-second beat sit on top of a 30-second
 | 1:49 | Let the cursor rest on the struck-through line as you say "written for the model". The screen carries the sentence; you don't have to read it out. |
 | 1:55 | Click **Console**. Findings are landing; BLOCK follows. |
 
-> Same attack, except this time there's a PDF attached, with a line hidden inside it written for
-> the model rather than the person. It never reached an agent, and the case still blocks — on
-> evidence the fleet gathered itself.
+> Same attack, except this time there's a PDF attached, with a line hidden inside written for the
+> model rather than the person. It never reached an agent, and the case still blocks — on evidence
+> the fleet gathered itself.
 
-*(39 words · 17s spoken)*
+*(38 words · 16s spoken)*
 
 ---
 
-## Beat 4 — The abstention · 1:59 → 2:19
+## Beat 4 — The abstention · 1:47 → 2:06
 
 The differentiator, and a prerequisite: beat 6 has nothing to wake without it.
 
@@ -296,15 +304,15 @@ The differentiator, and a prerequisite: beat 6 has nothing to wake without it.
 ⚠︎ **Stop the take if any oxblood appears here.** If the case decides, the fixture is wrong, not the
 rules — `tests/test_callback_window.py` is the regression guard.
 
-> This third one is genuine — a real bank change after a real acquisition. The headers are clean
-> and the entity checks out, but nobody answers the callback, so it stops without a verdict. A
-> vendor not picking up the phone isn't a yes.
+> This third one is genuine — a real bank change after an acquisition. The headers are clean and
+> the entity checks out, but nobody answers the callback, so it stops without a verdict. A vendor
+> not picking up isn't a yes.
 
-*(43 words · 18s spoken)*
+*(40 words · 17s spoken)*
 
 ---
 
-## Beat 5 — Under the hood, and the cloud · 2:19 → 3:08
+## Beat 5 — Under the hood, and the cloud · 2:06 → 2:50
 
 **The pivot beat.** You click S4, leave it running, and go underneath. It takes 41.6 seconds and you
 spend every one of them.
@@ -338,7 +346,7 @@ niche, and crash safety belongs to the beat that was cut.
 > **(1 · reasoning chain)** The whole reasoning trace — every step, with latency and tokens per
 > agent.
 >
-> **(2 · evidence chain)** Every finding beside the record it cited. No verdict reaches
+> **(2 · evidence chain)** Every finding beside the record it cited — no verdict reaches
 > adjudication without one.
 >
 > **(3 · memory)** *(cuttable)* This is what the case remembered — its session, and the tradecraft
@@ -346,16 +354,16 @@ niche, and crash safety belongs to the beat that was cut.
 >
 > **(4 · audit record)** And each case closes into a record carrying the hash of the one before it.
 >
-> **(Google Cloud)** And all of it runs on Google Cloud: twelve agents on Google's Agent Development
-> Kit, reasoning on Gemini Flash through Vertex AI, with Model Armor on every attachment.
+> **(Google Cloud)** *(cuttable)* And this is it on Google Cloud — Gemini Flash on Vertex AI, Model
+> Armor on every artifact, served from Cloud Run.
 >
 > **(back on Console)** And there it is — the vendor called back, confirmed, released.
 
-*(109 words · 47s spoken)*
+*(102 words · 44s spoken)*
 
 ---
 
-## Beat 6 — The wake · 3:08 → 3:25
+## Beat 6 — The wake · 2:50 → 3:07
 
 | t | Do this / what appears |
 |---|---|
@@ -371,11 +379,11 @@ niche, and crash safety belongs to the beat that was cut.
 
 ---
 
-## Beat 8 — Close · 3:25 → 3:53
+## Beat 8 — Close: the stack, the number, the point · 3:07 → 3:58
 
 | t | Do this |
 |---|---|
-| 3:25 | Click **Console**. Cursor rests on the right-hand **Ledger** panel — four rows with proportional meters. |
+| 2:58 | Click **Console**. Cursor rests on the right-hand **Ledger** panel — four rows with proportional meters. |
 
 | Row | Amount | From |
 |---|---|---|
@@ -384,30 +392,20 @@ niche, and crash safety belongs to the beat that was cut.
 | Released | **$47,250** | S4 |
 | Held | $0 | everything resolved |
 
-> Eight hundred thousand dollars examined in four minutes: four eighty-five blocked, two sixty-eight
-> escalated because the system knew what it didn't know, forty-seven thousand released because it
-> earned it.
+> So: twelve Google ADK agents reasoning on Gemini through Vertex AI, Firestore holding every case,
+> checkpoint and effect, and the whole fleet built on the Gemini Enterprise Agent Platform — Agent
+> Registry for discovery and versioning, Agent Runtime for long-running execution, Memory Bank for
+> cross-session state, Agent Identity and Agent Gateway for zero-trust scope and routing, Model
+> Armor for guardrails, Agent Observability for the traces you just saw.
+>
+> Eight hundred thousand dollars, examined in four minutes. Blocked, escalated and released — each
+> for a reason it can show you.
 >
 > Most tools score a message and hand you a number. Interdict holds the money and gives you a
-> decision it can defend line by line — or an honest refusal to decide.
+> decision it can defend — or an honest refusal to decide.
 
-*(60 words · 26s spoken)*
+*(115 words · 49s spoken)*
 
----
-
-## One thing to decide before you record
-
-The demo runs `PLATFORM_BACKEND=local`. Under that setting **Vertex AI and Model Armor are called on
-every run** — those are real, and the narration above claims only those. Firestore, Agent Runtime
-and Memory Bank are implemented behind the Protocols in `backend/app/platform/` and selected by
-`PLATFORM_BACKEND=geap`, but they are **not on the default path**, and the Agent Registry does not
-provision on this project at all (DECISIONS D-013a).
-
-**So do not say "Agent Registry" or "Memory Bank" on camera.** Say what is true — agent discovery,
-versioning, scope manifests, a session that rehydrates with its own prior findings — and let the
-README's [Google Cloud section](../README.md#what-is-genuinely-running-on-google-cloud) carry the
-precise split. A submission that draws that line honestly reads far better than one implying a
-managed service it never calls.
 
 ---
 
