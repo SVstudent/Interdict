@@ -25,7 +25,6 @@ from .adk_runtime import infer_via_adk
 from .scopes import FLEET_SCOPES, ScopeViolation
 from .tools import TOOL_SPECS
 
-
 # The single definition of what a verdict MEANS.
 #
 # Empirically necessary. With the earlier prompts, which named the enum values without defining

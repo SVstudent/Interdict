@@ -6,9 +6,8 @@ instead of broadcasting a message about a kill that never happened (DECISIONS D-
 """
 from __future__ import annotations
 
-import logging
-
 import asyncio
+import logging
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -104,7 +103,9 @@ class AppState:
 
         async def challenge(ctx: StepContext, findings):
             await self.platform.gateway.route("orchestrator", "challenger", {})
-            return await self.agents["challenger"].review(self.agent_ctx(ctx, "challenger"), findings)
+            return await self.agents["challenger"].review(
+                self.agent_ctx(ctx, "challenger"), findings
+            )
 
         async def attribute(ctx: StepContext, dossier, match, request_summary):
             return await self.agents["attribution"].attribute(

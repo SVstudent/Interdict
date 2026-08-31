@@ -9,7 +9,7 @@ from decimal import Decimal
 
 import pytest
 
-from app.agents.hunter import HunterAgent, SweepResult, SweepTarget
+from app.agents.hunter import HunterAgent
 from app.agents.scopes import FLEET_SCOPES, Scope, ScopeViolation
 from app.config import DEMO_EPOCH, FrozenClock, Settings
 from app.models.domain import PaymentStatus

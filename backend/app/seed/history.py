@@ -9,7 +9,7 @@ A new case injected from the demo control plane runs through the real fleet.
 """
 from __future__ import annotations
 
-from datetime import datetime, timedelta
+from datetime import timedelta
 from decimal import Decimal
 
 from ..audit.nacha import AuditChain
@@ -37,7 +37,7 @@ def _finding(agent: str, version: str, signal: str, verdict: str, conf: float,
         finding_id=f"F-{agent}-{signal[:6]}",
         agent=agent, agent_version=version, signal=signal, verdict=verdict,
         confidence=conf, reasoning=reasoning, latency_ms=latency,
-        evidence=[EvidenceRef(source=s, locator=l, excerpt=x) for s, l, x in evidence],
+        evidence=[EvidenceRef(source=src, locator=loc, excerpt=x) for src, loc, x in evidence],
     )
 
 

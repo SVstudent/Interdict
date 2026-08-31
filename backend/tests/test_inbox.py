@@ -12,7 +12,7 @@ import pytest
 from app.agents.sentry import SentryAgent
 from app.config import DEMO_EPOCH, Settings
 from app.seed.inbox import build_inbox
-from app.seed.scenarios import CATALOG, build_request
+from app.seed.scenarios import build_request
 
 SENTRY = SentryAgent(Settings())
 

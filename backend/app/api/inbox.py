@@ -15,7 +15,6 @@ from typing import Any
 
 from fastapi import APIRouter, Depends
 
-from ..platform.mailbox import build_mailbox
 from ..seed.inbox import InboxMessage
 from ..seed.scenarios import CATALOG, build_request
 from ..state import AppState

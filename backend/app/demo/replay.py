@@ -12,9 +12,8 @@ from __future__ import annotations
 
 import hashlib
 import json
-from typing import Any
-
 from pathlib import Path
+from typing import Any
 
 from ..config import DemoMode, Settings
 from ..store.base import Repository

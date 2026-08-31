@@ -7,11 +7,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from decimal import Decimal
 from typing import Any
 
 from ..models.domain import BankingDetails, ChangeRequest
-
 from .generate import SCENARIO_VENDOR_FOR, SCENARIO_VENDORS
 
 
@@ -125,7 +123,6 @@ def _banking(name: str, last4: str, routing: str, bank: str, now: datetime) -> B
 
 
 def build_request(scenario_id: str, now: datetime, request_id: str) -> ChangeRequest:
-    scenario = CATALOG[scenario_id]
     spec = _vendor(scenario_id)
     invoice = spec.invoices[0][0]
     real = spec.domain

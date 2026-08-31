@@ -151,8 +151,19 @@ def test_the_hashed_instruction_is_the_one_the_model_receives():
 
 def test_no_agent_prompt_carries_a_hex_blob():
     """A uuid inside a prompt is the tell for the whole bug class."""
-    from app.agents import (adjudicator, callback, challenger, hunter, ledger, precedent,
-                            provenance, redteam, registry_check, scribe, sentry)
+    from app.agents import (
+        adjudicator,
+        callback,
+        challenger,
+        hunter,
+        ledger,
+        precedent,
+        provenance,
+        redteam,
+        registry_check,
+        scribe,
+        sentry,
+    )
 
     offenders: list[str] = []
     for module in (adjudicator, callback, challenger, hunter, ledger, precedent,

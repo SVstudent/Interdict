@@ -3,11 +3,9 @@ from __future__ import annotations
 
 import hashlib
 import re
-import uuid
+from dataclasses import dataclass
 from datetime import timedelta
 from decimal import Decimal
-
-from dataclasses import dataclass
 from typing import Any
 
 from ..models.domain import DEFAULT_TENANT_ID, Case, CaseState, ChangeRequest, Vendor

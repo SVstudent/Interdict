@@ -48,7 +48,6 @@ from app.seed.tenants import (
 )
 from app.services.payments import PaymentService
 
-
 # --- the registry -------------------------------------------------------------
 
 def test_both_districts_belong_to_the_one_exchange():

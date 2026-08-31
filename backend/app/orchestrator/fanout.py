@@ -50,11 +50,11 @@ class FanoutReport:
 
     @property
     def findings(self) -> list[Finding]:
-        return [l.finding for l in self.lanes if l.finding is not None]
+        return [lane.finding for lane in self.lanes if lane.finding is not None]
 
     @property
     def failures(self) -> list[LaneResult]:
-        return [l for l in self.lanes if not l.ok]
+        return [lane for lane in self.lanes if not lane.ok]
 
     @property
     def concurrent(self) -> bool:
@@ -63,12 +63,12 @@ class FanoutReport:
         Asserted by the rehearsal skill: if total lane time greatly exceeds wall time, the lanes
         ran together; if they are near-equal, something serialised them.
         """
-        total = sum(l.duration_ms for l in self.lanes)
+        total = sum(lane.duration_ms for lane in self.lanes)
         return bool(self.lanes) and total > self.wall_ms * 1.3
 
     def as_dict(self) -> dict[str, Any]:
         return {
-            "lanes": [l.as_dict() for l in self.lanes],
+            "lanes": [lane.as_dict() for lane in self.lanes],
             "wall_ms": self.wall_ms,
             "concurrent": self.concurrent,
             "finding_count": len(self.findings),
@@ -125,7 +125,7 @@ class VerificationFanout:
                 await ctx.emit("finding_added", {
                     "case_id": ctx.case.case_id, **finding.model_dump(mode="json")
                 })
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 result.error = f"{name} exceeded {self._timeout}s and was cut off"
             except ValidationError as exc:
                 # A model that asserted a verdict without citing evidence. The Finding never

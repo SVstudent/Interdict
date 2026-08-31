@@ -7,6 +7,7 @@
 **A fleet of twelve Google ADK agents that freezes a payment run and refuses to release it until
 the payee has been independently verified — or refuses to decide at all, and says so.**
 
+[![CI](https://github.com/SVstudent/Interdict/actions/workflows/ci.yml/badge.svg)](https://github.com/SVstudent/Interdict/actions/workflows/ci.yml)
 [![tests](https://img.shields.io/badge/tests-255%20passing-2f7a63?style=flat-square)](#every-claim-in-this-readme-and-how-to-check-it)
 [![runs offline](https://img.shields.io/badge/runs%20offline-no%20credentials-2f7a63?style=flat-square)](#the-90-second-proof)
 [![models](https://img.shields.io/badge/Gemini-3.6%20%C2%B7%203.7%20Flash-4285F4?style=flat-square)](#what-is-genuinely-running-on-google-cloud)
@@ -798,7 +799,9 @@ banner saying so.
 
 ## Every claim in this README, and how to check it
 
-Nothing here asks to be taken on trust. Each row is a command or a file.
+Nothing here asks to be taken on trust. Each row is a command or a file — and the first three
+rows are also what [CI](.github/workflows/ci.yml) runs on every push, with no cloud credentials
+present in the runner at all.
 
 | Claim | How to verify |
 |---|---|

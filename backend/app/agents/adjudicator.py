@@ -6,8 +6,6 @@ after the model and can only ever make the outcome more conservative.
 """
 from __future__ import annotations
 
-import time
-from decimal import Decimal
 from typing import Any
 
 from ..models.domain import Case, ChallengeResult, Decision, Finding
@@ -62,7 +60,6 @@ class AdjudicatorAgent(InterdictAgent):
         self, ctx: AgentContext, case: Case, findings: list[Finding],
         challenge: ChallengeResult | None,
     ) -> Decision:
-        started = time.perf_counter()
         observations = {
             "exposure_amount": str(case.exposure_amount),
             # Sorted for the same reason the Challenger's are: the fan-out completes in

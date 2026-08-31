@@ -12,8 +12,9 @@ import pytest
 
 from app.config import DEMO_EPOCH, FrozenClock, Settings
 from app.models.domain import CaseState
-from app.orchestrator.runner import CaseRunner
 from app.orchestrator.pipeline import build_pipeline
+from app.orchestrator.runner import CaseRunner
+from app.platform.memory import LocalMemory
 from app.platform.recall import (
     MATCH_THRESHOLD,
     Fingerprint,
@@ -22,12 +23,10 @@ from app.platform.recall import (
     fingerprint_from_request,
     score_match,
 )
-from app.services.payments import PaymentService
 from app.seed.generate import seed_all
 from app.seed.scenarios import build_request
+from app.services.payments import PaymentService
 from app.store.memory import InMemoryRepository
-from app.platform.memory import LocalMemory
-
 
 # --- fingerprinting ----------------------------------------------------------
 
@@ -153,8 +152,8 @@ async def test_second_victim_of_the_same_attacker_is_recognised_on_arrival(stub_
     payments = PaymentService(repo, clock)
     await seed_all(repo, clock.now())
 
-    from app.agents.sentry import SentryAgent
     from app.agents.base import AgentContext
+    from app.agents.sentry import SentryAgent
 
     sentry = SentryAgent(Settings())
 
@@ -333,8 +332,9 @@ async def test_a_woken_case_supersedes_its_stale_findings(stub_fleet):
     It did, and because `finding_by_agent` returns the first match, the adjudicator read the
     stale verdict and escalated a case the vendor had just confirmed on the number of record.
     """
-    from app.models.domain import ChallengeResult, Decision, EvidenceRef, Finding
     import uuid
+
+    from app.models.domain import EvidenceRef, Finding
 
     _, challenge, adjudicate = stub_fleet
     repo, clock = InMemoryRepository(), FrozenClock(DEMO_EPOCH)
@@ -396,7 +396,7 @@ async def test_a_woken_case_supersedes_its_stale_findings(stub_fleet):
 async def test_the_library_groups_by_operation_not_by_case():
     """A second sighting of the same operators is not a second adversary. Listing one row per
     blocked case showed the same designation twice, which reads as two groups."""
-    from app.platform.recall import Fingerprint, LocalRecall, fingerprint_from_request
+    from app.platform.recall import LocalRecall, fingerprint_from_request
 
     recall = LocalRecall()
     dossier = {"designation": "Deceptive Transit", "first_seen_case_id": "CASE-A"}

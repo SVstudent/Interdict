@@ -7,9 +7,10 @@ from __future__ import annotations
 
 import time
 import uuid
+from collections.abc import Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass, field
-from typing import Any, Iterator, Protocol
+from typing import Any, Protocol
 
 # Attribute names are fixed by context/PLATFORM.md and asserted by a test.
 ATTR_CASE = "interdict.case_id"

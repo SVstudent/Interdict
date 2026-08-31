@@ -14,8 +14,16 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "backend"))
 
 from app.config import DEMO_EPOCH, FrozenClock
 from app.models.domain import (
-    BankingDetails, Case, ChallengeResult, ChangeRequest, Decision,
-    EvidenceRef, Finding, Payment, Rebuttal, Vendor,
+    BankingDetails,
+    Case,
+    ChallengeResult,
+    ChangeRequest,
+    Decision,
+    EvidenceRef,
+    Finding,
+    Payment,
+    Rebuttal,
+    Vendor,
 )
 from app.orchestrator.pipeline import build_pipeline
 from app.orchestrator.runner import CaseRunner
@@ -58,7 +66,8 @@ async def main() -> int:
         request_id="REQ-1001", vendor_id="V-NORTHWIND", channel="email", received_at=DEMO_EPOCH,
         raw_artifact="Please update our remittance details for invoice INV-4471.",
         artifact_metadata={"reply_to": "ap@northwind-cornponents.com"},
-        proposed_banking=bank("NW Holdings Group", "9930"), claimed_reason="Treasury consolidation"))
+        proposed_banking=bank("NW Holdings Group", "9930"),
+        claimed_reason="Treasury consolidation"))
     await repo.save_case(Case(case_id="CASE-A1B2C3", request_id="REQ-1001", vendor_id="V-NORTHWIND",
                               exposure_amount=Decimal("0"), opened_at=clock.now(),
                               deadline_at=clock.now() + timedelta(days=7)))
@@ -70,12 +79,16 @@ async def main() -> int:
             die["armed"] = False
             raise Killed("SIGKILL during fan-out")
         return [finding("provenance", "contradicts", 0.94), finding("ledger", "contradicts", 0.88),
-                finding("registry-check", "contradicts", 0.91), finding("callback", "contradicts", 0.97)]
+                finding("registry-check", "contradicts", 0.91),
+                finding("callback", "contradicts", 0.97)]
 
     async def challenge(ctx, findings):
         return ChallengeResult(
             strongest_legitimate_explanation="Treasury consolidation following a bank merger.",
-            rebuttals=[Rebuttal(finding_id=f.finding_id, argument="considered", succeeds=False) for f in findings],
+            rebuttals=[
+                Rebuttal(finding_id=f.finding_id, argument="considered", succeeds=False)
+                for f in findings
+            ],
             survived=False, reasoning="No rebuttal survives the lookalike domain.")
 
     async def adjudicate(ctx, findings, ch):
@@ -93,13 +106,15 @@ async def main() -> int:
     print("\n[1] Start the case. The runner is killed mid fan-out.")
     try:
         await runner().advance("CASE-A1B2C3", {"callback_response": "denied"})
-        print("    !! expected a crash and did not get one"); return 1
+        print("    !! expected a crash and did not get one")
+        return 1
     except Killed as exc:
         print(f"    runner died: {exc}")
 
     case = await repo.get_case("CASE-A1B2C3")
     print(f"    persisted state : {case.state.value}")
-    print(f"    exposure        : ${case.exposure_amount}  (sum of {len(case.held_payment_ids)} held payments)")
+    print(f"    exposure        : ${case.exposure_amount}  "
+          f"(sum of {len(case.held_payment_ids)} held payments)")
     print("\n    checkpoint log after the crash:")
     for cp in await repo.list_checkpoints("CASE-A1B2C3"):
         print(f"      seq {cp.seq}  {cp.step:<24} {cp.status.value:<10} attempt {cp.attempt}")

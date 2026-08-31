@@ -1,5 +1,6 @@
 import re
 
+
 class RedactionModule:
     @staticmethod
     def mask_account_number(account_num: str) -> str:

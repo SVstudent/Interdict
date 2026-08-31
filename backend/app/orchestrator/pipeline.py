@@ -6,15 +6,16 @@ the state machine is the piece §15 says must never be parallelised or improvise
 """
 from __future__ import annotations
 
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
-from typing import Any, Awaitable, Callable
+from typing import Any
 
 from ..models.domain import (
     Case,
-    EvidenceRef,
     CaseState,
     ChallengeResult,
     Decision,
+    EvidenceRef,
     Finding,
 )
 from ..services.payments import PaymentService

@@ -6,8 +6,6 @@ it cannot act on its own argument.
 """
 from __future__ import annotations
 
-import time
-
 from ..models.domain import ChallengeResult, Finding, Rebuttal
 from .base import AgentContext, InterdictAgent
 
@@ -45,7 +43,6 @@ class ChallengerAgent(InterdictAgent):
         return self._settings.reasoning_model()
 
     async def review(self, ctx: AgentContext, findings: list[Finding]) -> ChallengeResult:
-        started = time.perf_counter()
         observations = {
             # Sorted by agent, not left in arrival order. The four lanes run concurrently and
             # finish in whatever order the models return, so arrival order is nondeterministic —

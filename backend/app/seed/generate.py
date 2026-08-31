@@ -17,7 +17,6 @@ from decimal import Decimal
 from ..models.domain import (
     BankingChange,
     BankingDetails,
-    ChangeRequest,
     Invoice,
     Payment,
     Vendor,

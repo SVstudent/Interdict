@@ -60,7 +60,8 @@ def main() -> int:
         return len(failures)
 
     check("INBOX_SOURCE is gmail", settings.INBOX_SOURCE.lower() == "gmail",
-          f"currently {settings.INBOX_SOURCE!r}; the console will show fixtures until this is 'gmail'")
+          f"currently {settings.INBOX_SOURCE!r}; the console will show fixtures "
+          "until this is 'gmail'")
 
     try:
         socket.create_connection((IMAP_HOST, IMAP_PORT), timeout=10).close()
@@ -78,7 +79,8 @@ def main() -> int:
         print("  but it will not be reading your real mail.")
         return len(failures)
 
-    check("messages were returned", len(messages) > 0, f"{len(messages)} in {settings.GMAIL_FOLDER!r}")
+    check("messages were returned", len(messages) > 0,
+          f"{len(messages)} in {settings.GMAIL_FOLDER!r}")
 
     found = {m.scenario_id for m in messages if m.scenario_id}
     check("the scenario headers survived Gmail", found == EXPECTED_SCENARIOS,

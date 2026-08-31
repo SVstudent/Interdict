@@ -15,6 +15,7 @@ from datetime import timedelta
 from decimal import Decimal
 
 import pytest
+from conftest import banking
 from fastapi import HTTPException
 from pydantic import ValidationError
 
@@ -45,8 +46,6 @@ from app.orchestrator.runner import CaseRunner, StepContext
 from app.platform.precedent import CITE_THRESHOLD, LocalPrecedent, key_from_case
 from app.state import AppState, build_state
 from app.store.memory import InMemoryRepository
-
-from conftest import banking
 
 SETTINGS = Settings()
 

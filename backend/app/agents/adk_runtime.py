@@ -369,7 +369,7 @@ async def infer_via_adk(
     async def _run_bounded() -> tuple[list[str], int, int]:
         try:
             return await asyncio.wait_for(_run_once(), timeout=STEP_TIMEOUT_SECONDS)
-        except asyncio.TimeoutError as exc:
+        except TimeoutError as exc:
             raise AdkStepTimeout(
                 f"{agent.name} on {agent.model} exceeded {STEP_TIMEOUT_SECONDS:.0f}s"
             ) from exc

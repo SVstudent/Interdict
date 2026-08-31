@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import asyncio
 import json
-from typing import AsyncGenerator
+from collections.abc import AsyncGenerator
 
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import StreamingResponse
@@ -25,7 +25,7 @@ async def events(request: Request, state: AppState = Depends(get_state)) -> Stre
     queue: asyncio.Queue = asyncio.Queue(maxsize=1000)
     state.subscribers.append(queue)
 
-    async def stream() -> AsyncGenerator[str, None]:
+    async def stream() -> AsyncGenerator[str]:
         try:
             yield "retry: 2000\n\n"
             while True:
@@ -33,7 +33,7 @@ async def events(request: Request, state: AppState = Depends(get_state)) -> Stre
                     break
                 try:
                     payload = await asyncio.wait_for(queue.get(), timeout=HEARTBEAT_SECONDS)
-                except asyncio.TimeoutError:
+                except TimeoutError:
                     # Comment frame: keeps proxies from closing an idle stream mid-demo.
                     yield ": keep-alive\n\n"
                     continue
@@ -45,5 +45,9 @@ async def events(request: Request, state: AppState = Depends(get_state)) -> Stre
     return StreamingResponse(
         stream(),
         media_type="text/event-stream",
-        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no", "Connection": "keep-alive"},
+        headers={
+            "Cache-Control": "no-cache",
+            "X-Accel-Buffering": "no",
+            "Connection": "keep-alive",
+        },
     )

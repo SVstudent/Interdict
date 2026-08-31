@@ -75,7 +75,9 @@ class AuditChain:
             "adversarial_review": {
                 "strongest_legitimate_explanation":
                     case.challenge.strongest_legitimate_explanation if case.challenge else None,
-                "rebuttals": [r.model_dump() for r in case.challenge.rebuttals] if case.challenge else [],
+                "rebuttals": (
+                    [r.model_dump() for r in case.challenge.rebuttals] if case.challenge else []
+                ),
                 "survived": case.challenge.survived if case.challenge else None,
             },
             "guardrail_screening": screening or {"clean": True, "neutralizations": []},

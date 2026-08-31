@@ -20,9 +20,9 @@ from datetime import datetime, timedelta
 from decimal import Decimal
 
 from ..models.domain import (
+    DEFAULT_TENANT_ID,
     BankingDetails,
     ChangeRequest,
-    DEFAULT_TENANT_ID,
     Invoice,
     Payment,
     Tenant,

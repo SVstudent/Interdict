@@ -13,9 +13,10 @@ from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException
 
-from ..models.domain import CaseState, SHARED_EXCHANGE_ID, Tenant
+from ..models.domain import SHARED_EXCHANGE_ID, CaseState, Tenant
 from ..seed.tenants import TENANTS
 from ..state import AppState
+
 # The docket's own row shape rather than a second derivation of it: a tenant's case list that
 # drifted from /api/cases would be two contracts for one object, and the UI renders both with
 # the same CaseSummary type.

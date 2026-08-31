@@ -123,7 +123,8 @@ async def test_redteam_may_read_the_threat_library_but_never_write_it(monkeypatc
 
     denials = [e for e in await state.repo.list_posture_events()
                if e["kind"] == "identity_denial" and e["agent"] == "redteam"]
-    assert denials, "a denial must leave a posture event; an enforcement you cannot show is one a judge assumes you did not build"
+    assert denials, ("a denial must leave a posture event; an enforcement you cannot show "
+                     "is one a judge assumes you did not build")
     assert denials[0]["scope"] == Scope.THREATINTEL_WRITE
     assert denials[0]["policy_id"] == "interdict-policy/redteam-v1"
 

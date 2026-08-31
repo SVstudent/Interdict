@@ -242,7 +242,7 @@ class Finding(BaseModel):
     latency_ms: int = 0
 
     @model_validator(mode="after")
-    def _committed_verdicts_must_cite(self) -> "Finding":
+    def _committed_verdicts_must_cite(self) -> Finding:
         """A Finding that takes a position must show its work. Structurally enforced, so no
         prompt regression can smuggle an uncited conclusion into an adjudication."""
         if self.verdict != "inconclusive" and not self.evidence:
@@ -328,7 +328,7 @@ def tenure_band(days: int) -> str:
     return "established"
 
 
-def verdict_pattern(findings: list["Finding"]) -> list[str]:
+def verdict_pattern(findings: list[Finding]) -> list[str]:
     """What the fleet concluded, canonicalised as sorted `agent:verdict` pairs.
 
     Agent identity is kept alongside the verdict because *which* lane objected is the substance
@@ -381,7 +381,7 @@ class Precedent(BaseModel):
     cited_by_case_ids: list[str] = Field(default_factory=list)
 
     @model_validator(mode="after")
-    def _a_precedent_must_explain_itself(self) -> "Precedent":
+    def _a_precedent_must_explain_itself(self) -> Precedent:
         """A resolution with no rationale teaches the fleet nothing and cannot be argued with.
 
         Same reasoning as INV-1: a position that cannot show its work must not be citable in an

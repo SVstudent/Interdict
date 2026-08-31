@@ -16,7 +16,7 @@ import httpx
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "backend"))
 
-from app.config import Settings          # noqa: E402
+from app.config import Settings  # noqa: E402
 from app.platform.catalog import full_catalog  # noqa: E402
 
 LOCATION = "global"

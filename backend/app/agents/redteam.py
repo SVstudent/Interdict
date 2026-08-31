@@ -105,7 +105,7 @@ def _reserved_phone(value: Any) -> str | None:
     return phone if "555" in phone else RESERVED_PHONE
 
 
-def is_rerun(variant: "AttackVariant", library: list[dict[str, Any]]) -> bool:
+def is_rerun(variant: AttackVariant, library: list[dict[str, Any]]) -> bool:
     """Would the fleet's own recall recognise this attack on arrival?
 
     The judgement is delegated to `score_match` — the function the fleet actually uses in

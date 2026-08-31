@@ -4,16 +4,26 @@ from __future__ import annotations
 import logging
 import sys
 from contextlib import asynccontextmanager
-from typing import Any
-
 from pathlib import Path
+from typing import Any
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from .api import (audit, callback, cases, demo, events, inbox, posture, precedent,
-                  redteam, registry, tenants)
+from .api import (
+    audit,
+    callback,
+    cases,
+    demo,
+    events,
+    inbox,
+    posture,
+    precedent,
+    redteam,
+    registry,
+    tenants,
+)
 from .config import Settings
 from .seed.generate import seed_all
 from .seed.history import seed_history

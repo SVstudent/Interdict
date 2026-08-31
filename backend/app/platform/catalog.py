@@ -5,8 +5,8 @@ alongside `interdict.*`: a registry with one entry is a demo, three is a platfor
 """
 from __future__ import annotations
 
-from .registry import RegistryEntry
 from ..agents.scopes import FLEET_SCOPES
+from .registry import RegistryEntry
 
 FINDING_SCHEMA = {
     "type": "object",

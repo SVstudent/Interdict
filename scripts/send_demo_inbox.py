@@ -35,7 +35,7 @@ import smtplib
 import ssl
 import sys
 import time
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime
 from email.message import EmailMessage
 from email.utils import format_datetime
 from pathlib import Path
@@ -63,11 +63,11 @@ def build_messages(address: str) -> list[EmailMessage]:
     """The scenario artifacts, plus ordinary mail for the triage ratio to be about something."""
     from app.config import DEMO_EPOCH
     from app.seed.inbox import SCENARIO_MESSAGES, build_inbox
-    from app.seed.scenarios import CATALOG, build_request
+    from app.seed.scenarios import build_request
 
     out: list[EmailMessage] = []
     attachments = {sid: name for sid, _, _, name in SCENARIO_MESSAGES}
-    sent_at = datetime.now(timezone.utc)
+    sent_at = datetime.now(UTC)
 
     # ONE loop over the fixture, oldest first, so the order is DERIVED rather than restated.
     #

@@ -7,10 +7,10 @@ module under `app/` calls `datetime.now()` directly.
 """
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from decimal import Decimal
-from pathlib import Path
 from enum import Enum
+from pathlib import Path
 from typing import Protocol, runtime_checkable
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -43,7 +43,7 @@ class SystemClock:
 
     def now(self) -> datetime:
         # The single sanctioned call site. The grep test allowlists this file.
-        return datetime.now(timezone.utc)
+        return datetime.now(UTC)
 
 
 class OffsetClock:
@@ -64,12 +64,12 @@ class OffsetClock:
 
     def now(self) -> datetime:
         # Sanctioned call site; the grep test allowlists this file.
-        return datetime.now(timezone.utc) + self._offset
+        return datetime.now(UTC) + self._offset
 
     def set(self, moment: datetime) -> datetime:
         if moment.tzinfo is None:
-            moment = moment.replace(tzinfo=timezone.utc)
-        self._offset = moment - datetime.now(timezone.utc)
+            moment = moment.replace(tzinfo=UTC)
+        self._offset = moment - datetime.now(UTC)
         return self.now()
 
     def advance(self, *, days: float = 0.0, seconds: float = 0.0) -> datetime:
@@ -87,7 +87,7 @@ class FrozenClock:
 
     def __init__(self, initial: datetime) -> None:
         if initial.tzinfo is None:
-            initial = initial.replace(tzinfo=timezone.utc)
+            initial = initial.replace(tzinfo=UTC)
         self._now = initial
 
     def now(self) -> datetime:
@@ -95,7 +95,7 @@ class FrozenClock:
 
     def set(self, moment: datetime) -> datetime:
         if moment.tzinfo is None:
-            moment = moment.replace(tzinfo=timezone.utc)
+            moment = moment.replace(tzinfo=UTC)
         self._now = moment
         return self._now
 
@@ -106,7 +106,7 @@ class FrozenClock:
 
 # Fixed epoch so replay-mode runs, cached prompts, and audit hashes are byte-identical
 # across machines and CI. Chosen to sit after the Nacha Phase 2 effective date (2026-06-19).
-DEMO_EPOCH = datetime(2026, 8, 3, 14, 30, 0, tzinfo=timezone.utc)
+DEMO_EPOCH = datetime(2026, 8, 3, 14, 30, 0, tzinfo=UTC)
 
 
 class Settings(BaseSettings):

@@ -14,7 +14,7 @@ from dataclasses import dataclass
 from decimal import Decimal
 
 from ..config import Clock
-from ..models.domain import Case, Effect, Payment, PaymentStatus
+from ..models.domain import Case, Effect, PaymentStatus
 from ..store.base import Repository
 
 

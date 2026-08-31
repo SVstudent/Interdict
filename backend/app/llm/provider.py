@@ -18,9 +18,10 @@ from __future__ import annotations
 import asyncio
 import json
 import random
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Awaitable, Callable, Protocol
+from typing import Any, Protocol
 
 # Vertex throttles on requests-per-minute, and the verification fan-out is bursty by design:
 # four lanes fire at once, then challenger, adjudicator, scribe and attribution follow. Running

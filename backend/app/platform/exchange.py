@@ -20,7 +20,7 @@ import uuid
 from dataclasses import dataclass, field
 from typing import Any, Protocol
 
-from .recall import Fingerprint, MATCH_THRESHOLD, score_match
+from .recall import MATCH_THRESHOLD, Fingerprint, score_match
 
 
 @dataclass

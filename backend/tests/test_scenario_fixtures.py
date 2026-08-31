@@ -46,7 +46,8 @@ def test_scenarios_that_run_consecutively_do_not_share_a_vendor():
 
 
 def test_s4_exposure_is_below_the_auto_release_ceiling():
-    """Otherwise the runbook's S4 RELEASE is unreachable: rail 4 forces ESCALATE above the ceiling."""
+    """Otherwise the runbook's S4 RELEASE is unreachable: rail 4 forces ESCALATE
+    above the ceiling."""
     exposure = scenario_exposure("S4")
     assert exposure <= SETTINGS.AUTO_RELEASE_CEILING, (
         f"S4 exposure {exposure} exceeds the ${SETTINGS.AUTO_RELEASE_CEILING} ceiling, so it can "

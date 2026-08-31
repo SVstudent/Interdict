@@ -13,7 +13,6 @@ from typing import Any, Protocol
 
 from ..models.domain import (
     Case,
-    CaseState,
     ChangeRequest,
     Checkpoint,
     Effect,

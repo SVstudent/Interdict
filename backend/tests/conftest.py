@@ -86,7 +86,8 @@ async def world(repo, clock):
         channel="email",
         received_at=DEMO_EPOCH,
         raw_artifact="Please update our remittance details for invoice INV-4471.",
-        artifact_metadata={"reply_to": "ap@northwind-cornponents.com", "supplied_phone": "+1-702-555-0199"},
+        artifact_metadata={"reply_to": "ap@northwind-cornponents.com",
+                           "supplied_phone": "+1-702-555-0199"},
         proposed_banking=banking("NW Holdings Group", "9930"),
         claimed_reason="Treasury consolidation",
     )
@@ -136,7 +137,8 @@ def stub_agents(clock):
             make_finding("registry-check", "contradicts", 0.91),
             make_finding(
                 "callback",
-                "contradicts" if cb == "denied" else ("supports" if cb == "confirmed" else "inconclusive"),
+                "contradicts" if cb == "denied"
+                else ("supports" if cb == "confirmed" else "inconclusive"),
                 0.97 if cb else 0.0,
             ),
         ]
@@ -145,7 +147,10 @@ def stub_agents(clock):
         calls["challenge"] += 1
         return ChallengeResult(
             strongest_legitimate_explanation="Treasury consolidation after a bank merger.",
-            rebuttals=[Rebuttal(finding_id=f.finding_id, argument="considered", succeeds=False) for f in findings],
+            rebuttals=[
+                Rebuttal(finding_id=f.finding_id, argument="considered", succeeds=False)
+                for f in findings
+            ],
             survived=False,
             reasoning="No rebuttal survives the lookalike domain and the name mismatch.",
         )

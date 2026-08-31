@@ -21,7 +21,6 @@ from datetime import timedelta
 from app.config import DEMO_EPOCH, DemoMode, FrozenClock, OffsetClock, Settings, make_clock
 from app.models.domain import CaseState
 
-
 # --- the clock ------------------------------------------------------------------------------
 
 

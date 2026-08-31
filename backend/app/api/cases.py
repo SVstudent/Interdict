@@ -205,7 +205,7 @@ async def ledger_totals(
 ) -> dict[str, Any]:
     buckets = {"held": Decimal("0"), "released": Decimal("0"),
                "blocked": Decimal("0"), "escalated": Decimal("0")}
-    counts = {k: 0 for k in buckets}
+    counts = dict.fromkeys(buckets, 0)
     for case in await state.repo.list_cases(tenant_id):
         if not _is_district(case.tenant_id):
             continue

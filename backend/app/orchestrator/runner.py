@@ -12,8 +12,9 @@ improvised (§15).
 from __future__ import annotations
 
 import logging
+from collections.abc import Awaitable, Callable, Sequence
 from dataclasses import dataclass, field
-from typing import Any, Awaitable, Callable, Protocol, Sequence
+from typing import Any, Protocol
 
 from ..config import Clock
 from ..models.domain import (

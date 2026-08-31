@@ -1,0 +1,48 @@
+[tool.ruff]
+# 100 is what the codebase already holds to; the four modules exempted below are
+# data tables, and a table reads better one row per line than wrapped.
+line-length = 100
+target-version = "py313"
+src = ["backend"]
+extend-exclude = ["untitled", "reference", ".venv"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # import sorting
+    "UP",   # pyupgrade
+    "B",    # bugbear
+    "SIM",  # simplify
+    "C4",   # comprehensions
+]
+ignore = [
+    # `x: T = Depends(...)` is FastAPI's documented dependency-injection form, and
+    # `Field(default_factory=...)` is Pydantic's. Both are function calls in a default
+    # argument by construction; the rule is aimed at mutable defaults, not at these.
+    "B008",
+    # `class X(str, Enum)` rather than `StrEnum`. The two differ in what `str(member)`
+    # returns, and these enums are serialised into JSON Schema, compared against wire
+    # values, and hashed into replay-cache keys. The rewrite is cosmetic and the blast
+    # radius is not.
+    "UP042",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Data tables. Each of these is a literal corpus — the scenario catalogue, the agent
+# catalogue, the injection patterns, the seeded case history — where one record per line
+# is the readable form and wrapping to 100 columns splits records across lines for no gain.
+"backend/app/seed/*.py" = ["E501"]
+"backend/app/platform/catalog.py" = ["E501"]
+"backend/app/guardrails/injection.py" = ["E501"]
+# Prompts. Reflowing a line inside an instruction changes the text that is sent, which
+# changes its hash, which invalidates every cached response keyed on it — and the miss is
+# reported against the agent DOWNSTREAM of the one that was edited. See CACHE.md.
+"backend/app/agents/*.py" = ["E501"]
+# `dict(a=..., b=...)` builds an override map that is immediately splatted back out as
+# keyword arguments. Written as a literal it stops mirroring the call it feeds.
+"backend/tests/test_redteam.py" = ["C408"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]

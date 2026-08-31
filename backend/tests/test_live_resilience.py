@@ -10,12 +10,9 @@ A genuine failure of judgment still must.
 """
 from __future__ import annotations
 
-import json
-
 import pytest
 
-from app.agents.base import (REPAIR_SUFFIX, AgentContext, InterdictAgent,
-                             MalformedModelOutput)
+from app.agents.base import REPAIR_SUFFIX, AgentContext, InterdictAgent, MalformedModelOutput
 from app.agents.challenger import ChallengerAgent
 from app.config import Settings
 from app.models.domain import ChallengeResult, EvidenceRef, Finding
@@ -92,7 +89,8 @@ async def test_an_empty_reply_is_repaired_rather_than_crashing(repo, clock, monk
 
 async def test_prose_around_the_json_is_repaired(repo, clock, monkeypatch):
     seen = _patch_adk(monkeypatch, [
-        'Certainly. Here is my analysis:\n{"verdict": "contradicts"}\nLet me know if you need more.',
+        'Certainly. Here is my analysis:\n{"verdict": "contradicts"}\n'
+        'Let me know if you need more.',
         '{"verdict": "contradicts", "confidence": 0.95}',
     ])
     ctx = _ctx(repo, clock)

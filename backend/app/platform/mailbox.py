@@ -35,12 +35,13 @@ no code path that deletes, moves, marks, or sends anything. It is a reader.
 """
 from __future__ import annotations
 
+import contextlib
 import email
 import email.utils
 import imaplib
 import logging
 from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from email.header import decode_header, make_header
 from email.message import Message
 from typing import Any, Protocol, runtime_checkable
@@ -224,10 +225,10 @@ class GmailMailbox:
             out.sort(key=lambda m: m.received_at, reverse=True)
             return out
         finally:
-            try:
+            # A logout that fails has nothing left to protect: the fetch is done and the
+            # connection is being torn down either way.
+            with contextlib.suppress(Exception):
                 client.logout()
-            except Exception:  # noqa: BLE001
-                pass
 
 
 def _decode(value: str | None) -> str:
@@ -299,7 +300,7 @@ def _parse(raw: bytes, fallback_id: str, now: datetime) -> FetchedMessage:
         try:
             parsed = email.utils.parsedate_to_datetime(date_header)
             if parsed is not None:
-                received = parsed if parsed.tzinfo else parsed.replace(tzinfo=timezone.utc)
+                received = parsed if parsed.tzinfo else parsed.replace(tzinfo=UTC)
         except Exception:  # noqa: BLE001
             pass
 

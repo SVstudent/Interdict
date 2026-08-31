@@ -6,6 +6,7 @@ matching the wire format and the UI fails at runtime rather than at build time.
 from __future__ import annotations
 
 import json
+from datetime import UTC
 from pathlib import Path
 
 import pytest
@@ -37,14 +38,14 @@ def test_money_serialises_as_a_decimal_string_not_a_float():
     Note the SCHEMA legitimately declares anyOf[number, string] — that is Pydantic describing what
     it ACCEPTS on input. What matters is what we EMIT, so assert the runtime, not the schema.
     """
-    from datetime import datetime, timezone
+    from datetime import datetime
     from decimal import Decimal
 
     from app.models.domain import Invoice, Payment
 
     p = Payment(
         payment_id="PAY-1", vendor_id="V-1", amount=Decimal("340000.005"),
-        scheduled_for=datetime(2026, 8, 3, tzinfo=timezone.utc),
+        scheduled_for=datetime(2026, 8, 3, tzinfo=UTC),
     )
     dumped = p.model_dump(mode="json")["amount"]
     assert isinstance(dumped, str), f"Payment.amount emitted {type(dumped).__name__}, not str"
@@ -53,8 +54,8 @@ def test_money_serialises_as_a_decimal_string_not_a_float():
 
     inv = Invoice(
         invoice_id="INV-1", vendor_id="V-1", amount=Decimal("0.01"),
-        issued_at=datetime(2026, 8, 1, tzinfo=timezone.utc),
-        due_at=datetime(2026, 9, 1, tzinfo=timezone.utc),
+        issued_at=datetime(2026, 8, 1, tzinfo=UTC),
+        due_at=datetime(2026, 9, 1, tzinfo=UTC),
     )
     assert isinstance(inv.model_dump(mode="json")["amount"], str)
 

@@ -6,14 +6,19 @@ not "does IMAP work" (it does, or it degrades) but "can the surface ever claim m
 """
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
 
 import pytest
 
 from app.config import DEMO_EPOCH, Settings
-from app.platform.mailbox import (SCENARIO_HEADER, FetchedMessage, GmailMailbox,
-                                  SeededMailbox, _parse, build_mailbox)
+from app.platform.mailbox import (
+    SCENARIO_HEADER,
+    FetchedMessage,
+    GmailMailbox,
+    SeededMailbox,
+    _parse,
+    build_mailbox,
+)
 
 NOW = DEMO_EPOCH
 
@@ -266,7 +271,7 @@ async def test_the_attacks_are_still_interleaved():
     """Three suspicious messages sitting together is a fixture arranging itself to be found."""
     messages = await SeededMailbox().fetch(NOW)
     positions = sorted(i for i, m in enumerate(messages) if m.scenario_id)
-    gaps = [b - a for a, b in zip(positions, positions[1:])]
+    gaps = [b - a for a, b in zip(positions, positions[1:], strict=False)]
     assert all(g > 1 for g in gaps), (
         f"scenario messages are adjacent at rows {positions}; the fleet should be picking them "
         "out of a real morning, not off the top of a pile"

@@ -16,7 +16,6 @@ from app.models.domain import (
     assert_transition,
 )
 
-
 # --- Test 3: state machine ---------------------------------------------------------
 
 def _all_pairs():
