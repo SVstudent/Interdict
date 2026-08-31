@@ -1,3 +1,10 @@
+"""Redaction helpers for anything that leaves the process as text.
+
+Log lines are the leak path nobody audits, so account-like digit runs are masked to their last
+four before they can reach a log sink, a span attribute or an error message. This is defence in
+depth rather than the primary control: the domain model already cannot hold a full account
+number (`BankingDetails` stores only `account_last4`).
+"""
 import re
 
 

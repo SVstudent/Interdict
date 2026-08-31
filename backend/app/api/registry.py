@@ -1,3 +1,9 @@
+"""Registry routes — the agent catalogue for cross-department discovery.
+
+Publishes each agent with its owner, department, data classification, version history and the
+scope manifest showing what it is granted *and* denied. The response reports which backend served
+it, so the surface never implies a platform registry it is not actually reading from.
+"""
 from __future__ import annotations
 
 from typing import Any

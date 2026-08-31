@@ -99,6 +99,13 @@ def _vertex_gemini(settings: Settings, model: str) -> Gemini:
     project, location = settings.GCP_PROJECT_ID, settings.VERTEX_LOCATION
 
     class _BoundGemini(Gemini):
+        """ADK's Gemini with our Vertex client bound explicitly.
+
+        ADK otherwise resolves a client from ambient `GOOGLE_*` environment variables, which
+        cannot express the location Gemini 3.x publisher models actually need: they are served
+        from `global`, and `us-central1` returns 404. Binding the client here makes the project
+        and location come from settings, so the process is not one stray env var from failing.
+        """
         @functools.cached_property
         def api_client(self) -> genai.Client:
             return genai.Client(vertexai=True, project=project, location=location)

@@ -1,3 +1,8 @@
+"""Case routes — the read surface over cases, findings, checkpoints and traces.
+
+Every list endpoint is tenant-scoped. The simulation tenant is excluded from the operator-facing
+views by default so a red-team run can never appear as a district's real caseload.
+"""
 from __future__ import annotations
 
 from decimal import Decimal

@@ -50,6 +50,7 @@ nothing actionable — a sweep that freezes nothing is far better than one that 
 
 @dataclass
 class SweepTarget:
+    """One scheduled payment the sweep believes belongs to the same operation."""
     payment_id: str
     vendor_id: str
     vendor_name: str
@@ -70,6 +71,11 @@ class SweepTarget:
 
 @dataclass
 class SweepResult:
+    """What a proactive sweep found: what it froze, what it cleared, and why.
+
+    `cleared` matters as much as `targets` — a sweep that reports only its hits gives the
+    operator no way to judge whether it looked hard enough.
+    """
     designation: str
     origin_case_id: str
     targets: list[SweepTarget] = field(default_factory=list)

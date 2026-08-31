@@ -1,3 +1,11 @@
+"""Callback — out-of-band confirmation, lane 1 of the verification fan-out.
+
+Dials only `contact_phone_of_record`. When the request supplies its own number that fact is
+reported as a signal and the number is never dialled, because a number the attacker chose
+verifies the attacker. An unanswered callback is `inconclusive`, never `supports`: silence is
+not confirmation, and rail 2 turns an unresolved callback above the exposure threshold into an
+ESCALATE rather than a release.
+"""
 from __future__ import annotations
 
 import time
@@ -17,6 +25,7 @@ An unanswered callback is "inconclusive" — never "supports".
 
 
 class CallbackAgent(InterdictAgent):
+    """Confirms the change with the vendor on the number already on file."""
     name = "callback"
     version = "1.2.1"
     signal = "out_of_band_confirmation"

@@ -1,3 +1,9 @@
+"""Audit routes — the hash-chained Nacha Phase 2 record for a case.
+
+The record is a first-class downloadable artifact rather than a log line, because the person who
+needs it is the one who will be asked for it. Each record carries `prev_record_hash`, so the
+chain is verifiable end to end.
+"""
 from __future__ import annotations
 
 from typing import Any

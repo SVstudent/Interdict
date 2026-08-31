@@ -1,3 +1,12 @@
+"""Ledger — relationship baseline, lane 2 of the verification fan-out.
+
+Reads the vendor's ERP history: tenure, invoice volume, prior banking-change frequency, and
+whether the invoice the request cites is genuinely open. Read-only by grant.
+
+The asymmetry it exists to encode: a long clean relationship with no prior banking changes makes
+a sudden change more notable, not less — and a correctly cited open invoice is weak evidence of
+authenticity, because attackers read invoices too.
+"""
 from __future__ import annotations
 
 import time
@@ -15,6 +24,7 @@ less. A correctly cited open invoice is weak evidence of authenticity: attackers
 
 
 class LedgerAgent(InterdictAgent):
+    """Scores the change against the vendor's own payment and invoice history."""
     name = "ledger"
     version = "1.3.0"
     signal = "relationship_baseline"

@@ -1,3 +1,12 @@
+"""RegistryCheck — entity attestation, lane 4 of the verification fan-out.
+
+Compares the proposed account holder against the vendor's registered legal entity, and the
+receiving bank's jurisdiction against the vendor's operating country. A beneficiary name that
+does not match the legal entity is among the strongest single indicators of a redirected payment.
+
+Deliberately not a rule: factoring companies, parent treasuries and post-acquisition entities all
+produce legitimate mismatches, so the agent weighs rather than asserts.
+"""
 from __future__ import annotations
 
 import time
@@ -18,6 +27,7 @@ so weigh, do not assume.
 
 
 class RegistryCheckAgent(InterdictAgent):
+    """Scores the proposed beneficiary against the vendor's registered identity."""
     name = "registry-check"
     version = "1.0.2"
     signal = "entity_attestation"

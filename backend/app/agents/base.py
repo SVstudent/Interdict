@@ -117,6 +117,12 @@ class AgentTimeout(RuntimeError):
 
 @dataclass
 class AgentContext:
+    """Everything an agent is allowed to reach, assembled per step.
+
+    An agent holds no globals and opens no connections of its own: the repository, clock,
+    settings, replay cache, telemetry and provider all arrive here. That is what makes the
+    whole fleet runnable against local implementations with no credentials.
+    """
     case_id: str
     repo: Repository
     clock: Clock
@@ -132,6 +138,13 @@ class AgentContext:
 
 
 class InterdictAgent:
+    """Base for every reasoning agent in the fleet.
+
+    Owns the three things that must be identical across all twelve: the identity grant consulted
+    on every tool call, the per-step wall-clock ceiling, and the shared prompt furniture
+    (`VERDICT_RUBRIC` and `TOOL_PROTOCOL`) that is appended to the instruction *and* hashed with
+    it, so the replay-cache key is always the instruction actually sent.
+    """
     name: str = "agent"
     version: str = "0.0.0"
     signal: str = "unspecified"

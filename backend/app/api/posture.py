@@ -1,3 +1,9 @@
+"""Posture routes — the security-posture feed.
+
+Every guardrail screening with the literal removed content, every scope decision including the
+model-initiated ones, and the fields the cross-district exchange withholds. An enforcement you
+cannot show is one a reviewer assumes you did not build.
+"""
 from __future__ import annotations
 
 from typing import Any
