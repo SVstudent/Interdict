@@ -13,9 +13,9 @@ reciting a spec — but it costs beats, and the arithmetic is unforgiving:
 
 | Cut | Words | Video | Buffer under 4:00 |
 |---|---|---|---|
-| **This one — eight beats** | **483** | **3:43** | **17s** |
-| + the inbox beat | 529 | 4:04 | **over the cap** |
-| + the inbox and the kill | 591 | 4:33 | **over the cap** |
+| **This one — eight beats** | **479** | **3:41** | **19s** |
+| + the inbox beat | 525 | 4:02 | **over the cap** |
+| + the inbox and the kill | 587 | 4:31 | **over the cap** |
 
 **The inbox and the crash-resume beats are cut.** They are both good and neither fits. Shoot them
 as separate 20-second clips for the Devpost page if you want them — the repo proves both with one
@@ -30,19 +30,23 @@ nothing dormant to wake.
 
 Everything below is budgeted at **140 wpm** — clear, unhurried technical delivery, not fast.
 
-| Your pace | Spoken | Video lands at | Buffer under 4:00 |
-|---|---|---|---|
-| 150 wpm — brisk | 3:13 | 3:29 | 31s |
-| **140 wpm — the plan** | **3:27** | **3:43** | 17s |
-| 130 wpm — deliberate | 3:42 | 3:58 | 1s — drop both cuttable lines → **3:44**, 15s |
-| 120 wpm — slow | 4:01 | 4:17 | **over — drop both cuttable lines → 3:59** |
+| Your pace | Spoken | Video lands at | Buffer | With both cuttable lines dropped |
+|---|---|---|---|---|
+| 150 wpm — brisk | 3:11 | 3:27 | 32s | 3:17 · 43s |
+| **140 wpm — the plan** | **3:25** | **3:41** | **19s** | 3:30 · 30s |
+| 130 wpm — deliberate | 3:41 | 3:57 | 3s — tight | **3:45 · 15s** |
+| 120 wpm — slow | 3:59 | 4:15 | over | 4:02 — still over; cut beat 1 |
 
-**If you are running slow**, two lines come out in this order and cost you nothing structural:
+**If you are running slow**, two lines come out in this order and cost you nothing you were asked
+to show:
 
-1. The `Posture, probe` sentence in beat 5 — marked *(cuttable)*. 23 words, ~10 seconds.
-2. The `+16s` sentence in beat 2 — marked *(cuttable)*. 14 words, ~6 seconds.
+1. The closing sentence of beat 0 — marked *(cuttable)*. 13 words, ~6 seconds. Beat 8 now makes
+   the same point at more length, so the hook does not need it.
+2. The `3 · memory` line in beat 5 — marked *(cuttable)*. 15 words, ~6 seconds. You still open the
+   tab; you just let it speak for itself.
 
-Together they are 37 words — about 16 seconds — which puts even a 120 wpm delivery back under the cap.
+Together they buy about 11 seconds, which brings a 130 wpm delivery back to a 15-second margin.
+At 120 wpm even that is not enough — drop beat 1 as well and open on the block.
 
 **And if you fumble a sentence, just say it again.** The recovery comes out of the silence, not out
 of the cap — there is about 16 seconds of it spread across the take, and no beat needs you to speak
@@ -68,13 +72,13 @@ working whether anyone is watching or not.*
 | # | Beat | In → Out | Length | Latency floor | Surface |
 |---|---|---|---|---|---|
 | 0 | Hook — the problem, and what we do about it | 0:00 → 0:26 | 0:26 | — | You / title card |
-| 1 | Discovery | 0:26 → 0:49 | 0:23 | — | Registry |
-| 2 | **The block** | 0:49 → 1:27 | 0:38 | **30.4s** | Console |
-| 3 | The injection | 1:27 → 1:50 | 0:23 | instant on Posture | Console → Posture |
-| 4 | The abstention | 1:50 → 2:11 | 0:21 | **14.4s** | Console |
-| 5 | **Trace, identity, cloud** *(over S4)* | 2:11 → 2:55 | 0:44 | **41.6s, spent** | Docket → Posture → GCP → Console |
-| 6 | The wake | 2:55 → 3:18 | 0:23 | ~10s | Console |
-| 8 | Close | 3:18 → 3:37 | 0:19 | — | Console |
+| 1 | Discovery | 0:26 → 0:48 | 0:23 | — | Registry |
+| 2 | **The block** | 0:48 → 1:22 | 0:34 | **30.4s** | Console |
+| 3 | The injection | 1:22 → 1:41 | 0:19 | instant on Posture | Console → Posture |
+| 4 | The abstention | 1:41 → 2:01 | 0:20 | **14.4s** | Console |
+| 5 | **Under the hood, and the cloud** *(over S4)* | 2:01 → 2:54 | 0:53 | **41.6s, spent** | Docket ×4 tabs → GCP → Console |
+| 6 | The wake | 2:54 → 3:11 | 0:17 | ~10s | Console |
+| 8 | Close — the number, and why it matters | 3:11 → 3:41 | 0:29 | — | Console |
 
 ---
 
@@ -91,7 +95,7 @@ The criteria are 40 / 30 / 30. Nothing in this cut is decorative.
 | 4 | **Innovation & Operational Utility** — judgment, not classification | — |
 | 5 | **Architectural Discipline** + **Production Readiness** *(mandatory cloud proof)* | *Can they audit its reasoning? Observability, zero-trust identity* |
 | 6 | **Architectural Discipline** — state and memory | *Long-term state persistence across sessions* |
-| 8 | Value proposition, landed as a number | — |
+| 8 | Value proposition, landed as a number, then said plainly | — |
 
 ---
 
@@ -156,14 +160,15 @@ cut), and two backends.
 
 > Someone emails your accounts payable office pretending to be a vendor you've paid for years, and
 > asks you to update their bank details. Everything checks out except the account number. It's a
-> three-billion-dollar-a-year problem, and it hits hardest wherever nobody's job is security — so
-> Interdict freezes the payment first, and makes twelve agents earn the release.
+> three-billion-dollar-a-year problem, and it hits hardest wherever nobody's job is security.
+>
+> *(cuttable)* So Interdict freezes the payment first, and makes twelve agents earn the release.
 
 *(56 words · 24s spoken)*
 
 ---
 
-## Beat 1 — Discovery · 0:26 → 0:49
+## Beat 1 — Discovery · 0:26 → 0:48
 
 | t | Do this |
 |---|---|
@@ -184,14 +189,14 @@ accurate and documented — but it isn't the point of this beat.
 
 ---
 
-## Beat 2 — The block · 0:49 → 1:27
+## Beat 2 — The block · 0:48 → 1:22
 
 Most of the video's value is in these thirty-eight seconds.
 
 | t | Do this / what appears |
 |---|---|
-| 0:49 | Click **Console** — you land on the Cases tab. |
-| 0:51 | Click **Lookalike**, first brass button in the demo bar. **Then take your hands off the mouse.** |
+| 0:48 | Click **Console** — you land on the Cases tab. |
+| 0:50 | Click **Lookalike**, first brass button in the demo bar. **Then take your hands off the mouse.** |
 | +2.5s | Hold fires. **$340,000** into **Held** on the ledger. Case opens and selects itself — *Northwind Student Transport LLC*. |
 | +2.7s | Four lanes go live, staggered 0.6s apart. |
 | +11–12s | Four findings land; chips slot onto the rail with per-lane latency. |
@@ -209,61 +214,58 @@ seconds, but **nothing on screen changes after the verdict.** Move on the verdic
 > **(+9s)** Four go out in parallel, and the one to watch actually rings the vendor — on the number
 > we already hold, not the one in the email.
 >
-> **(+16s)** *(cuttable)* They all come back against it, and the vendor confirms they never sent
-> this.
->
 > **(+27s)** Then the Challenger argues the opposite case and takes down each finding in turn — and
 > all four attempts fail.
 >
 > **(+33s)** So the balance tips, and it blocks.
 
-*(89 words · 38s spoken)*
+*(75 words · 32s spoken)*
 
 ---
 
-## Beat 3 — The injection · 1:27 → 1:50
+## Beat 3 — The injection · 1:22 → 1:41
 
 The guardrail event is written **before any agent parses the artifact**, so it's on Posture within a
 second of the click. That's what lets a 23-second beat sit on top of a 30-second verdict.
 
 | t | Do this / what appears |
 |---|---|
-| 1:27 | Click **Poisoned PDF**. |
-| 1:29 | **Immediately** click **Posture**. Don't wait. |
-| 1:31 | Top-left, **Guardrail screening**: **1 · Injections neutralized**, and below it the removed span reproduced **verbatim and struck through**, with technique (`hidden_text`), location and byte offset. |
-| 1:36 | Let the cursor rest on the struck-through line as you say "written for the model". The screen carries the sentence; you don't have to read it out. |
-| 1:46 | Click **Console**. Findings are landing; BLOCK follows. |
+| 1:22 | Click **Poisoned PDF**. |
+| 1:24 | **Immediately** click **Posture**. Don't wait. |
+| 1:26 | Top-left, **Guardrail screening**: **1 · Injections neutralized**, and below it the removed span reproduced **verbatim and struck through**, with technique (`hidden_text`), location and byte offset. |
+| 1:31 | Let the cursor rest on the struck-through line as you say "written for the model". The screen carries the sentence; you don't have to read it out. |
+| 1:37 | Click **Console**. Findings are landing; BLOCK follows. |
 
-> Same attack, except this time there's a PDF attached, with a line hidden inside it written for the
-> model rather than the person reading it. It's reproduced here exactly as we stripped it out, and
-> it never reached an agent — the case still blocks, on evidence the fleet gathered itself.
+> Same attack, except this time there's a PDF attached, with a line hidden inside it written for
+> the model rather than the person. It never reached an agent, and the case still blocks — on
+> evidence the fleet gathered itself.
 
-*(50 words · 21s spoken)*
+*(39 words · 17s spoken)*
 
 ---
 
-## Beat 4 — The abstention · 1:50 → 2:11
+## Beat 4 — The abstention · 1:41 → 2:01
 
 The differentiator, and a prerequisite: beat 6 has nothing to wake without it.
 
 | t | Do this / what appears |
 |---|---|
-| 1:50 | Click **Thin evidence**. |
+| 1:41 | Click **Thin evidence**. |
 | +3s | Hold fires. New case — *Padstow Special Education Services LLC*, **$268,000**. |
 | **+14.4s** | It **parks** in *Waiting on vendor callback*. Callback panel renders. **Findings visible, verdict band empty.** |
 
 ⚠︎ **Stop the take if any oxblood appears here.** If the case decides, the fixture is wrong, not the
 rules — `tests/test_callback_window.py` is the regression guard.
 
-> This third one is genuine — a real bank change after a real acquisition. The headers are clean and
-> the entity checks out, but nobody answers the callback, so it simply stops without a verdict. A
+> This third one is genuine — a real bank change after a real acquisition. The headers are clean
+> and the entity checks out, but nobody answers the callback, so it stops without a verdict. A
 > vendor not picking up the phone isn't a yes.
 
-*(44 words · 19s spoken)*
+*(43 words · 18s spoken)*
 
 ---
 
-## Beat 5 — Trace, identity, cloud · 2:11 → 2:55
+## Beat 5 — Under the hood, and the cloud · 2:01 → 2:54
 
 **The pivot beat.** You click S4, leave it running, and go underneath. It takes 41.6 seconds and you
 spend every one of them.
@@ -271,14 +273,18 @@ spend every one of them.
 ⚠︎ **Rules requirement — uncuttable.** The submission *must* show the backend running on Google
 Cloud: Cloud Run dashboard, Vertex logs, Console, or a `.run.app` URL. It lands here.
 
+Four of the Docket's six tabs, in order. Skip **Precedent** and **Crash safety** — precedent is
+niche, and crash safety belongs to the beat that was cut.
+
 | t | Do this / what appears |
 |---|---|
-| 2:11 | Click **Late callback**. New case — *Redgate Student Information Systems*, **$47,250**. Then leave it. |
-| 2:16 | **Docket → Reasoning chain tab.** Trace tree expands with latency and tokens per node. Hover one. |
-| 2:25 | **Docket → Audit record tab.** Point at `prev_record_hash`. |
-| 2:31 | **Posture** → bottom-left **Identity denials** → click **Probe callback → banking read**. The denial writes itself in with its policy ID. |
-| 2:39 | **Switch to the Google Cloud tab.** Decide which page before the take — see below. |
-| ~2:50 | **Back to Console.** **RELEASE** in verdigris; the ledger's **Released** row increments. If it hasn't landed, stay on the cloud tab one more beat. |
+| 2:01 | Click **Late callback**. New case — *Redgate Student Information Systems*, **$47,250**. Then leave it running. |
+| 2:05 | **Docket → 1 · Reasoning chain.** The trace tree expands: every step, with latency and tokens per node. Hover one. |
+| 2:14 | **→ 2 · Evidence chain.** Each finding beside the record it cited. |
+| 2:22 | **→ 3 · Memory & threat intel.** The session the case kept, and the tradecraft fingerprint it matched. |
+| 2:30 | **→ 4 · Audit record.** Point at `prev_record_hash`. |
+| 2:37 | **Switch to the Google Cloud tab.** Decide which page before the take — see below. |
+| ~2:48 | **Back to Console.** **RELEASE** in verdigris; the ledger's **Released** row increments. If it hasn't landed, stay on the cloud tab one more beat. |
 
 **Google Cloud tab — pick one before you record:**
 
@@ -287,45 +293,50 @@ Cloud: Cloud Run dashboard, Vertex logs, Console, or a `.run.app` URL. It lands 
 | **Preferred — Cloud Run** | `make deploy DEMO_MODE=live`, then the Cloud Run service page with the revision serving and the `.run.app` URL visible. | One step this repo can't do for you: `gcloud auth login` as the account that owns `interdict-demo-57216`, then `gcloud config set project`. |
 | **Verified fallback — Vertex logs** | Cloud Logging filtered to `aiplatform.googleapis.com`, showing the run you just recorded: `gemini-3.6-flash` and `gemini-3.7-flash`, and the `modelarmor…:sanitizeUserPrompt` 200s beside them. | Nothing. Satisfies the requirement as written, and it's real either way. |
 
-> **(on the click)** One more, and it takes about forty seconds — which it'll spend whether I'm
-> watching or not, so let me use the time to show you underneath.
+> **(on the click)** One more — it runs for about forty seconds whether I'm watching or not, so
+> let me show you underneath.
 >
-> **(Docket, reasoning chain)** Every step is traced, so you can read what each agent concluded and
-> why — and every case closes into a record carrying the hash of the one before it.
+> **(1 · reasoning chain)** This is the whole reasoning trace: every step, with latency and tokens
+> per agent.
 >
-> **(Posture, probe)** *(cuttable)* The boundaries are enforced, not documented — that's the callback
-> agent asking for the bank details it's meant to be verifying, and being refused.
+> **(2 · evidence chain)** Every finding, beside the record it cited to reach it — no verdict gets
+> into adjudication without one.
 >
-> **(Google Cloud)** All of it running on Google Cloud — Gemini on Vertex AI, with Model Armor
-> screening every attachment.
+> **(3 · memory)** *(cuttable)* This is what the case remembered — its session, and the tradecraft
+> it matched.
+>
+> **(4 · audit record)** And each case closes into a record carrying the hash of the one before it.
+>
+> **(Google Cloud)** And all of it runs on Google Cloud: twelve agents on Google's Agent Development
+> Kit, reasoning on Gemini Flash through Vertex AI, with Model Armor screening every attachment.
 >
 > **(back on Console)** And there it is — the vendor called back, confirmed, and it released.
 
-*(107 words · 46s spoken)*
+*(118 words · 51s spoken)*
 
 ---
 
-## Beat 6 — The wake · 2:55 → 3:18
+## Beat 6 — The wake · 2:54 → 3:11
 
 | t | Do this / what appears |
 |---|---|
-| 2:55 | Click **+4 days** in the demo bar. |
+| 2:54 | Click **+4 days** in the demo bar. |
 | ~+10s | The clock passes the 48-hour grace window. **The dormant Padstow case wakes on its own** — no click. Its session rehydrates, prior findings reappear with session ID and age in days, and it resolves to **ESCALATE**. |
-| 3:12 | Click the **Padstow row** in the left queue to put ESCALATE on screen for the cut. |
+| 3:06 | Click the **Padstow row** in the left queue to put ESCALATE on screen for the cut. |
 
-> Now, the case that refused to decide. I'm pushing the clock forward four days, and nobody touches
-> it — it wakes itself up, pulls its own earlier findings back out of memory, and stops waiting. It
-> escalates to a named person, which is the right answer when the evidence never arrived.
+> Now, the case that refused to decide. Four days forward on the clock, and nobody touches it — it
+> wakes itself, pulls its own findings back out of memory, and stops waiting. It escalates to a
+> person.
 
-*(50 words · 21s spoken)*
+*(36 words · 15s spoken)*
 
 ---
 
-## Beat 8 — Close · 3:18 → 3:37
+## Beat 8 — Close · 3:11 → 3:41
 
 | t | Do this |
 |---|---|
-| 3:18 | Click **Console**. Cursor rests on the right-hand **Ledger** panel — four rows with proportional meters. |
+| 3:11 | Click **Console**. Cursor rests on the right-hand **Ledger** panel — four rows with proportional meters. |
 
 | Row | Amount | From |
 |---|---|---|
@@ -334,11 +345,14 @@ Cloud: Cloud Run dashboard, Vertex logs, Console, or a `.run.app` URL. It lands 
 | Released | **$47,250** | S4 |
 | Held | $0 | everything resolved |
 
-> Eight hundred thousand dollars examined in four minutes: four hundred and eighty-five thousand
-> blocked, two hundred and sixty-eight thousand escalated to a person because the system knew what
-> it didn't know, and forty-seven thousand released, because it earned it.
+> Eight hundred thousand dollars examined in four minutes: four eighty-five blocked, two sixty-eight
+> escalated to a person because the system knew what it didn't know, and forty-seven thousand
+> released because it earned it.
+>
+> Most tools score a message and hand you a number. Interdict holds the money and gives you a
+> decision it can defend line by line — or an honest refusal to decide.
 
-*(39 words · 17s spoken)*
+*(64 words · 27s spoken)*
 
 ---
 

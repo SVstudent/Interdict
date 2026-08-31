@@ -208,7 +208,10 @@ export function Balance({ detail, lanes, challengeLanded }: Props) {
   const laneRunning = laneRows.some((l) => l.status === 'running');
 
   return (
-    <div className="flex h-full min-h-0 flex-col overflow-y-auto pane-scroll">
+    /* `flex-1`, never `h-full`. This component is one child of a flex column that may also
+       hold a recognition strip or a callback panel; `h-full` claimed the whole column from
+       inside it, pushing its own bottom edge — and the verdict — below the fold. */
+    <div className="flex min-h-0 flex-1 flex-col overflow-y-auto pane-scroll">
       <SectionHeader
         title="Verification lanes"
         actions={

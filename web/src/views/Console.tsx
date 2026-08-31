@@ -366,7 +366,16 @@ export function Console({
       {/* CENTRE — the record header, the Path, the Balance --------------- */}
       <div className="flex min-h-0 flex-col">
         <CaseHeader detail={detail} summary={summary} />
-        <div className="min-h-0 flex-1">
+        {/* A COLUMN, not a block. Anything that renders above the Balance — the recognition
+            strip, the callback panel — is a sibling of it, and `Balance` sizes itself to this
+            box. As a plain block the Balance took `h-full` (the whole box) while the strip
+            above it added another 115px, so the Balance's own bottom edge, and with it the
+            verdict, hung below the fold with nothing able to scroll to it: its internal
+            scrollbar only moves content inside a box that was itself off-screen.
+
+            As a flex column the strips are `shrink-0` and the Balance takes what is left, so
+            its scrollbar always reaches the verdict no matter what sits above it. */}
+        <div className="flex min-h-0 flex-1 flex-col">
           <>
             {/* The fleet recognising a known operation is the highest-value signal available,
                 so it sits above the balance rather than inside the finding list. */}
@@ -376,15 +385,19 @@ export function Console({
               const locator = hit.evidence[0]?.locator ?? '';
               const m = /^(.*?)\s*\(([^)]+)\)\s*$/.exec(locator);
               return (
-                <RecognitionStrip
-                  finding={hit}
-                  designation={m?.[1] ?? 'Known operation'}
-                  priorCaseId={m?.[2] ?? '—'}
-                />
+                <div className="shrink-0">
+                  <RecognitionStrip
+                    finding={hit}
+                    designation={m?.[1] ?? 'Known operation'}
+                    priorCaseId={m?.[2] ?? '—'}
+                  />
+                </div>
               );
             })()}
             {detail?.state === 'awaiting_callback' && (
-              <CallbackPanel caseId={detail.case_id} onResolved={() => void refresh()} />
+              <div className="shrink-0">
+                <CallbackPanel caseId={detail.case_id} onResolved={() => void refresh()} />
+              </div>
             )}
             <Balance detail={detail} lanes={lanes} challengeLanded={challengeLanded} />
           </>
@@ -622,8 +635,32 @@ function LedgerPanel({
    bar does not reflow when /api/demo/scenarios resolves. Slots render a
    disabled placeholder until the catalog arrives. */
 
+/* The inject group used to be a FIXED 536px box (5 x 104px + gaps) marked `shrink-0`, so that
+   the bar could not reflow when /api/demo/scenarios resolved. It achieved that and caused a
+   worse bug: the centre column is 704px at a 1440px viewport, the bar's content needs 976px,
+   and because the widest child refused to shrink and nothing clipped, `+4 days`, `Kill run`
+   and `Resume` were pushed clean out of the column and painted on top of the Ledger.
+
+   The no-reflow guarantee never depended on a fixed WIDTH — it depends on a fixed slot COUNT.
+   So the count stays at five (empty slots render a real placeholder, not `null`, which is what
+   made a fixed width necessary in the first place) and the slots became elastic: 104px where
+   there is room, down to a 76px floor where there is not. At the recording viewport every
+   label is full width; while rehearsing at 1440 they truncate and the `title` carries the rest.
+   `overflow-x-auto` on the row is the backstop — a control may end up scrolled, never escaped. */
 const INJECT_SLOTS = 5;
-const SLOT_W = 'w-[104px]';
+
+/* On the WRAPPER, never on the Button. `Button` bakes `shrink-0` into its own class list, and a
+   `flex-1` appended after it does not win — both set `flex-shrink`, and which one applies comes
+   down to Tailwind's stylesheet order rather than the order of the strings. The first attempt at
+   this fix put the sizing on the Button and the two rules cancelled, which let the controls
+   collapse under their own labels and overlap. The wrapper owns the geometry; the Button fills
+   it. */
+const SLOT_W = 'min-w-[70px] flex-1 basis-[104px] overflow-hidden';
+/* `overflow-hidden` is load-bearing, not tidying. Without it the slot's min-content width
+   is the button's own un-wrappable label, so the group could never shrink past the sum of
+   its five labels (~456px) however small `min-w` was — the explicit min-width sets a floor,
+   not a ceiling. Hiding the overflow collapses that intrinsic contribution and lets the
+   truncation the labels were written for actually happen. */
 
 /** The scenario's own slug, as a sentence. `S1` is a handle, not a label, and
     a label that only exists in `title` does not exist on a muted recording. */
@@ -668,7 +705,10 @@ function DemoBar({
         )}
       </div>
 
-      <div className="flex h-[40px] min-w-0 items-center gap-2 px-3">
+      <div
+        className="flex h-[40px] min-w-0 items-center gap-1.5 overflow-x-auto overflow-y-hidden
+          px-3 pane-scroll"
+      >
 
         <Button
           size="sm"
@@ -681,27 +721,36 @@ function DemoBar({
         </Button>
 
         <Divider vertical />
-        <div
-          className="flex shrink-0 items-center gap-1 overflow-hidden"
-          style={{ width: INJECT_SLOTS * 104 + (INJECT_SLOTS - 1) * 4 }}
-        >
-          {slots.map((s) => (s ? (
-            <Button
-              key={s.scenario_id}
-              size="sm"
-              variant="minimal"
-              tone="brass"
-              className={SLOT_W}
-              active={busy?.token === s.scenario_id}
-              title={`${s.scenario_id} — ${s.headline}. Expected to ${
-                outcomeVerb(s.expected_outcome)}.`}
-              onClick={() => run(
-                s.scenario_id, scenarioLabel(s), () => api.demo.inject(s.scenario_id),
-              )}
-            >
-              <span className="min-w-0 truncate">{scenarioLabel(s)}</span>
-            </Button>
-          ) : null))}
+        {/* Asks for its natural 536px and gives width back as the column narrows, down to a
+            floor of 366px (5 x 70px + four 4px gaps) stated explicitly rather than left to
+            `min-width: auto`. Auto resolved to the sum of the five un-wrappable labels — 456px —
+            so the group stopped shrinking 70px early and pushed `Kill run` and `Resume` out of
+            the column. Below the floor the row scrolls; nothing is ever painted outside it. */}
+        <div className="flex min-w-[366px] flex-[0_1_536px] items-center gap-1">
+          {slots.map((s, i) => (s ? (
+            <span key={s.scenario_id} className={SLOT_W}>
+              <Button
+                size="sm"
+                variant="minimal"
+                tone="brass"
+                fill
+                className="min-w-0"
+                active={busy?.token === s.scenario_id}
+                title={`${s.scenario_id} — ${s.headline}. Expected to ${
+                  outcomeVerb(s.expected_outcome)}.`}
+                onClick={() => run(
+                  s.scenario_id, scenarioLabel(s), () => api.demo.inject(s.scenario_id),
+                )}
+              >
+                <span className="min-w-0 truncate">{scenarioLabel(s)}</span>
+              </Button>
+            </span>
+          ) : (
+            /* A real placeholder, not `null`. This is what holds the geometry steady between
+               first paint and /api/demo/scenarios resolving; rendering nothing was why the
+               container previously needed a hard-coded width to stop the bar reflowing. */
+            <span key={`slot-${i}`} aria-hidden className={`h-[24px] ${SLOT_W}`} />
+          )))}
         </div>
 
         <Divider vertical />
@@ -736,11 +785,16 @@ function DemoBar({
           Resume
         </Button>
 
-        {/* Reserved, so the bar never reflows when work starts. Named only while something is
-            actually running: a permanent "Idle" readout spends 104px saying nothing for most of
-            a take, and the sweep above the bar already carries the in-flight signal. */}
-        <span className="ml-auto flex h-[18px] shrink-0 items-center gap-2">
-          <span className="w-[104px] truncate text-right text-mini text-[var(--color-brass-text)]">
+        {/* Named only while something is actually running: a permanent "Idle" readout spends
+            104px saying nothing for most of a take, and the sweep above the bar already carries
+            the in-flight signal.
+
+            `flex-[0_1_104px]` rather than a hard `w-[104px]`: it asks for 104px and keeps it
+            wherever the bar has room — including the recording viewport, so nothing reflows
+            there when a run starts — but yields it to the scenario buttons on a narrow screen
+            instead of shoving three controls out of the column. */}
+        <span className="ml-auto flex h-[18px] min-w-0 flex-[0_1_104px] items-center gap-2">
+          <span className="min-w-0 flex-1 truncate text-right text-mini text-[var(--color-brass-text)]">
             {busy?.label ?? ''}
           </span>
         </span>
