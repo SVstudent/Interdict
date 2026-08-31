@@ -5,21 +5,22 @@ what they prove; this says **what you click, when, and what you actually say ove
 
 ---
 
-## Why this cut is eight beats and not ten
+## Nine beats, and how the time is spent
 
 Written as whole, connected sentences rather than clipped fragments, the narration runs about 40%
 longer than the same content in note form. That is the right trade — fragments read as a machine
-reciting a spec — but it costs beats, and the arithmetic is unforgiving:
+reciting a spec — but it means nine beats fill a four-minute video almost exactly, and the margin
+is thinner than it looks. Read the second row of this table as the real plan:
 
 | Cut | Words | Video | Buffer under 4:00 |
 |---|---|---|---|
-| **This one — eight beats** | **479** | **3:41** | **19s** |
-| + the inbox beat | 525 | 4:02 | **over the cap** |
-| + the inbox and the kill | 587 | 4:31 | **over the cap** |
+| **This one — nine beats** | **503** | **3:53** | 6s |
+| **…with the 3 cuttable lines dropped** | **460** | **3:35** | **24s** |
+| + the crash-and-resume beat | 565 | 4:22 | **over the cap** |
 
-**The inbox and the crash-resume beats are cut.** They are both good and neither fits. Shoot them
-as separate 20-second clips for the Devpost page if you want them — the repo proves both with one
-command each, and the README carries them.
+**Only the crash-and-resume beat is cut.** It is a good beat and it does not fit; shoot it as a
+separate 20-second clip for the submission page — the repo proves it with one command, and the
+README carries it.
 
 **Beat 4 is not optional.** Beat 6 wakes a dormant case; without beat 4 injecting S3 there is
 nothing dormant to wake.
@@ -30,27 +31,25 @@ nothing dormant to wake.
 
 Everything below is budgeted at **140 wpm** — clear, unhurried technical delivery, not fast.
 
-| Your pace | Spoken | Video lands at | Buffer | With both cuttable lines dropped |
+| Your pace | Spoken | Video | Buffer | With the 3 cuttable lines dropped |
 |---|---|---|---|---|
-| 150 wpm — brisk | 3:11 | 3:27 | 32s | 3:17 · 43s |
-| **140 wpm — the plan** | **3:25** | **3:41** | **19s** | 3:30 · 30s |
-| 130 wpm — deliberate | 3:41 | 3:57 | 3s — tight | **3:45 · 15s** |
-| 120 wpm — slow | 3:59 | 4:15 | over | 4:02 — still over; cut beat 1 |
+| 150 wpm — brisk | 3:21 | 3:39 | 21s | 3:25 · 35s |
+| **140 wpm — the plan** | **3:35** | **3:53** | 6s — tight | **3:35 · 24s** |
+| 130 wpm — deliberate | 3:52 | 4:10 | over | 3:50 · 10s |
+| 120 wpm — slow | 4:11 | 4:29 | over | 4:08 — still over; see below |
 
-**If you are running slow**, two lines come out in this order and cost you nothing you were asked
-to show:
+**Three lines are marked *(cuttable)*.** Dropping all three buys 43 words — about 18 seconds — and
+none of them is something you were asked to show:
 
-1. The closing sentence of beat 0 — marked *(cuttable)*. 13 words, ~6 seconds. Beat 8 now makes
-   the same point at more length, so the hook does not need it.
-2. The `3 · memory` line in beat 5 — marked *(cuttable)*. 15 words, ~6 seconds. You still open the
-   tab; you just let it speak for itself.
+1. **Beat 0's last line.** Beat 8 makes the same point at more length.
+2. **Beat 0.5's model-call sentence.** The header already reads `Model calls 3` on screen.
+3. **Beat 5's `3 · memory` line.** You still open the tab; you just let it speak for itself.
 
-Together they buy about 11 seconds, which brings a 130 wpm delivery back to a 15-second margin.
-At 120 wpm even that is not enough — drop beat 1 as well and open on the block.
+At 120 wpm even that is not enough — drop beat 1 as well and let the Registry go, or accept a
+4:05 and trim in post. Everything above assumes an unedited take.
 
 **And if you fumble a sentence, just say it again.** The recovery comes out of the silence, not out
-of the cap — there is about 16 seconds of it spread across the take, and no beat needs you to speak
-continuously.
+of the cap, and no beat needs you to speak continuously.
 
 ---
 
@@ -71,14 +70,15 @@ working whether anyone is watching or not.*
 
 | # | Beat | In → Out | Length | Latency floor | Surface |
 |---|---|---|---|---|---|
-| 0 | Hook — the problem, and what we do about it | 0:00 → 0:26 | 0:26 | — | You / title card |
-| 1 | Discovery | 0:26 → 0:48 | 0:23 | — | Registry |
-| 2 | **The block** | 0:48 → 1:22 | 0:34 | **30.4s** | Console |
-| 3 | The injection | 1:22 → 1:41 | 0:19 | instant on Posture | Console → Posture |
-| 4 | The abstention | 1:41 → 2:01 | 0:20 | **14.4s** | Console |
-| 5 | **Under the hood, and the cloud** *(over S4)* | 2:01 → 2:54 | 0:53 | **41.6s, spent** | Docket ×4 tabs → GCP → Console |
-| 6 | The wake | 2:54 → 3:11 | 0:17 | ~10s | Console |
-| 8 | Close — the number, and why it matters | 3:11 → 3:41 | 0:29 | — | Console |
+| 0 | Hook — the problem, and what we do about it | 0:00 → 0:24 | 0:24 | — | You / title card |
+| 0.5 | **The inbox** — where every case here comes from | 0:24 → 0:47 | 0:23 | ~4s | Gmail → Console |
+| 1 | Discovery | 0:47 → 1:06 | 0:19 | — | Registry |
+| 2 | **The block** | 1:06 → 1:40 | 0:34 | **30.4s** | Console |
+| 3 | The injection | 1:40 → 1:59 | 0:19 | instant on Posture | Console → Posture |
+| 4 | The abstention | 1:59 → 2:19 | 0:20 | **14.4s** | Console |
+| 5 | **Under the hood, and the cloud** *(over S4)* | 2:19 → 3:08 | 0:49 | **41.6s, spent** | Docket ×4 tabs → GCP → Console |
+| 6 | The wake | 3:08 → 3:25 | 0:17 | ~10s | Console |
+| 8 | Close — the number, and why it matters | 3:25 → 3:53 | 0:28 | — | Console |
 
 ---
 
@@ -89,6 +89,7 @@ The criteria are 40 / 30 / 30. Nothing in this cut is decorative.
 | Beat | Criterion | The Fortified Enterprise Fleet question it answers |
 |---|---|---|
 | 0 | Problem + value proposition *(required)* | — |
+| 0.5 | **Innovation & Operational Utility** — autonomous action, no hand-holding | — |
 | 1 | **Demo & Production Readiness** | *How does an organisation discover your agents?* |
 | 2 | **Innovation & Operational Utility** — the whole 40% | *Multi-agent orchestration at scale* |
 | 3 | **Architectural Discipline** — guardrails | *Can they trust its data handling?* |
@@ -125,19 +126,23 @@ The words below are the *shape* of what to say. Read them three times, then put 
 lsof -nP -iTCP:8077 -sTCP:LISTEN -t          # zero or one PID. Kill any extras.
 
 # 2. .env must say live. It currently says record — change it.
-grep -E '^(DEMO_MODE|PLATFORM_BACKEND)' .env
-#    want: DEMO_MODE=live   PLATFORM_BACKEND=local
+grep -E '^(DEMO_MODE|PLATFORM_BACKEND|INBOX_SOURCE)' .env
+#    want: DEMO_MODE=live   PLATFORM_BACKEND=local   INBOX_SOURCE=gmail
 
 # 3. Backend, then front end.
 cd backend && ../.venv/bin/python -m uvicorn app.main:app --port 8077
 cd web && npm run dev                        # :5173, proxies /api to :8077
 
-# 4. WARM-UP. Beat 2 has measured 57.8s, 67.6s and 79.4s on identical code, and a cold
+# 4. Mailbox preflight. Catches what is invisible until it is on camera: stripped
+#    headers, the three lures sorted below the fold, your own address as a sender.
+python3 scripts/check_demo_inbox.py
+
+# 5. WARM-UP. Beat 2 has measured 57.8s, 67.6s and 79.4s on identical code, and a cold
 #    first call is the worst of them. Burn one, then reset.
 curl -s -X POST localhost:8077/api/demo/inject_scenario/S1 -m 300 -o /dev/null
 curl -s -X POST localhost:8077/api/demo/reset
 
-# 5. Confirm you are live, not replaying.
+# 6. Confirm you are live, not replaying.
 curl -s localhost:8077/healthz               # expect "mode":"live"
 ```
 
@@ -145,7 +150,8 @@ curl -s localhost:8077/healthz               # expect "mode":"live"
 machine's Chrome won't exceed a 1309px viewport and the Console clips there — zoom to **67%**
 (`⌘−` ×3) and check `document.documentElement.clientWidth` reads ≥ 1900 before you record.
 
-One more tab, already authenticated: the **Google Cloud console**, parked on the page beat 5 uses.
+Two more tabs, both already authenticated: **Gmail** (the demo mailbox, inbox view, scrolled to
+top) and the **Google Cloud console**, parked on the page beat 5 uses.
 
 **Two things that fail a take on the spot:** a spinner sitting at a beat's peak (keep talking, don't
 cut), and two backends.
@@ -156,47 +162,81 @@ cut), and two backends.
 
 ---
 
-## Beat 0 — Hook · 0:00 → 0:26 · you, or a title card
+## Beat 0 — Hook · 0:00 → 0:24 · you, or a title card
 
-> Someone emails your accounts payable office pretending to be a vendor you've paid for years, and
-> asks you to update their bank details. Everything checks out except the account number. It's a
-> three-billion-dollar-a-year problem, and it hits hardest wherever nobody's job is security.
+> Someone emails your accounts payable office posing as a vendor you've paid for years, and asks
+> you to update their bank details. Everything checks out except the account number. It's a
+> three-billion-dollar-a-year problem, and it lands hardest where nobody's job is security.
 >
-> *(cuttable)* So Interdict freezes the payment first, and makes twelve agents earn the release.
+> *(cuttable)* So Interdict freezes the payment before anyone looks at it.
 
-*(56 words · 24s spoken)*
+*(52 words · 22s spoken)*
 
 ---
 
-## Beat 1 — Discovery · 0:26 → 0:48
+## Beat 0.5 — The inbox · 0:24 → 0:47
+
+Where every case in this video comes from. **The three messages triage flags are S1, S2 and S3** —
+the same three the next beats open — so this is not a separate demo, it is the first frame of the
+one you are about to watch.
+
+| t | Do this / what appears |
+|---|---|
+| 0:24 | **Gmail tab.** Inbox view, top of list. |
+| 0:27 | **Scroll down once, slowly**, back to top. The ratio has to read: ordinary district post, three remittance messages among it. |
+| 0:32 | **Switch to Interdict.** You land on Console. |
+| 0:34 | Click **Inbox** — the left tab in the left pane's header. |
+| 0:36 | Rest the cursor on the **`live mailbox`** pill for a beat. |
+| 0:38 | Click **Triage**. |
+| ~0:42 | Header repaints: **Read 25 · Flagged 3 · Model calls 3.** Three rows go amber with a one-line reason each; the other twenty-two fade back. |
+
+⚠︎ **Click `Triage`, never `Open 3 cases`.** After a triage run the button relabels itself, and that
+second path drives every flagged message through the full fleet one at a time — about three
+minutes, most of your video. Triage reads and sorts; the beats that follow open the cases.
+
+⚠︎ **If the `live mailbox` pill is absent** the mailbox degraded to the seeded fixtures. The subjects
+on screen are identical either way, so the shot still works — but say "the morning's post" and drop
+"read over IMAP".
+
+> This is a real mailbox — twenty-five messages that actually arrived this morning, read over IMAP.
+> One click sorts the whole thing: twenty-two dismissed, three flagged with a reason each.
+>
+> *(cuttable)* And it only spent three model calls doing it, because you shouldn't be paying Gemini
+> to read a parent newsletter.
+
+*(49 words · 21s spoken)*
+
+---
+
+## Beat 1 — Discovery · 0:47 → 1:06
 
 | t | Do this |
 |---|---|
-| 0:26 | Click **Registry** in the nav rail — third icon down. |
-| 0:29 | Catalogue: twelve agents with owner, department, data classification, version, granted/denied scope ratio. |
-| 0:33 | Click the **Challenger** row. The detail pane fills on the right. |
-| 0:38 | **Scroll the detail pane** to **Scope manifest** — 1 granted (`findings:read`), 6 denied. |
-| 0:44 | Keep scrolling to **Version history** — v1.x → **v2.0.0**. |
+| 0:47 | Click **Registry** in the nav rail — third icon down. |
+| 0:50 | Catalogue: twelve agents with owner, department, data classification, version, granted/denied scope ratio. |
+| 0:54 | Click the **Challenger** row. The detail pane fills on the right. |
+| 0:58 | **Scroll the detail pane** to **Scope manifest** — 1 granted (`findings:read`), 6 denied. |
+| 1:02 | Keep scrolling to **Version history** — v1.x → **v2.0.0**. |
 
 ⚠︎ Don't linger on the **Platform** readout in the catalogue footer. It says `local`, which is
 accurate and documented — but it isn't the point of this beat.
 
-> Before anyone can trust a fleet like this, they have to be able to find it — so here's the
-> catalogue. This one's the Challenger, and it's granted exactly one permission: to read findings.
-> Everything that touches money is denied, because its job is to argue, not to act.
+> Before anyone can trust a fleet, they have to find it — so here's the catalogue. This one's the
+> Challenger, granted one permission: to read findings. Everything that touches money is denied,
+> because its job is to argue, not to act.
 
-*(48 words · 21s spoken)*
+*(40 words · 17s spoken)*
 
 ---
 
-## Beat 2 — The block · 0:48 → 1:22
+## Beat 2 — The block · 1:06 → 1:40
 
 Most of the video's value is in these thirty-eight seconds.
 
 | t | Do this / what appears |
 |---|---|
-| 0:48 | Click **Console** — you land on the Cases tab. |
-| 0:50 | Click **Lookalike**, first brass button in the demo bar. **Then take your hands off the mouse.** |
+| 1:06 | Click **Console**, then the **Cases** tab — you left it on Inbox. |
+| 1:08 | Click **Lookalike**, first brass button in the demo bar. **Then take your hands off the mouse.** |
 | +2.5s | Hold fires. **$340,000** into **Held** on the ledger. Case opens and selects itself — *Northwind Student Transport LLC*. |
 | +2.7s | Four lanes go live, staggered 0.6s apart. |
 | +11–12s | Four findings land; chips slot onto the rail with per-lane latency. |
@@ -206,16 +246,15 @@ Most of the video's value is in these thirty-eight seconds.
 ⚠︎ The demo bar never disables while busy — deliberately. The HTTP request doesn't return for ~65
 seconds, but **nothing on screen changes after the verdict.** Move on the verdict, not the spinner.
 
-> **(on the click)** Here's the email arriving — watch the money.
+> **(on the click)** That's the first of the three it flagged, opened as a case. Watch the money.
 >
-> **(+4s)** Three hundred and forty thousand has moved into hold, before any agent has formed an
-> opinion.
+> **(+4s)** Three hundred and forty thousand into hold, before any agent has formed an opinion.
 >
 > **(+9s)** Four go out in parallel, and the one to watch actually rings the vendor — on the number
-> we already hold, not the one in the email.
+> we hold, not the one in the email.
 >
-> **(+27s)** Then the Challenger argues the opposite case and takes down each finding in turn — and
-> all four attempts fail.
+> **(+27s)** Then the Challenger argues the opposite case, finding by finding. All four attempts
+> fail.
 >
 > **(+33s)** So the balance tips, and it blocks.
 
@@ -223,18 +262,18 @@ seconds, but **nothing on screen changes after the verdict.** Move on the verdic
 
 ---
 
-## Beat 3 — The injection · 1:22 → 1:41
+## Beat 3 — The injection · 1:40 → 1:59
 
 The guardrail event is written **before any agent parses the artifact**, so it's on Posture within a
 second of the click. That's what lets a 23-second beat sit on top of a 30-second verdict.
 
 | t | Do this / what appears |
 |---|---|
-| 1:22 | Click **Poisoned PDF**. |
-| 1:24 | **Immediately** click **Posture**. Don't wait. |
-| 1:26 | Top-left, **Guardrail screening**: **1 · Injections neutralized**, and below it the removed span reproduced **verbatim and struck through**, with technique (`hidden_text`), location and byte offset. |
-| 1:31 | Let the cursor rest on the struck-through line as you say "written for the model". The screen carries the sentence; you don't have to read it out. |
-| 1:37 | Click **Console**. Findings are landing; BLOCK follows. |
+| 1:40 | Click **Poisoned PDF**. |
+| 1:42 | **Immediately** click **Posture**. Don't wait. |
+| 1:44 | Top-left, **Guardrail screening**: **1 · Injections neutralized**, and below it the removed span reproduced **verbatim and struck through**, with technique (`hidden_text`), location and byte offset. |
+| 1:49 | Let the cursor rest on the struck-through line as you say "written for the model". The screen carries the sentence; you don't have to read it out. |
+| 1:55 | Click **Console**. Findings are landing; BLOCK follows. |
 
 > Same attack, except this time there's a PDF attached, with a line hidden inside it written for
 > the model rather than the person. It never reached an agent, and the case still blocks — on
@@ -244,13 +283,13 @@ second of the click. That's what lets a 23-second beat sit on top of a 30-second
 
 ---
 
-## Beat 4 — The abstention · 1:41 → 2:01
+## Beat 4 — The abstention · 1:59 → 2:19
 
 The differentiator, and a prerequisite: beat 6 has nothing to wake without it.
 
 | t | Do this / what appears |
 |---|---|
-| 1:41 | Click **Thin evidence**. |
+| 1:59 | Click **Thin evidence**. |
 | +3s | Hold fires. New case — *Padstow Special Education Services LLC*, **$268,000**. |
 | **+14.4s** | It **parks** in *Waiting on vendor callback*. Callback panel renders. **Findings visible, verdict band empty.** |
 
@@ -265,7 +304,7 @@ rules — `tests/test_callback_window.py` is the regression guard.
 
 ---
 
-## Beat 5 — Under the hood, and the cloud · 2:01 → 2:54
+## Beat 5 — Under the hood, and the cloud · 2:19 → 3:08
 
 **The pivot beat.** You click S4, leave it running, and go underneath. It takes 41.6 seconds and you
 spend every one of them.
@@ -278,13 +317,13 @@ niche, and crash safety belongs to the beat that was cut.
 
 | t | Do this / what appears |
 |---|---|
-| 2:01 | Click **Late callback**. New case — *Redgate Student Information Systems*, **$47,250**. Then leave it running. |
-| 2:05 | **Docket → 1 · Reasoning chain.** The trace tree expands: every step, with latency and tokens per node. Hover one. |
-| 2:14 | **→ 2 · Evidence chain.** Each finding beside the record it cited. |
-| 2:22 | **→ 3 · Memory & threat intel.** The session the case kept, and the tradecraft fingerprint it matched. |
-| 2:30 | **→ 4 · Audit record.** Point at `prev_record_hash`. |
-| 2:37 | **Switch to the Google Cloud tab.** Decide which page before the take — see below. |
-| ~2:48 | **Back to Console.** **RELEASE** in verdigris; the ledger's **Released** row increments. If it hasn't landed, stay on the cloud tab one more beat. |
+| 2:19 | Click **Late callback**. New case — *Redgate Student Information Systems*, **$47,250**. Then leave it running. |
+| 2:23 | **Docket → 1 · Reasoning chain.** The trace tree expands: every step, with latency and tokens per node. Hover one. |
+| 2:32 | **→ 2 · Evidence chain.** Each finding beside the record it cited. |
+| 2:40 | **→ 3 · Memory & threat intel.** The session the case kept, and the tradecraft fingerprint it matched. |
+| 2:47 | **→ 4 · Audit record.** Point at `prev_record_hash`. |
+| 2:54 | **Switch to the Google Cloud tab.** Decide which page before the take — see below. |
+| ~3:04 | **Back to Console.** **RELEASE** in verdigris; the ledger's **Released** row increments. If it hasn't landed, stay on the cloud tab one more beat. |
 
 **Google Cloud tab — pick one before you record:**
 
@@ -293,14 +332,14 @@ niche, and crash safety belongs to the beat that was cut.
 | **Preferred — Cloud Run** | `make deploy DEMO_MODE=live`, then the Cloud Run service page with the revision serving and the `.run.app` URL visible. | One step this repo can't do for you: `gcloud auth login` as the account that owns `interdict-demo-57216`, then `gcloud config set project`. |
 | **Verified fallback — Vertex logs** | Cloud Logging filtered to `aiplatform.googleapis.com`, showing the run you just recorded: `gemini-3.6-flash` and `gemini-3.7-flash`, and the `modelarmor…:sanitizeUserPrompt` 200s beside them. | Nothing. Satisfies the requirement as written, and it's real either way. |
 
-> **(on the click)** One more — it runs for about forty seconds whether I'm watching or not, so
-> let me show you underneath.
+> **(on the click)** One more — it runs for forty seconds whether I'm watching or not, so let me
+> show you underneath.
 >
-> **(1 · reasoning chain)** This is the whole reasoning trace: every step, with latency and tokens
-> per agent.
+> **(1 · reasoning chain)** The whole reasoning trace — every step, with latency and tokens per
+> agent.
 >
-> **(2 · evidence chain)** Every finding, beside the record it cited to reach it — no verdict gets
-> into adjudication without one.
+> **(2 · evidence chain)** Every finding beside the record it cited. No verdict reaches
+> adjudication without one.
 >
 > **(3 · memory)** *(cuttable)* This is what the case remembered — its session, and the tradecraft
 > it matched.
@@ -308,21 +347,21 @@ niche, and crash safety belongs to the beat that was cut.
 > **(4 · audit record)** And each case closes into a record carrying the hash of the one before it.
 >
 > **(Google Cloud)** And all of it runs on Google Cloud: twelve agents on Google's Agent Development
-> Kit, reasoning on Gemini Flash through Vertex AI, with Model Armor screening every attachment.
+> Kit, reasoning on Gemini Flash through Vertex AI, with Model Armor on every attachment.
 >
-> **(back on Console)** And there it is — the vendor called back, confirmed, and it released.
+> **(back on Console)** And there it is — the vendor called back, confirmed, released.
 
-*(118 words · 51s spoken)*
+*(109 words · 47s spoken)*
 
 ---
 
-## Beat 6 — The wake · 2:54 → 3:11
+## Beat 6 — The wake · 3:08 → 3:25
 
 | t | Do this / what appears |
 |---|---|
-| 2:54 | Click **+4 days** in the demo bar. |
+| 3:08 | Click **+4 days** in the demo bar. |
 | ~+10s | The clock passes the 48-hour grace window. **The dormant Padstow case wakes on its own** — no click. Its session rehydrates, prior findings reappear with session ID and age in days, and it resolves to **ESCALATE**. |
-| 3:06 | Click the **Padstow row** in the left queue to put ESCALATE on screen for the cut. |
+| 3:20 | Click the **Padstow row** in the left queue to put ESCALATE on screen for the cut. |
 
 > Now, the case that refused to decide. Four days forward on the clock, and nobody touches it — it
 > wakes itself, pulls its own findings back out of memory, and stops waiting. It escalates to a
@@ -332,11 +371,11 @@ niche, and crash safety belongs to the beat that was cut.
 
 ---
 
-## Beat 8 — Close · 3:11 → 3:41
+## Beat 8 — Close · 3:25 → 3:53
 
 | t | Do this |
 |---|---|
-| 3:11 | Click **Console**. Cursor rests on the right-hand **Ledger** panel — four rows with proportional meters. |
+| 3:25 | Click **Console**. Cursor rests on the right-hand **Ledger** panel — four rows with proportional meters. |
 
 | Row | Amount | From |
 |---|---|---|
@@ -346,13 +385,13 @@ niche, and crash safety belongs to the beat that was cut.
 | Held | $0 | everything resolved |
 
 > Eight hundred thousand dollars examined in four minutes: four eighty-five blocked, two sixty-eight
-> escalated to a person because the system knew what it didn't know, and forty-seven thousand
-> released because it earned it.
+> escalated because the system knew what it didn't know, forty-seven thousand released because it
+> earned it.
 >
 > Most tools score a message and hand you a number. Interdict holds the money and gives you a
 > decision it can defend line by line — or an honest refusal to decide.
 
-*(64 words · 27s spoken)*
+*(60 words · 26s spoken)*
 
 ---
 
